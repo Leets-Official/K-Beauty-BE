@@ -1,0 +1,29 @@
+name: Bug Report
+description: 버그를 제보합니다.
+title: "[fix] "
+labels: ["fix"]
+body:
+  - type: textarea
+    id: issue
+    attributes:
+      label: 문제 설명
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 재현 방법
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: note
+    attributes:
+      label: 참고 사항
+    validations:
+      required: false
