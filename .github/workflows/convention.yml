@@ -1,0 +1,21 @@
+name: Convention
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+jobs:
+  pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if [[ ! "$PR_TITLE" =~ ^\[(Feat|Fix|Hotfix|Refactor|Chore|Docs|Style|Test)\]\ .+ ]]; then
+            echo "PR 제목은 '[Type] 작업 요약' 형식이어야 합니다."
+            echo "예시: [Feat] 로그인 기능 구현"
+            echo "예시: [Fix] 댓글 등록 오류 수정"
+            echo "허용 Type: Feat, Fix, Hotfix, Refactor, Chore, Docs, Style, Test"
+            exit 1
+          fi
