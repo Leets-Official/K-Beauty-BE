@@ -26,5 +26,4 @@ MySQL 드라이버는 의존성에 포함되어 있으며, 실제 운영/개발 
 
 ## 협업 가이드
 
-브랜치 전략, 이슈/PR 제목 규칙, PR 머지 규칙은 [CONTRIBUTING.md](CONTRIBUTING.md)를 참고합니다.
-
+브랜치 전략, PR 제목 규칙, PR 머지 규칙은 [CONTRIBUTING.md](CONTRIBUTING.md)를 참고합니다.
