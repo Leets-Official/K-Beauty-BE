@@ -31,7 +31,7 @@ public class Ingredient {
     @Column(length = 200, nullable = false)
     private String name;
 
-    @Column(length = 500)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @PrePersist

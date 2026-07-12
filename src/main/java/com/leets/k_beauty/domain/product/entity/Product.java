@@ -33,18 +33,27 @@ public class Product {
     @Column(name = "external_product_id", length = 100, unique = true)
     private String externalProductId;
 
-    @Column(name = "brand_name", length = 50, nullable = false)
+    @Column(name = "brand_name", length = 100)
     private String brandName;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 200, nullable = false)
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
+    @Column(length = 50)
     private ProductCategory category;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     @Column
     private Integer price;
+
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
+
+    @Column(name = "purchase_url", length = 500)
+    private String purchaseUrl;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
