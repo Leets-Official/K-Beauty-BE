@@ -2,11 +2,6 @@ spring:
   application:
     name: k-beauty
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
 naver:
   shopping:
     base-url: https://openapi.naver.com
