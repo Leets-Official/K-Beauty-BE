@@ -53,7 +53,7 @@ erDiagram
 | 외부 상품 ID | `external_id` | VARCHAR(100) | UNIQUE | 네이버 쇼핑 API에서 제공하는 상품 ID |
 | 브랜드명 | `brand_name` | VARCHAR(50) | NOT NULL | 상품 브랜드명 |
 | 상품명 | `product_name` | VARCHAR(100) | NOT NULL | 서비스에서 사용하는 상품명 |
-| 카테고리 | `category` | VARCHAR(20) | NOT NULL | TONER / SKIN / SERUM / AMPOULE / ESSENCE / LIGHT_GEL / BALANCED / RICH_DEEP |
+| 카테고리 | `category` | VARCHAR(20) | NOT NULL | TONER / SKIN / SERUM / AMPOULE / ESSENCE / GEL_CREAM / MOISTURE_CREAM / NUTRIENT_DEEP_CREAM |
 | 이미지 URL | `image_url` | VARCHAR(500) | NULL | 네이버 쇼핑 API에서 받은 상품 이미지 URL |
 | 구매 URL | `purchase_url` | VARCHAR(500) | NULL | 네이버 쇼핑 API에서 받은 상품 구매 URL |
 | 가격 | `price` | INT | NULL | 네이버 쇼핑 API에서 받은 최저가 |
@@ -89,9 +89,9 @@ erDiagram
 | `SERUM` | 세럼 | 2단계 집중 케어 |
 | `AMPOULE` | 앰플 | 2단계 집중 케어 |
 | `ESSENCE` | 에센스 | 2단계 집중 케어 |
-| `LIGHT_GEL` | 젤크림 | 3단계 보습 마무리 |
-| `BALANCED` | 수분크림 | 3단계 보습 마무리 |
-| `RICH_DEEP` | 영양/보습크림 | 3단계 보습 마무리 |
+| `GEL_CREAM` | 젤 크림 (Gel Cream) | 3단계 보습 마무리 |
+| `MOISTURE_CREAM` | 수분 크림 (Moisture Cream) | 3단계 보습 마무리 |
+| `NUTRIENT_DEEP_CREAM` | 영양/보습 크림 (Nutrient / Deep Cream) | 3단계 보습 마무리 |
 
 ## 피부 고민별 추천 성분 매핑
 
