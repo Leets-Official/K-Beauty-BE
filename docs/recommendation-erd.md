@@ -15,9 +15,7 @@ erDiagram
       BIGINT session_id FK
       BIGINT user_conditions_id FK
       varchar recommend_type
-      varchar view_mode
       varchar policy_version
-      varchar overall_reason
       datetime created_at
     }
 
@@ -25,7 +23,9 @@ erDiagram
       BIGINT id PK
       BIGINT recommendation_id FK
       BIGINT product_id FK
-      int rank
+      int step
+      int candidate_rank
+      boolean is_user_selected
       decimal match_score
       varchar reason_short
       varchar reason_detail
@@ -35,21 +35,13 @@ erDiagram
     SHARES {
       BIGINT id PK
       BIGINT recommendation_id FK
+      varchar share_token
       varchar share_type
       datetime shared_at
     }
 
     USER_CONDITIONS {
       BIGINT id PK
-      BIGINT session_id FK
-      BIGINT skin_concern_tag_id FK
-      BIGINT skin_type_tag_id FK
-      BIGINT sensitivity_tag_id FK
-      BIGINT category_pref_tag_id FK
-      varchar knowledge_level
-      varchar diagnosis_mode
-      datetime created_at
-      datetime updated_at
     }
 
     SESSIONS {
@@ -65,40 +57,43 @@ erDiagram
 
 ### recommendation_results (추천 결과)
 
-| 필드 | 타입/제약 | 설명 |
-|---|---|---|
-| `id` | BIGINT PK | 추천 결과 식별자 |
-| `session_id` | BIGINT NOT NULL FK → sessions.id | 추천이 발생한 세션 |
-| `user_conditions_id` | BIGINT NOT NULL FK → user_conditions.id | 추천의 근거가 된 진단 조건값 |
-| `recommend_type` | VARCHAR(20) NOT NULL | 추천 방식. QUICK / TAG / DETAILED / SCORE 중 하나 |
-| `view_mode` | VARCHAR(20) NOT NULL | 보기 모드. 등록보기 / 자세히보기 |
-| `policy_version` | VARCHAR(20) NOT NULL | 추천 규칙 버전 |
-| `overall_reason` | VARCHAR(255) NULL | 전체 추천 결과에 대한 요약 이유 |
-| `created_at` | DATETIME NOT NULL | 추천 생성 시각 |
+| 이름 | 필드명 | 타입 | 제약 | 설명 |
+|---|---|---|---|---|
+| 추천 결과 ID | `id` | BIGINT | PK | 추천 결과 식별자 |
+| 세션 ID | `session_id` | BIGINT | NOT NULL FK → sessions.id | 추천이 발생한 세션 |
+| 조건 ID | `user_conditions_id` | BIGINT | NOT NULL FK → user_conditions.id | 추천의 근거가 된 진단 조건값 |
+| 추천 형태 | `recommend_type` | VARCHAR(20) | NOT NULL | QUICK(빠른 진단) / DETAILED(상세 진단) |
+| 추천 규칙 | `policy_version` | VARCHAR(20) | NOT NULL | 추천 규칙 버전 |
+| 생성일자 | `created_at` | DATETIME | NOT NULL | 추천 생성 시각 |
 
 ### recommendation_products (추천 상품)
 
-| 필드 | 타입/제약 | 설명 |
-|---|---|---|
-| `id` | BIGINT PK | 추천 상품 식별자 |
-| `recommendation_id` | BIGINT NOT NULL FK → recommendation_results.id | 연결된 추천 결과 |
-| `product_id` | BIGINT NOT NULL FK → products.id | 추천된 상품 |
-| `rank` | INT NOT NULL | 추천 순위 (1 / 2 / 3) |
-| `match_score` | DECIMAL(5,2) NULL | 상품 매칭 점수 |
-| `reason_short` | VARCHAR(200) NULL | 이 상품을 추천한 요약 이유 |
-| `reason_detail` | VARCHAR(1000) NULL | 이 상품을 추천한 상세 이유 |
-| `created_at` | DATETIME NOT NULL | 생성 시각 |
+| 이름 | 필드명 | 타입 | 제약 | 설명 |
+|---|---|---|---|---|
+| 추천 상품 ID | `id` | BIGINT | PK | 추천 상품 식별자 |
+| 추천 결과 ID | `recommendation_id` | BIGINT | NOT NULL FK → recommendation_results.id | 연결된 추천 결과 |
+| 상품 ID | `product_id` | BIGINT | NOT NULL FK → products.id | 추천된 상품 |
+| 루틴 단계 | `step` | INT | NOT NULL | 1(피부결 정돈) / 2(집중 케어) / 3(보습 마무리) |
+| 후보 순서 | `candidate_rank` | INT | NOT NULL | 1=메인 추천, 2·3=다른 후보 |
+| 사용자 교체 여부 | `is_user_selected` | BOOLEAN | NOT NULL DEFAULT FALSE | 사용자가 직접 후보로 교체한 경우 TRUE |
+| 매칭 점수 | `match_score` | DECIMAL(5,2) | NULL | 상품 매칭 점수 |
+| 이유 보기 | `reason_short` | VARCHAR(200) | NULL | 추천 이유 요약 / 후보 카드 한 줄 설명 |
+| 자세한 보기 | `reason_detail` | VARCHAR(1000) | NULL | 자세히 보기 내용 |
+| 생성일자 | `created_at` | DATETIME | NOT NULL | 생성 시각 |
 
 ### shares (공유)
 
-| 필드 | 타입/제약 | 설명 |
-|---|---|---|
-| `id` | BIGINT PK | 공유 식별자 |
-| `recommendation_id` | BIGINT NOT NULL FK → recommendation_results.id | 공유된 추천 결과 |
-| `share_type` | VARCHAR(20) NOT NULL | 공유 방식. KAKAO / LINK / TEXT 중 하나 |
-| `shared_at` | DATETIME NOT NULL | 공유 시각 |
+| 이름 | 필드명 | 타입 | 제약 | 설명 |
+|---|---|---|---|---|
+| 공유 ID | `id` | BIGINT | PK | 공유 식별자 |
+| 추천 결과 ID | `recommendation_id` | BIGINT | NOT NULL FK → recommendation_results.id | 공유된 추천 결과 |
+| 공유 토큰 | `share_token` | VARCHAR(100) | NOT NULL UNIQUE | 공유 링크 접근용 토큰. `/share/{share_token}` 형태로 사용 |
+| 공유 방식 | `share_type` | VARCHAR(20) | NOT NULL | KAKAO / LINK / TEXT |
+| 공유 시간 | `shared_at` | DATETIME | NOT NULL | 공유 시각 |
 
 ## 제약 조건
 
-- `recommendation_products`의 순위는 같은 추천 결과 안에서 중복될 수 없다. `UNIQUE(recommendation_id, rank)`
+- 같은 추천 결과 안에서 동일한 단계·후보 순서는 중복될 수 없다. `UNIQUE(recommendation_id, step, candidate_rank)`
+- 각 단계의 메인 추천은 `candidate_rank = 1`이며, 후보는 `candidate_rank = 2 또는 3`이다.
+- `is_user_selected = TRUE`인 상품은 사용자가 후보에서 직접 교체한 상품이다. 답변 변경 시 FALSE로 초기화한다.
 - 공유 기능은 `shares` 테이블로 일원화한다. `recommendation_results`에 공유 관련 필드를 두지 않는다.
