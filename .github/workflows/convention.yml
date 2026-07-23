@@ -19,3 +19,17 @@ jobs:
             echo "허용 Type: Feat, Fix, Hotfix, Refactor, Chore, Docs, Style, Test"
             exit 1
           fi
+
+  branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          if [[ ! "$BRANCH" =~ ^(feat|fix|hotfix|refactor|chore|docs|style|test)/#[0-9]+/.+ ]]; then
+            echo "브랜치 이름은 'type/#이슈번호/작업명' 형식이어야 합니다."
+            echo "예시: feat/#10/login"
+            echo "예시: docs/#9/erd-recommendation"
+            echo "허용 Type: feat, fix, hotfix, refactor, chore, docs, style, test"
+            exit 1
+          fi
