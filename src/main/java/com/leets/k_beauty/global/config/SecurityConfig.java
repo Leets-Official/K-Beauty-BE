@@ -18,7 +18,8 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/health").permitAll()
-                        .anyRequest().authenticated());
+                        // TODO: X-Session-Token 검증을 Security Filter로 분리한 뒤 authenticated()로 변경
+                        .anyRequest().permitAll());
 
         return http.build();
     }
