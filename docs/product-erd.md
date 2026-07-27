@@ -161,5 +161,6 @@ MVP 단계에서는 `ingredients.is_caution`처럼 성분 자체를 주의 성�
 - `products.external_id`는 네이버 쇼핑 API 상품 ID를 저장하며, 동일 상품 중복 저장 여부를 판별하는 기준으로 사용한다.
 - `products.category`는 서비스 내부 추천 카테고리 기준으로 관리한다. 네이버 쇼핑 API의 `category3` 값과 반드시 동일하지 않아도 된다.
 - `ingredients.name`은 중복 저장되지 않도록 UNIQUE로 관리한다.
+- `product_ingredients`는 동일 상품과 동일 성분 조합이 중복 저장되지 않도록 `UNIQUE(product_id, ingredient_id)`로 관리한다.
 - `product_ingredients.display_order`는 추천 로직이 아니라 상품 상세 화면의 대표 성분 노출 순서를 위해 사용한다.
 - `products.description`, `rating`, `rating_count`, `ingredients.is_caution`은 MVP 단계에서 제외한다.
