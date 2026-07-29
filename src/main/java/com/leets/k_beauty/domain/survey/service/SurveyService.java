@@ -140,10 +140,22 @@ public class SurveyService {
         SensitivityStatus derivedSensitivityStatus = null;
         if (questionCode == QuestionCode.SENSITIVITY) {
             boolean isNo = selectedOptions.get(0).getOptionCode().equals(SENSITIVE_NO);
-            derivedSensitivityStatus = isNo ? SensitivityStatus.LOW : null;
+            if (isNo) {
+                derivedSensitivityStatus = SensitivityStatus.LOW;
+            } else {
+                // "예"를 선택한 시점엔 아직 CAUTION 응답 여부를 모른다.
+                // 이미 CAUTION 응답이 있으면(재저장 케이스) 그 값으로 재계산하고,
+                // 없으면 "민감도 정보를 아직 확인하지 않은" UNASSESSED로 둠
+                List<SurveyOption> existingCaution = userSurveyAnswerRepository
+                        .findByConditionAndSurvey(userCondition, findActiveSurvey(QuestionCode.CAUTION))
+                        .stream().map(UserSurveyAnswer::getOption).toList();
+                derivedSensitivityStatus = existingCaution.isEmpty()
+                        ? SensitivityStatus.UNASSESSED
+                        : deriveFromCaution(existingCaution);
+            }
             userCondition.updateSensitivityStatus(derivedSensitivityStatus);
         } else if (questionCode == QuestionCode.CAUTION) {
-            derivedSensitivityStatus = selectedOptions.size() >= 2 ? SensitivityStatus.HIGH : SensitivityStatus.MEDIUM;
+            derivedSensitivityStatus = deriveFromCaution(selectedOptions);
             userCondition.updateSensitivityStatus(derivedSensitivityStatus);
         }
 
@@ -261,6 +273,11 @@ public class SurveyService {
                 .ifPresent(option -> {
                     throw new BusinessException(ErrorCode.EXCLUSIVE_OPTION_VIOLATION);
                 });
+    }
+
+    // CAUTION 선택지 개수 기준 민감도 산출 (1개=MEDIUM, 2개 이상=HIGH)
+    private SensitivityStatus deriveFromCaution(List<SurveyOption> cautionOptions) {
+        return cautionOptions.size() >= 2 ? SensitivityStatus.HIGH : SensitivityStatus.MEDIUM;
     }
 
     // 특정 선택지 응답 여부 확인
