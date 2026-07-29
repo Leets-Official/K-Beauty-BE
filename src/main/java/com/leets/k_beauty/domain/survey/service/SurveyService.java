@@ -38,7 +38,11 @@ public class SurveyService {
     @Transactional
     public UserConditionResponse create(String sessionToken) {
         Long sessionId = resolveSessionId(sessionToken);
-        userConditionRepository.findBySession(sessionId, SurveyStatus.IN_PROGRESS)
+        // ABANDONED가 아닌(=IN_PROGRESS 또는 COMPLETED) 컨텍스트가 남아있으면 새로 만들지 않는다.
+        // COMPLETED 상태를 그냥 통과시키면 restart를 거치지 않고도 완료 설문 위에 새 설문이 쌓여
+        // 한 세션에 여러 개의 "활성" 컨텍스트가 공존하는 상태 오염이 발생.
+        userConditionRepository.findFirstBySessionIdOrderByIdDesc(sessionId)
+                .filter(uc -> uc.getStatus() != SurveyStatus.ABANDONED)
                 .ifPresent(uc -> {
                     throw new BusinessException(ErrorCode.SURVEY_IN_PROGRESS_EXISTS);
                 });
