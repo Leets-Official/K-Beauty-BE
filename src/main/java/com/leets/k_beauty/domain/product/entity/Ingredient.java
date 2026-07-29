@@ -29,13 +29,17 @@ public class Ingredient {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "caution_description", columnDefinition = "TEXT")
+    private String cautionDescription;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    private Ingredient(String name, String description) {
+    private Ingredient(String name, String description, String cautionDescription) {
         this.name = name;
         this.description = description;
+        this.cautionDescription = cautionDescription;
     }
 
     @PrePersist
