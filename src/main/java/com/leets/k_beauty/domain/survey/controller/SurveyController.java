@@ -81,7 +81,7 @@ public class SurveyController {
     }
 
     @Operation(summary = "이전 질문으로 돌아가기", description = "직전에 답변한 질문과 그때 선택한 답변을 프리필용으로 조회합니다.")
-    @PostMapping("/{surveyId}/previous-question")
+    @GetMapping("/{surveyId}/previous-question")
     public ResponseEntity<ApiResponse<PreviousQuestionResponse>> getPreviousQuestion(@PathVariable Long surveyId,
                                                                                      @Parameter(description = "클라이언트가 현재 보고 있는 질문 코드 (생략 시 서버가 마지막 답변 기준으로 계산)")
                                                                                      @RequestParam(required = false) QuestionCode from,
