@@ -3,13 +3,11 @@ name: CI/CD
 on:
   pull_request:
     branches:
-      - develop
       - main
+      - develop
   push:
     branches:
       - main
-      - 'chore/#24/cicd'
-  workflow_dispatch:
 
 jobs:
   ci:
@@ -57,9 +55,13 @@ jobs:
 
   deploy:
     needs: ci
-    if: "github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/chore/#24/cicd'))"
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: self-hosted
     timeout-minutes: 15
+
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
 
     steps:
       - name: Deploy application
@@ -68,13 +70,57 @@ jobs:
 
           cd /home/ubuntu/K-Beauty-BE
 
-          BRANCH="${GITHUB_REF_NAME}"
+          git checkout main
+          PREVIOUS_COMMIT=$(git rev-parse HEAD)
 
-          git fetch origin "$BRANCH"
-          git checkout "$BRANCH"
-          git reset --hard "origin/$BRANCH"
+          git fetch origin main
+          git reset --hard origin/main
+          TARGET_COMMIT=$(git rev-parse HEAD)
+
+          echo "Deploying ${TARGET_COMMIT} (previous: ${PREVIOUS_COMMIT})"
 
           docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
 
-          sleep 15
-          curl -f http://localhost:8080/health
+          echo "Waiting for application to start..."
+          SUCCESS=0
+
+          for i in {1..12}; do
+            if curl -f http://localhost:8080/health; then
+              echo "Health check passed!"
+              SUCCESS=1
+              break
+            fi
+
+            echo "Health check failed, retrying in 5s... ($i/12)"
+            sleep 5
+          done
+
+          if [ $SUCCESS -ne 1 ]; then
+            echo "Health check failed after multiple attempts."
+            docker compose -f docker-compose.prod.yml logs app --tail=100 || true
+
+            echo "Rolling back to previous commit: ${PREVIOUS_COMMIT}"
+            git reset --hard "${PREVIOUS_COMMIT}"
+            docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
+
+            echo "Waiting for rollback application to start..."
+            ROLLBACK_SUCCESS=0
+
+            for i in {1..12}; do
+              if curl -f http://localhost:8080/health; then
+                echo "Rollback health check passed!"
+                ROLLBACK_SUCCESS=1
+                break
+              fi
+
+              echo "Rollback health check failed, retrying in 5s... ($i/12)"
+              sleep 5
+            done
+
+            if [ $ROLLBACK_SUCCESS -ne 1 ]; then
+              echo "Rollback health check failed after multiple attempts."
+              docker compose -f docker-compose.prod.yml logs app --tail=100 || true
+            fi
+
+            exit 1
+          fi
