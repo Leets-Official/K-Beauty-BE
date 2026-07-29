@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - 'chore/#24/cicd'
   workflow_dispatch:
 
 jobs:
