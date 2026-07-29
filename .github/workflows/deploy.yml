@@ -57,7 +57,7 @@ jobs:
 
   deploy:
     needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     runs-on: self-hosted
     timeout-minutes: 15
 
@@ -68,9 +68,11 @@ jobs:
 
           cd /home/ubuntu/K-Beauty-BE
 
-          git fetch origin main
-          git checkout main
-          git reset --hard origin/main
+          BRANCH="${GITHUB_REF_NAME}"
+
+          git fetch origin "$BRANCH"
+          git checkout "$BRANCH"
+          git reset --hard "origin/$BRANCH"
 
           docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
 
