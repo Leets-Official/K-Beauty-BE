@@ -1,35 +1,55 @@
-name: Deploy to EC2
+name: CI/CD
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
+      - main
+  push:
+    branches:
+      - main
       - 'chore/#24/cicd'
   workflow_dispatch:
 
 jobs:
-  deploy:
+  ci:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script_stop: true
-          script: |
-            set -e
+          distribution: temurin
+          java-version: 17
+          cache: gradle
 
-            cd "${{ secrets.EC2_DEPLOY_PATH }}"
+      - name: Run tests
+        run: |
+          chmod +x ./gradlew
+          ./gradlew test --no-daemon
 
-            git fetch origin develop
-            git checkout develop
-            git reset --hard origin/develop
+  deploy:
+    needs: ci
+    if: github.event_name != 'pull_request'
+    runs-on: self-hosted
+    timeout-minutes: 15
 
-            docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
+    steps:
+      - name: Deploy application
+        run: |
+          set -e
 
-            sleep 15
-            curl -f http://localhost:8080/health
+          cd /home/ubuntu/K-Beauty-BE
+
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+
+          docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
+
+          sleep 15
+          curl -f http://localhost:8080/health
