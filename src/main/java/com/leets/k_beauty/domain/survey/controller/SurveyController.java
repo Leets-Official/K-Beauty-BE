@@ -29,7 +29,8 @@ public class SurveyController {
                 .body(ApiResponse.created(surveyService.create(sessionToken)));
     }
 
-    @Operation(summary = "설문 이어하기", description = "진행 중인 설문을 조회합니다.")
+    @Operation(summary = "설문 이어하기/재진입 라우팅", description = "세션의 가장 최근 설문 컨텍스트를 상태 무관으로 조회합니다. " +
+            "status가 IN_PROGRESS면 이어하기, COMPLETED면 결과 화면으로, 응답이 없으면(404) 온보딩으로 라우팅합니다.")
     @GetMapping("/current")
     public ResponseEntity<ApiResponse<UserConditionResponse>> getCurrent(@Parameter(description = "세션 토큰", required = true)
                                                                          @RequestHeader("X-Session-Token") String sessionToken) {

@@ -48,10 +48,10 @@ public class SurveyService {
         return UserConditionResponse.from(userCondition);
     }
 
-    // 진행 중인 설문 조회
+    // 세션의 가장 최근 설문 컨텍스트 조회 (재진입 라우팅용: IN_PROGRESS→이어하기, COMPLETED→결과 화면, 없음→온보딩)
     public UserConditionResponse getCurrent(String sessionToken) {
         Long sessionId = resolveSessionId(sessionToken);
-        UserCondition userCondition = userConditionRepository.findBySession(sessionId, SurveyStatus.IN_PROGRESS)
+        UserCondition userCondition = userConditionRepository.findFirstBySessionIdOrderByIdDesc(sessionId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SURVEY_NOT_FOUND));
         return UserConditionResponse.from(userCondition);
     }
