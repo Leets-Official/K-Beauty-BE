@@ -5,7 +5,6 @@
 ```mermaid
 erDiagram
     RECOMMENDATION_RESULTS ||--o{ RECOMMENDATION_PRODUCTS : contains
-    RECOMMENDATION_RESULTS ||--o{ SHARES : shared_via
     SESSIONS ||--o{ RECOMMENDATION_RESULTS : triggers
     USER_CONDITIONS ||--o{ RECOMMENDATION_RESULTS : based_on
     PRODUCTS ||--o{ RECOMMENDATION_PRODUCTS : included_in
@@ -30,14 +29,6 @@ erDiagram
       varchar reason_short
       varchar reason_detail
       datetime created_at
-    }
-
-    SHARES {
-      BIGINT id PK
-      BIGINT recommendation_id FK
-      varchar share_token
-      varchar share_type
-      datetime shared_at
     }
 
     USER_CONDITIONS {
@@ -81,19 +72,9 @@ erDiagram
 | 자세한 보기 | `reason_detail` | VARCHAR(1000) | NULL | 자세히 보기 내용 |
 | 생성일자 | `created_at` | DATETIME | NOT NULL | 생성 시각 |
 
-### shares (공유)
-
-| 이름 | 필드명 | 타입 | 제약 | 설명 |
-|---|---|---|---|---|
-| 공유 ID | `id` | BIGINT | PK | 공유 식별자 |
-| 추천 결과 ID | `recommendation_id` | BIGINT | NOT NULL FK → recommendation_results.id | 공유된 추천 결과 |
-| 공유 토큰 | `share_token` | VARCHAR(100) | NOT NULL UNIQUE | 공유 링크 접근용 토큰. `/share/{share_token}` 형태로 사용 |
-| 공유 방식 | `share_type` | VARCHAR(20) | NOT NULL | KAKAO / LINK / TEXT |
-| 공유 시간 | `shared_at` | DATETIME | NOT NULL | 공유 시각 |
-
 ## 제약 조건
 
 - 같은 추천 결과 안에서 동일한 단계·후보 순서는 중복될 수 없다. `UNIQUE(recommendation_id, step, candidate_rank)`
 - 각 단계의 메인 추천은 `candidate_rank = 1`이며, 후보는 `candidate_rank = 2 또는 3`이다.
+- `candidate_rank`는 `match_score` 내림차순으로 결정하며, 동점일 경우 네이버 `productId` 내림차순(더 최근 등록 상품 우선)으로 결정한다.
 - `is_user_selected = TRUE`인 상품은 사용자가 후보에서 직접 교체한 상품이다. 답변 변경 시 FALSE로 초기화한다.
-- 공유 기능은 `shares` 테이블로 일원화한다. `recommendation_results`에 공유 관련 필드를 두지 않는다.
