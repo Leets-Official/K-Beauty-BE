@@ -38,3 +38,9 @@ out/
 
 ### Environment ###
 .env
+
+
+
+
+### Local AI context ###
+CLAUDE.md
