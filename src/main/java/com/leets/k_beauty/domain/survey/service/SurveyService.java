@@ -191,6 +191,15 @@ public class SurveyService {
         }
 
         userCondition.updateDiagnosisMode(mode);
+        // 진단 경로가 바뀌면 민감도 상태도 함께 재산출한다.
+        // 원본 답변은 지우지 않고(프리필 유지) 파생값만 현재 경로에 맞춰 다시 계산한다.
+        // 따라서 QUICK에 상세 진단 값이 남는 일이 없고,
+        // 다시 DETAILED로 돌아오면 남아있는 답변으로 원래 값이 복원된다.
+        userCondition.updateSensitivityStatus(
+                mode == DiagnosisMode.QUICK
+                        ? SensitivityStatus.UNASSESSED           // 빠른 진단 = 민감도를 확인하지 않은 상태
+                        : deriveSensitivityStatus(userCondition) // 상세 진단 = 남아있는 답변으로 복원
+        );
         return DiagnosisModeResponse.from(userCondition);
     }
 
@@ -282,6 +291,28 @@ public class SurveyService {
     // CAUTION 선택지 개수 기준 민감도 산출 (1개=MEDIUM, 2개 이상=HIGH)
     private SensitivityStatus deriveFromCaution(List<SurveyOption> cautionOptions) {
         return cautionOptions.size() >= 2 ? SensitivityStatus.HIGH : SensitivityStatus.MEDIUM;
+    }
+
+    // 저장된 답변만으로 민감도 상태를 산출한다.
+    // 진단 경로(diagnosisMode)는 보지 않는 순수 조회 함수
+    private SensitivityStatus deriveSensitivityStatus(UserCondition userCondition) {
+        List<UserSurveyAnswer> sensitivityAnswers = userSurveyAnswerRepository
+                .findByConditionAndSurvey(userCondition, findActiveSurvey(QuestionCode.SENSITIVITY));
+
+        if (sensitivityAnswers.isEmpty()) {
+            return SensitivityStatus.UNASSESSED;                 // 민감 여부 미응답
+        }
+        if (sensitivityAnswers.get(0).getOption().getOptionCode().equals(SENSITIVE_NO)) {
+            return SensitivityStatus.LOW;                        // 아니요
+        }
+
+        List<SurveyOption> cautionOptions = userSurveyAnswerRepository
+                .findByConditionAndSurvey(userCondition, findActiveSurvey(QuestionCode.CAUTION))
+                .stream().map(UserSurveyAnswer::getOption).toList();
+
+        return cautionOptions.isEmpty()
+                ? SensitivityStatus.UNASSESSED                   // 예 + 주의 요소 미응답
+                : deriveFromCaution(cautionOptions);             // 예 + 주의 요소 응답
     }
 
     // 특정 선택지 응답 여부 확인
