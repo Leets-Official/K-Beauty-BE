@@ -107,10 +107,6 @@ public class SurveyService {
     @Transactional
     public AnswerSaveResponse saveAnswer(Long surveyId, QuestionCode questionCode, AnswerSaveRequest request, String sessionToken) {
         UserCondition userCondition = getOwnedCondition(surveyId, sessionToken);
-        if (userCondition.getStatus() == SurveyStatus.COMPLETED) {
-            throw new BusinessException(ErrorCode.SURVEY_ALREADY_COMPLETED);
-        }
-
         Survey survey = findActiveSurvey(questionCode);
         if (questionCode == QuestionCode.CAUTION && !isSensitiveYesAnswered(userCondition)) {
             throw new BusinessException(ErrorCode.CAUTION_PREREQUISITE_MISSING);
@@ -122,6 +118,13 @@ public class SurveyService {
             throw new BusinessException(ErrorCode.SURVEY_OPTION_INVALID);
         }
         validateExclusive(selectedOptions);
+
+        // "다음" 버튼은 답변을 바꿨는지와 상관없이 항상 이 API를 호출.
+        // 값이 그대로면 저장할 필요가 없으므로 지우고 다시 넣지 않음.
+        // 불필요하게 행이 새로 만들어져 저장 시각과 순서가 바뀌는 것을 막음.
+        if (isSameAsSaved(userCondition, survey, request.optionCodes())) {
+            return unchangedResponse(userCondition, survey, questionCode, selectedOptions, request.optionCodes());
+        }
 
         if (questionCode == QuestionCode.SKIN_TYPE) {
             boolean isTypeNeutral = selectedOptions.get(0).getOptionCode().equals(SKIN_TYPE_UNKNOWN);
@@ -170,6 +173,12 @@ public class SurveyService {
                 ? RecommendationImpact.NONE
                 : RecommendationImpact.RECALCULATE_REQUIRED;
 
+        // 추천에 반영되는 답변이 바뀌었으면 완료 상태를 풀어 다시 완료를 거치도록 설정
+        // 탐색 습관은 추천 결과를 바꾸지 않으므로(기획 9.2) 완료 상태를 유지
+        if (impact == RecommendationImpact.RECALCULATE_REQUIRED) {
+            userCondition.reopenIfCompleted();
+        }
+
         return new AnswerSaveResponse(
                 userCondition.getId(), questionCode, request.optionCodes(), clearedQuestionCodes,
                 derivedSensitivityStatus, nextAction, nextQuestionCode, impact
@@ -180,15 +189,17 @@ public class SurveyService {
     @Transactional
     public DiagnosisModeResponse setDiagnosisMode(Long surveyId, DiagnosisModeRequest request, String sessionToken) {
         UserCondition userCondition = getOwnedCondition(surveyId, sessionToken);
-        if (userCondition.getStatus() == SurveyStatus.COMPLETED) {
-            throw new BusinessException(ErrorCode.SURVEY_ALREADY_COMPLETED);
-        }
-
         DiagnosisMode mode = parseDiagnosisMode(request.diagnosisMode());
 
         List<QuestionCode> missing = missingRequiredAnswers(userCondition, List.of(QuestionCode.CONCERN, QuestionCode.SKIN_TYPE));
         if (!missing.isEmpty()) {
             throw new BusinessException(ErrorCode.DIAGNOSIS_MODE_PREREQUISITE_MISSING);
+        }
+
+        // 추천 화면에서 뒤로 와 경로를 실제로 바꾼 경우에만 완료 상태를 푼다.
+        // 같은 경로를 다시 고른 것(이동만 한 경우)은 완료 상태를 유지한다.
+        if (mode != userCondition.getDiagnosisMode()) {
+            userCondition.reopenIfCompleted();
         }
 
         userCondition.updateDiagnosisMode(mode);
@@ -199,7 +210,17 @@ public class SurveyService {
                         ? SensitivityStatus.UNASSESSED           // 빠른 진단 = 민감도를 확인하지 않은 상태
                         : deriveSensitivityStatus(userCondition) // 상세 진단 = 남아있는 답변으로 복원
         );
-        return DiagnosisModeResponse.from(userCondition);
+        // 상세 진단이면 다음 질문으로, 빠른 진단이면 바로 완료 단계
+        // 다음 질문은 시드 데이터에서 찾으므로 설문 구성이 바뀌어도 따라감.
+        QuestionCode nextQuestionCode = (mode == DiagnosisMode.DETAILED)
+                ? surveyRepository.findNext(findActiveSurvey(QuestionCode.SKIN_TYPE).getSurveyStep())
+                        .map(Survey::getQuestionCode).orElse(null)
+                : null;
+        NextAction nextAction = (nextQuestionCode != null)
+                ? NextAction.ANSWER_QUESTION
+                : NextAction.READY_TO_COMPLETE;
+
+        return DiagnosisModeResponse.of(userCondition, nextAction, nextQuestionCode);
     }
 
     // 설문 완료 처리
@@ -285,6 +306,34 @@ public class SurveyService {
                 .ifPresent(option -> {
                     throw new BusinessException(ErrorCode.EXCLUSIVE_OPTION_VIOLATION);
                 });
+    }
+
+    // 이미 저장된 답변과 요청한 답변이 같은지 확인 
+    private boolean isSameAsSaved(UserCondition userCondition, Survey survey, List<String> optionCodes) {
+        List<String> savedOptionCodes = userSurveyAnswerRepository
+                .findByConditionAndSurvey(userCondition, survey).stream()
+                .map(answer -> answer.getOption().getOptionCode())
+                .toList();
+        return !savedOptionCodes.isEmpty()
+                && new HashSet<>(savedOptionCodes).equals(new HashSet<>(optionCodes));
+    }
+
+    // 저장할 내용이 없을 때의 응답.
+    // 값이 그대로이므로 삭제한 질문도 없고 추천 재계산도 필요 없음.
+    private AnswerSaveResponse unchangedResponse(UserCondition userCondition, Survey survey, QuestionCode questionCode,
+                                                  List<SurveyOption> selectedOptions, List<String> optionCodes) {
+        QuestionCode nextQuestionCode = determineNextQuestionCode(survey, selectedOptions);
+        SensitivityStatus derivedSensitivityStatus =
+                (questionCode == QuestionCode.SENSITIVITY || questionCode == QuestionCode.CAUTION)
+                        ? userCondition.getSensitivityStatus()
+                        : null;
+
+        return new AnswerSaveResponse(
+                userCondition.getId(), questionCode, optionCodes, List.of(),
+                derivedSensitivityStatus,
+                determineNextAction(questionCode, nextQuestionCode), nextQuestionCode,
+                RecommendationImpact.NONE
+        );
     }
 
     // CAUTION 선택지 개수 기준 민감도 산출 (1개=MEDIUM, 2개 이상=HIGH)

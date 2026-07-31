@@ -50,8 +50,8 @@ class SurveyServiceAnswerOrderTest extends IntegrationTestSupport {
     void reSavingMiddleQuestionKeepsOrder() {
         Fixture fixture = answeredAllQuestions();
 
-        // 뒤로 가서 Q3을 같은 값으로 다시 저장하면 해당 행이 새로 생성되어 가장 뒤로 밀린다
-        answer(fixture, QuestionCode.SENSITIVITY, "SENSITIVE_YES");
+        // 뒤로 가서 Q4의 답을 바꾸면 해당 행이 새로 생성되어 가장 뒤로 밀림
+        answer(fixture, QuestionCode.CAUTION, "OILY_TEXTURE", "EXFOLIATION");
 
         assertThat(answeredCodesOf(fixture)).containsExactlyElementsOf(FLOW_ORDER);
     }
@@ -139,12 +139,12 @@ class SurveyServiceAnswerOrderTest extends IntegrationTestSupport {
     @DisplayName("재저장 후에도 이전 질문 조회가 흐름 순서를 따른다")
     void previousQuestionFollowsFlowOrder() {
         Fixture fixture = answeredAllQuestions();
-        answer(fixture, QuestionCode.SENSITIVITY, "SENSITIVE_YES");
+        answer(fixture, QuestionCode.CAUTION, "OILY_TEXTURE");
 
         var previous = surveyService.getPreviousQuestion(
-                fixture.surveyId(), QuestionCode.CAUTION, fixture.sessionToken());
+                fixture.surveyId(), QuestionCode.EXPLORATION_HABIT, fixture.sessionToken());
 
-        assertThat(previous.questionCode()).isEqualTo(QuestionCode.SENSITIVITY);
+        assertThat(previous.questionCode()).isEqualTo(QuestionCode.CAUTION);
     }
 
     // ---- fixtures & helpers ----

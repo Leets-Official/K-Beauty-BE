@@ -11,6 +11,7 @@ public record PreviousQuestionResponse(
         QuestionCode questionCode,
         String questionText,
         SelectionType selectionType,
+        Integer maxSelections,
         List<String> selectedOptionCodes,
         List<SurveyOptionResponse> options
 ) {
@@ -19,6 +20,7 @@ public record PreviousQuestionResponse(
                 survey.getQuestionCode(),
                 survey.getQuestionText(),
                 survey.getSelectionType(),
+                survey.getMaxSelections(),
                 selectedOptionCodes,
                 options.stream().map(SurveyOptionResponse::from).toList()
         );
