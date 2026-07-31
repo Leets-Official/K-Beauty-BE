@@ -7,7 +7,6 @@ import com.leets.k_beauty.domain.product.entity.ProductIngredient;
 import com.leets.k_beauty.domain.product.enums.ProductCategory;
 import com.leets.k_beauty.domain.product.repository.ProductIngredientRepository;
 import com.leets.k_beauty.domain.product.repository.ProductRepository;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,24 +27,7 @@ public class ProductQueryService {
         if (category == null) {
             return List.of();
         }
-        return findCandidatesByCategories(List.of(category));
-    }
-
-    public List<ProductCandidate> findCandidatesByCategories(Collection<ProductCategory> categories) {
-        if (categories == null || categories.isEmpty()) {
-            return List.of();
-        }
-
-        List<Product> products = productRepository.findActiveByCategories(categories);
-        return toCandidates(products);
-    }
-
-    public List<ProductCandidate> findCandidatesByIds(Collection<Long> productIds) {
-        if (productIds == null || productIds.isEmpty()) {
-            return List.of();
-        }
-
-        List<Product> products = productRepository.findActiveByIds(productIds);
+        List<Product> products = productRepository.findActiveByCategory(category);
         return toCandidates(products);
     }
 

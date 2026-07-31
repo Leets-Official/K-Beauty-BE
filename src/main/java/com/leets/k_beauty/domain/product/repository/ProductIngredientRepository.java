@@ -14,18 +14,10 @@ public interface ProductIngredientRepository extends JpaRepository<ProductIngred
             FROM ProductIngredient productIngredient
             JOIN FETCH productIngredient.product product
             JOIN FETCH productIngredient.ingredient ingredient
-            WHERE product.id = :productId
-            ORDER BY productIngredient.displayOrder ASC
-            """)
-    List<ProductIngredient> findByProductId(@Param("productId") Long productId);
-
-    @Query("""
-            SELECT productIngredient
-            FROM ProductIngredient productIngredient
-            JOIN FETCH productIngredient.product product
-            JOIN FETCH productIngredient.ingredient ingredient
             WHERE product.id IN :productIds
-            ORDER BY product.id ASC, productIngredient.displayOrder ASC
+            ORDER BY product.id ASC,
+              CASE WHEN productIngredient.displayOrder IS NULL THEN 1 ELSE 0 END ASC,
+              productIngredient.displayOrder ASC
             """)
     List<ProductIngredient> findByProductIds(@Param("productIds") Collection<Long> productIds);
-}
+} // 여러 상품의 대표 성분을 상품별 표시 순서대로 한 번에 조회하기 위한 메서드
