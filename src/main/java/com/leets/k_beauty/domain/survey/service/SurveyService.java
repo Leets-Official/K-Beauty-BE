@@ -97,8 +97,9 @@ public class SurveyService {
     // 답변된 질문을 설문 흐름 순서(surveyStep)대로 정렬
     private List<QuestionCode> answeredQuestionCodesInFlowOrder(UserCondition userCondition) {
         Map<QuestionCode, List<String>> grouped = groupAnswers(userCondition);
+        Map<QuestionCode, Integer> steps = surveyStepsOf(grouped.keySet());
         return grouped.keySet().stream()
-                .sorted(Comparator.comparing(code -> findActiveSurvey(code).getSurveyStep()))
+                .sorted(Comparator.comparing(steps::get))
                 .toList();
     }
 
@@ -191,10 +192,8 @@ public class SurveyService {
         }
 
         userCondition.updateDiagnosisMode(mode);
-        // 진단 경로가 바뀌면 민감도 상태도 함께 재산출한다.
-        // 원본 답변은 지우지 않고(프리필 유지) 파생값만 현재 경로에 맞춰 다시 계산한다.
-        // 따라서 QUICK에 상세 진단 값이 남는 일이 없고,
-        // 다시 DETAILED로 돌아오면 남아있는 답변으로 원래 값이 복원된다.
+        // 진단 경로가 바뀌면 민감도 상태도 다시 계산한다.
+        // 원본 답변은 지우지 않고(프리필 유지) 파생값만 현재 경로에 맞춘다.
         userCondition.updateSensitivityStatus(
                 mode == DiagnosisMode.QUICK
                         ? SensitivityStatus.UNASSESSED           // 빠른 진단 = 민감도를 확인하지 않은 상태
@@ -391,6 +390,14 @@ public class SurveyService {
                 .toList();
     }
 
+    // 질문코드 -> surveyStep 매핑.
+    // 정렬할 때마다 질문을 다시 조회하지 않도록 미리 만들어 둠.
+    private Map<QuestionCode, Integer> surveyStepsOf(Collection<QuestionCode> questionCodes) {
+        Map<QuestionCode, Integer> steps = new HashMap<>();
+        questionCodes.forEach(code -> steps.put(code, findActiveSurvey(code).getSurveyStep()));
+        return steps;
+    }
+
     // 질문별 답변 코드 그룹핑 (답변된 순서 유지)
     private Map<QuestionCode, List<String>> groupAnswers(UserCondition userCondition) {
         List<UserSurveyAnswer> answers = userSurveyAnswerRepository.findAllByCondition(userCondition);
@@ -406,8 +413,11 @@ public class SurveyService {
     private SurveyProgressResponse buildProgress(UserCondition userCondition) {
         Map<QuestionCode, List<String>> grouped = groupAnswers(userCondition);
 
-        List<SurveyProgressResponse.AnsweredQuestion> answeredQuestions = grouped.entrySet().stream()
-                .map(entry -> new SurveyProgressResponse.AnsweredQuestion(entry.getKey(), entry.getValue()))
+        // 답변을 다시 저장하면 저장 순서가 바뀌므로, 화면에 보이는 순서(surveyStep)로 맞춰서 내려줌.
+        Map<QuestionCode, Integer> steps = surveyStepsOf(grouped.keySet());
+        List<SurveyProgressResponse.AnsweredQuestion> answeredQuestions = grouped.keySet().stream()
+                .sorted(Comparator.comparing(steps::get))
+                .map(code -> new SurveyProgressResponse.AnsweredQuestion(code, grouped.get(code)))
                 .toList();
 
         QuestionCode currentQuestionCode = null;
