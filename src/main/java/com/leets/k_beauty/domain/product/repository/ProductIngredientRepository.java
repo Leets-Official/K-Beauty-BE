@@ -1,5 +1,7 @@
 package com.leets.k_beauty.domain.product.repository;
 
+import com.leets.k_beauty.domain.product.entity.Ingredient;
+import com.leets.k_beauty.domain.product.entity.Product;
 import com.leets.k_beauty.domain.product.entity.ProductIngredient;
 import java.util.Collection;
 import java.util.List;
@@ -9,6 +11,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface ProductIngredientRepository extends JpaRepository<ProductIngredient, Long> {
 
+    boolean existsByProductAndIngredient(Product product, Ingredient ingredient);
+
+    // 여러 상품의 대표 성분을 상품별 표시 순서대로 한 번에 조회한다.
     @Query("""
             SELECT productIngredient
             FROM ProductIngredient productIngredient
@@ -20,4 +25,4 @@ public interface ProductIngredientRepository extends JpaRepository<ProductIngred
               productIngredient.displayOrder ASC
             """)
     List<ProductIngredient> findByProductIds(@Param("productIds") Collection<Long> productIds);
-} // 여러 상품의 대표 성분을 상품별 표시 순서대로 한 번에 조회하기 위한 메서드
+}

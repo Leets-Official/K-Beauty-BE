@@ -15,7 +15,7 @@ public record ProductCandidate(
         List<IngredientInfo> ingredients
 ) {
     public ProductCandidate {
-        ingredients = List.copyOf(ingredients);
+        ingredients = ingredients == null ? List.of() : List.copyOf(ingredients);
     }
 
     public static ProductCandidate of(Product product, List<IngredientInfo> ingredients) {

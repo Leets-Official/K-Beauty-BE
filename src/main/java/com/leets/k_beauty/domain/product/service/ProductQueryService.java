@@ -10,6 +10,7 @@ import com.leets.k_beauty.domain.product.repository.ProductRepository;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,9 +25,7 @@ public class ProductQueryService {
     private final ProductIngredientRepository productIngredientRepository;
 
     public List<ProductCandidate> findCandidatesByCategory(ProductCategory category) {
-        if (category == null) {
-            return List.of();
-        }
+        Objects.requireNonNull(category, "category must not be null");
         List<Product> products = productRepository.findActiveByCategory(category);
         return toCandidates(products);
     }
