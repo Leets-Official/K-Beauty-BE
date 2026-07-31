@@ -8,6 +8,7 @@ public record ProductSeedData(
         String productName,
         ProductCategory category,
         String naverSearchQuery,
+        Boolean isActive,
         List<ProductSeedIngredient> ingredients
 ) {
 }
