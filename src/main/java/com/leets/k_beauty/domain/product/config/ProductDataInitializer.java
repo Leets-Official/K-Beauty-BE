@@ -15,8 +15,10 @@ import com.leets.k_beauty.domain.product.repository.ProductRepository;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -149,23 +151,45 @@ public class ProductDataInitializer implements ApplicationRunner {
     }
 
     private void seedProductIngredients(Product product, List<ProductSeedIngredient> seedIngredients) {
-        if (seedIngredients == null || seedIngredients.isEmpty()) {
+        if (seedIngredients == null) {
             return;
         }
 
+        List<ProductIngredient> existingProductIngredients = productIngredientRepository.findByProduct(product);
+        Map<String, ProductIngredient> existingByIngredientName = new HashMap<>();
+        existingProductIngredients.forEach(productIngredient ->
+                existingByIngredientName.put(productIngredient.getIngredient().getName(), productIngredient));
+
+        Set<String> seedIngredientNames = new HashSet<>();
         for (int i = 0; i < seedIngredients.size(); i++) {
             ProductSeedIngredient seedIngredient = seedIngredients.get(i);
+            if (!seedIngredientNames.add(seedIngredient.name())) {
+                throw new IllegalStateException(
+                        "Duplicated product ingredient data: "
+                                + product.getBrandName() + " " + product.getProductName()
+                                + " - " + seedIngredient.name()
+                );
+            }
+
             Ingredient ingredient = findOrCreateIngredient(seedIngredient.name());
-            if (productIngredientRepository.existsByProductAndIngredient(product, ingredient)) {
+            Integer displayOrder = resolveDisplayOrder(seedIngredient, i);
+            ProductIngredient productIngredient = existingByIngredientName.get(seedIngredient.name());
+            if (productIngredient != null) {
+                productIngredient.updateDisplayOrder(displayOrder);
                 continue;
             }
 
             productIngredientRepository.save(ProductIngredient.builder()
                     .product(product)
                     .ingredient(ingredient)
-                    .displayOrder(resolveDisplayOrder(seedIngredient, i))
+                    .displayOrder(displayOrder)
                     .build());
         }
+
+        List<ProductIngredient> removedProductIngredients = existingProductIngredients.stream()
+                .filter(productIngredient -> !seedIngredientNames.contains(productIngredient.getIngredient().getName()))
+                .toList();
+        productIngredientRepository.deleteAll(removedProductIngredients);
     }
 
     private Ingredient findOrCreateIngredient(String name) {

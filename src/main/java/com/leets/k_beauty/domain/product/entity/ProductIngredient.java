@@ -56,6 +56,10 @@ public class ProductIngredient {
         this.displayOrder = displayOrder;
     }
 
+    public void updateDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
     @PrePersist
     private void prePersist() {
         this.createdAt = LocalDateTime.now();
