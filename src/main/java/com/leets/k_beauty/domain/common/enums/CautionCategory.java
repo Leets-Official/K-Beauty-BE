@@ -1,4 +1,4 @@
-package com.leets.k_beauty.domain.session.enums;
+package com.leets.k_beauty.domain.common.enums;
 
 public enum CautionCategory {
     FRAGRANCE,   // 향이 강한 제품

@@ -4,8 +4,8 @@ import com.leets.k_beauty.domain.product.dto.ProductCandidate;
 import com.leets.k_beauty.domain.product.enums.ProductCategory;
 import com.leets.k_beauty.domain.product.service.ProductQueryService;
 import com.leets.k_beauty.domain.session.entity.Session;
-import com.leets.k_beauty.domain.session.enums.CautionCategory;
-import com.leets.k_beauty.domain.session.enums.SensitivityStatus;
+import com.leets.k_beauty.domain.common.enums.CautionCategory;
+import com.leets.k_beauty.domain.common.enums.SensitivityStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

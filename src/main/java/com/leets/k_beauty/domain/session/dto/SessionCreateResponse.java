@@ -10,9 +10,9 @@ public record SessionCreateResponse(
         SessionStatus status,
         LocalDateTime createdAt
 ) {
-    public static SessionCreateResponse from(Session session) {
+    public static SessionCreateResponse from(Session session, String rawToken) {
         return new SessionCreateResponse(
-                session.getSessionToken(),
+                rawToken,
                 session.getStatus(),
                 session.getCreatedAt()
         );

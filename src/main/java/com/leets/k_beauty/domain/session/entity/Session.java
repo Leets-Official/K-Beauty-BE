@@ -1,6 +1,8 @@
 package com.leets.k_beauty.domain.session.entity;
 
-import com.leets.k_beauty.domain.session.enums.*;
+import com.leets.k_beauty.domain.common.enums.*;
+import com.leets.k_beauty.domain.session.enums.SessionStatus;
+import com.leets.k_beauty.global.exception.SessionNotInProgressException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,6 +10,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +28,8 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 36)
-    private String sessionToken;
+    @Column(nullable = false, unique = true, length = 64)
+    private String sessionTokenHash;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
@@ -56,10 +61,6 @@ public class Session {
     @Column(name = "caution_category", length = 20)
     private List<CautionCategory> cautionCategories = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private SearchHabit searchHabit;
-
     private Long recommendationId;
 
     @CreationTimestamp
@@ -69,14 +70,41 @@ public class Session {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public static Session create() {
+    private LocalDateTime completedAt;
+
+    public static Session create(String rawToken) {
         Session session = new Session();
-        session.sessionToken = UUID.randomUUID().toString();
+        session.sessionTokenHash = hashToken(rawToken);
         session.status = SessionStatus.IN_PROGRESS;
         session.sensitivityStatus = SensitivityStatus.UNASSESSED;
         session.typeNeutralMode = false;
         session.cautionCategories = new ArrayList<>();
         return session;
+    }
+
+    public static String hashToken(String rawToken) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(rawToken.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hex = new StringBuilder();
+            for (byte b : hash) {
+                hex.append(String.format("%02x", b));
+            }
+            return hex.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-256 알고리즘을 사용할 수 없습니다.", e);
+        }
+    }
+
+    public void validateInProgress() {
+        if (this.status != SessionStatus.IN_PROGRESS) {
+            throw new SessionNotInProgressException();
+        }
+    }
+
+    public void markAsCompleted() {
+        this.status = SessionStatus.COMPLETED;
+        this.completedAt = LocalDateTime.now();
     }
 
     public void markAsRestarted() {

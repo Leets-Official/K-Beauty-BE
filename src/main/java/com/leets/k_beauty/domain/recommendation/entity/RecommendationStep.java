@@ -35,7 +35,7 @@ public class RecommendationStep {
     private Long selectedCandidateId;
 
     @OneToMany(mappedBy = "step", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @OrderBy("rank ASC")
+    @OrderBy("candidateRank ASC")
     private List<RecommendationCandidate> candidates = new ArrayList<>();
 
     public static RecommendationStep of(Recommendation recommendation, int step, StepRole role) {

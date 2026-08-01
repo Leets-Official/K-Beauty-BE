@@ -9,6 +9,7 @@ public enum ErrorCode {
 
     SESSION_NOT_FOUND(404, "세션을 찾을 수 없습니다."),
     MISSING_SESSION_TOKEN(400, "X-Session-Token 헤더가 필요합니다."),
+    SESSION_NOT_IN_PROGRESS(400, "진행 중인 세션만 재시작할 수 있습니다."),
 
     // ---- Survey: 조회/소유권 ----
     SURVEY_NOT_FOUND(404, "설문 진행 정보를 찾을 수 없습니다."),

@@ -62,7 +62,7 @@ public class RecommendationService {
 
         // 새 추천 생성
         Recommendation recommendation = Recommendation.create(
-                session.getId(), userCondition.getId(), session.getSearchHabit());
+                session.getId(), userCondition.getId());
         recommendationRepository.save(recommendation);
 
         // 3단계 후보 생성
@@ -148,7 +148,7 @@ public class RecommendationService {
     }
 
     private Session resolveSession(String sessionToken) {
-        return sessionRepository.findBySessionToken(sessionToken)
+        return sessionRepository.findBySessionTokenHash(Session.hashToken(sessionToken))
                 .orElseThrow(() -> new BusinessException(ErrorCode.SESSION_NOT_FOUND));
     }
 

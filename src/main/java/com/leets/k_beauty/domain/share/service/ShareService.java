@@ -29,15 +29,15 @@ public class ShareService {
 
     @Transactional
     public ShareCreateResponse create(String sessionToken) {
-        Session session = sessionRepository.findBySessionToken(sessionToken)
+        Session session = sessionRepository.findBySessionTokenHash(Session.hashToken(sessionToken))
                 .orElseThrow(() -> new BusinessException(ErrorCode.SESSION_NOT_FOUND));
 
         Recommendation recommendation = recommendationRepository
                 .findFirstBySessionIdAndStatusOrderByIdDesc(session.getId(), RecommendationStatus.GENERATED)
                 .orElseThrow(() -> new BusinessException(ErrorCode.RECOMMENDATION_NOT_FOUND));
 
-        Share share = Share.create(recommendation.getId());
-        shareRepository.save(share);
+        Share share = shareRepository.findByRecommendationId(recommendation.getId())
+                .orElseGet(() -> shareRepository.save(Share.create(recommendation.getId())));
 
         return ShareCreateResponse.from(share);
     }
