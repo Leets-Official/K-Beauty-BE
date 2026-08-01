@@ -1,0 +1,634 @@
+[
+  {
+    "brandName": "라운드랩",
+    "productName": "1025 독도 토너",
+    "naverSearchQuery": "라운드랩 1025 독도 토너",
+    "imageUrl": "https://thumbnail.10x10.co.kr/webimage/image/basic600/164/B001647534-2.jpg?cmd=thumb&w=500&h=500&fit=true&ws=false",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=4926856",
+    "price": 9860
+  },
+  {
+    "brandName": "아누아",
+    "productName": "어성초 77 수딩 토너",
+    "naverSearchQuery": "아누아 어성초 77 수딩 토너",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260221_23/1771659442311la3Xr_JPEG/39405869150666743_485384653.jpeg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=14507213",
+    "price": 15130
+  },
+  {
+    "brandName": "브링그린",
+    "productName": "티트리시카 수딩 토너",
+    "naverSearchQuery": "브링그린 티트리시카 수딩 토너",
+    "imageUrl": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018509933ko.jpg?l=ko",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=120601510",
+    "price": 9240
+  },
+  {
+    "brandName": "넘버즈인",
+    "productName": "1번 진정 맑게담은 청초 토너",
+    "naverSearchQuery": "넘버즈인 1번 진정 맑게담은 청초 토너",
+    "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/875a/d5547d5e5947473a6ac2cf72fa30719867107fbb1d1e015e4c1f217bb639.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=18667577",
+    "price": 12910
+  },
+  {
+    "brandName": "원씽",
+    "productName": "병풀추출물 토너",
+    "naverSearchQuery": "원씽 병풀추출물 토너",
+    "imageUrl": "https://image.musinsa.com/mfile_s01/2022/06/25/2b3361f0e447cc6e49e317e67eb6b7d2103818.jpg",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228199&cate_c4=0&cmpny_c=TP40F&link_prod_c=V94647506162&keyword=%EC%9B%90%EC%94%BD+%EB%B3%91%ED%92%80%EC%B6%94%EC%B6%9C%EB%AC%BC+%ED%86%A0%EB%84%88&r=17854926009194&cate=18255393",
+    "price": 16860
+  },
+  {
+    "brandName": "이즈앤트리",
+    "productName": "히알루론산 토너",
+    "naverSearchQuery": "이즈앤트리 히알루론산 토너",
+    "imageUrl": "https://shop-phinf.pstatic.net/20251124_198/1763968924448PanTR_JPEG/16894985985349472_1102441195.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=114764511",
+    "price": 8250
+  },
+  {
+    "brandName": "토니모리",
+    "productName": "원더 세라마이드 모찌 토너",
+    "naverSearchQuery": "토니모리 원더 세라마이드 모찌 토너",
+    "imageUrl": "https://photo3.enuri.info/data/images/service/dnw/master/107341000/107341233.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=114072028",
+    "price": 8020
+  },
+  {
+    "brandName": "닥터지",
+    "productName": "레드 블레미쉬 클리어 수딩 토너",
+    "naverSearchQuery": "닥터지 레드 블레미쉬 클리어 수딩 토너",
+    "imageUrl": "https://contents.lotteon.com/itemimage/20260513095052/LO/25/11/46/12/45/_2/51/14/61/24/6/LO2511461245_2511461246_1.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=16780103",
+    "price": 11610
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "AHA/BHA 클래리파잉 트리트먼트 토너",
+    "naverSearchQuery": "코스알엑스 AHA BHA 클래리파잉 트리트먼트 토너",
+    "imageUrl": "https://itemimage.cjmall.net/goods_images/44/178/44003178L.jpg?timestamp=1524018025",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=3928594",
+    "price": 9010
+  },
+  {
+    "brandName": "마몽드",
+    "productName": "로즈워터 토너",
+    "naverSearchQuery": "마몽드 로즈워터 토너",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260406_184/1775407663332AQ1Lo_JPEG/109540566462452691_1300947692.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=30631118",
+    "price": 9350
+  },
+  {
+    "brandName": "라네즈",
+    "productName": "크림 스킨 세라펩타이드 리파이너",
+    "naverSearchQuery": "라네즈 크림 스킨 세라펩타이드 리파이너",
+    "imageUrl": "https://imgnews.naver.net/image/5721/2023/01/02/0000060331_001_20230102142803431.png",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228193&cate_c4=0&cmpny_c=EE715&link_prod_c=F260375353&prod_id=18716279&linkYN=Y&fee_type=T&safe_trade=&keyword=%EB%9D%BC%EB%84%A4%EC%A6%88+%ED%81%AC%EB%A6%BC+%EC%8A%A4%ED%82%A8+%EC%84%B8%EB%9D%BC%ED%8E%A9%ED%83%80%EC%9D%B4%EB%93%9C+%EB%A6%AC%ED%8C%8C%EC%9D%B4%EB%84%88&r=17854926071420&cate=18255391",
+    "price": 18830
+  },
+  {
+    "brandName": "이니스프리",
+    "productName": "블랙티 유스 인핸싱 스킨",
+    "naverSearchQuery": "이니스프리 블랙티 유스 인핸싱 스킨",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260211_128/1770813429818iQGG0_PNG/25349824679751475_2079399979.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=112853752",
+    "price": 13630
+  },
+  {
+    "brandName": "라네즈",
+    "productName": "워터뱅크 블루 히알루로닉 스킨",
+    "naverSearchQuery": "라네즈 워터뱅크 블루 히알루로닉 스킨",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260421_262/1776709926644q6ewv_JPEG/52285733775290165_2146502604.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=16650680",
+    "price": 21820
+  },
+  {
+    "brandName": "헤라",
+    "productName": "옴므 에센스 인 스킨",
+    "naverSearchQuery": "헤라 옴므 에센스 인 스킨",
+    "imageUrl": "https://shop-phinf.pstatic.net/20250116_141/173702259897199col_JPEG/22652150786669904_1874373408.jpeg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=40884212",
+    "price": 27740
+  },
+  {
+    "brandName": "토니모리",
+    "productName": "더 촉촉 그린티 수분 스킨",
+    "naverSearchQuery": "토니모리 더 촉촉 그린티 수분 스킨",
+    "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/07e0/7733f69ea82a066b7c3b1da4e7f2155fa569b905d73a8f4b850ba5a937bf.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=3873274",
+    "price": 10270
+  },
+  {
+    "brandName": "더페이스샵",
+    "productName": "닥터벨머 데일리리페어 스킨",
+    "naverSearchQuery": "더페이스샵 닥터벨머 데일리리페어 스킨",
+    "imageUrl": "https://shop-phinf.pstatic.net/20241024_215/1729743802309oRKij_JPEG/11174006075992916_1155340569.jpeg",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228193&cate_c4=0&cmpny_c=TP40F&link_prod_c=I26238001153&keyword=%EB%8D%94%ED%8E%98%EC%9D%B4%EC%8A%A4%EC%83%B5+%EB%8B%A5%ED%84%B0%EB%B2%A8%EB%A8%B8+%EB%8D%B0%EC%9D%BC%EB%A6%AC%EB%A6%AC%ED%8E%98%EC%96%B4+%EC%8A%A4%ED%82%A8&r=17854926144452&cate=18255391",
+    "price": 34600
+  },
+  {
+    "brandName": "마몽드",
+    "productName": "플로랄 하이드로 스킨 소프너",
+    "naverSearchQuery": "마몽드 플로랄 하이드로 스킨 소프너",
+    "imageUrl": null,
+    "purchaseUrl": null,
+    "price": null
+  },
+  {
+    "brandName": "설화수",
+    "productName": "자음수",
+    "naverSearchQuery": "설화수 자음수",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260522_34/1779449218635Mm3YO_JPEG/15224811532901322_1632648762.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=76790012",
+    "price": 40080
+  },
+  {
+    "brandName": "아이오페",
+    "productName": "슈퍼바이탈 소프너",
+    "naverSearchQuery": "아이오페 슈퍼바이탈 소프너",
+    "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/831a/d513e1f6eb012d70836ced8af62c7b138842689aee02084b647cbe0a7c6d.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=5775325",
+    "price": 39030
+  },
+  {
+    "brandName": "프리메라",
+    "productName": "오가니언스 베리어 리페어 워터",
+    "naverSearchQuery": "프리메라 오가니언스 베리어 리페어 워터",
+    "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/rs_quotation_api/eerjanhp/19878a425fcc468782d3c3db5f92586f.jpg",
+    "purchaseUrl": null,
+    "price": null
+  },
+  {
+    "brandName": "토리든",
+    "productName": "다이브인 저분자 히알루론산 세럼",
+    "naverSearchQuery": "토리든 다이브인 저분자 히알루론산 세럼",
+    "imageUrl": "https://photo3.enuri.info/data/images/service/dnw/master/127287000/127287645.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=30649103",
+    "price": 10370
+  },
+  {
+    "brandName": "구달",
+    "productName": "청귤 비타C 잡티케어 세럼",
+    "naverSearchQuery": "구달 청귤 비타C 잡티케어 세럼",
+    "imageUrl": "https://shop-phinf.pstatic.net/20250207_252/1738934532519u3Etn_JPEG/2702499330416520_213759552.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=30663734",
+    "price": 12820
+  },
+  {
+    "brandName": "아누아",
+    "productName": "나이아신아마이드 10 TXA 4 세럼",
+    "naverSearchQuery": "아누아 나이아신아마이드 10 TXA 4 세럼",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260712_124/1783855134251yC4pF_PNG/117987933366899044_14632612.png",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228199&cate_c4=0&cmpny_c=TH201&link_prod_c=8380720201&keyword=%EC%95%84%EB%88%84%EC%95%84+%EB%82%98%EC%9D%B4%EC%95%84%EC%8B%A0%EC%95%84%EB%A7%88%EC%9D%B4%EB%93%9C+10+TXA+4+%EC%84%B8%EB%9F%BC&r=17854926246032&cate=18255393",
+    "price": 20450
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "더 나이아신아마이드 15 세럼",
+    "naverSearchQuery": "코스알엑스 더 나이아신아마이드 15 세럼",
+    "imageUrl": "https://contents.lotteon.com/itemimage/20241213173600/LO/23/02/64/92/00/_2/30/26/49/20/1/LO2302649200_2302649201_1.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=18670085",
+    "price": 16290
+  },
+  {
+    "brandName": "넘버즈인",
+    "productName": "3번 보들보들 결 세럼",
+    "naverSearchQuery": "넘버즈인 3번 보들보들 결 세럼",
+    "imageUrl": "https://shop-phinf.pstatic.net/20251123_74/1763845821684L1Mto_JPEG/32961703805366155_1076072815.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=16003808",
+    "price": 12800
+  },
+  {
+    "brandName": "조선미녀",
+    "productName": "글로우 세럼 프로폴리스 나이아신아마이드",
+    "naverSearchQuery": "조선미녀 글로우 세럼 프로폴리스 나이아신아마이드",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260703_114/1783005703865vwtLi_JPEG/38987328990798904_553027149.jpg",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228199&cate_c4=0&cmpny_c=TXB15E&link_prod_c=FAJVXX00000&keyword=%EC%A1%B0%EC%84%A0%EB%AF%B8%EB%85%80+%EA%B8%80%EB%A1%9C%EC%9A%B0+%EC%84%B8%EB%9F%BC+%ED%94%84%EB%A1%9C%ED%8F%B4%EB%A6%AC%EC%8A%A4+%EB%82%98%EC%9D%B4%EC%95%84%EC%8B%A0%EC%95%84%EB%A7%88%EC%9D%B4%EB%93%9C&r=17854926283372&cate=18255393",
+    "price": 17830
+  },
+  {
+    "brandName": "아이소이",
+    "productName": "블레미쉬 케어 업 세럼",
+    "naverSearchQuery": "아이소이 블레미쉬 케어 업 세럼",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260626_58/17824826267906YvoL_JPEG/25852405762540600_1810553821.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=121116312",
+    "price": 9000
+  },
+  {
+    "brandName": "메디힐",
+    "productName": "마데카소사이드 흔적 세럼",
+    "naverSearchQuery": "메디힐 마데카소사이드 흔적 세럼",
+    "imageUrl": "https://static.lottedfs.com/prod/prd-img/52/52/22/01/00/02/20001225252_2.jpg/dims/resize/460x460",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=60168737",
+    "price": 10780
+  },
+  {
+    "brandName": "라운드랩",
+    "productName": "자작나무 수분 세럼",
+    "naverSearchQuery": "라운드랩 자작나무 수분 세럼",
+    "imageUrl": "https://image.next-engine.co.kr/data/uploads/editor/img/9679403577/tmp/202504231332409796.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=12352979",
+    "price": 14280
+  },
+  {
+    "brandName": "비플레인",
+    "productName": "녹두 모공 타이트업 세럼",
+    "naverSearchQuery": "비플레인 녹두 모공 타이트업 세럼",
+    "imageUrl": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0021/A00000021097907ko.jpg?l=ko",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=55449668",
+    "price": 17280
+  },
+  {
+    "brandName": "스킨1004",
+    "productName": "마다가스카르 센텔라 앰플",
+    "naverSearchQuery": "스킨1004 마다가스카르 센텔라 앰플",
+    "imageUrl": "https://contents.lotteon.com/itemimage/20251204230359/LO/23/41/34/54/36/_2/34/13/45/43/7/LO2341345436_2341345437_1.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=122278187",
+    "price": 9200
+  },
+  {
+    "brandName": "마녀공장",
+    "productName": "비피다 바이옴 콤플렉스 앰플",
+    "naverSearchQuery": "마녀공장 비피다 바이옴 콤플렉스 앰플",
+    "imageUrl": "https://static.lottedfs.com/prod/prd-img/51/00/25/01/00/02/20001250051_2.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=120036428",
+    "price": 18730
+  },
+  {
+    "brandName": "웰라쥬",
+    "productName": "리얼 히알루로닉 블루 앰플",
+    "naverSearchQuery": "웰라쥬 리얼 히알루로닉 블루 앰플",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260702_105/1782924948354vRDvx_JPEG/26294727331383720_1792185817.jpg",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228199&cate_c4=0&cmpny_c=EE715&link_prod_c=F621040364&keyword=%EC%9B%B0%EB%9D%BC%EC%A5%AC+%EB%A6%AC%EC%96%BC+%ED%9E%88%EC%95%8C%EB%A3%A8%EB%A1%9C%EB%8B%89+%EB%B8%94%EB%A3%A8+%EC%95%B0%ED%94%8C&r=17854926378526&cate=18255393",
+    "price": 31960
+  },
+  {
+    "brandName": "메디힐",
+    "productName": "티트리바이옴 블레미쉬 시카 앰플",
+    "naverSearchQuery": "메디힐 티트리바이옴 블레미쉬 시카 앰플",
+    "imageUrl": "https://image.oliveyoung.co.kr/uploads/images/goods/550/10/0000/0015/A00000015592604ko.jpg?l=ko",
+    "purchaseUrl": null,
+    "price": null
+  },
+  {
+    "brandName": "이니스프리",
+    "productName": "레티놀 시카 흔적 앰플",
+    "naverSearchQuery": "이니스프리 레티놀 시카 흔적 앰플",
+    "imageUrl": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/html/crop/A000000230208/202509042307/crop1/amc.apglobal.com/asset/384224417642/image_m196m037vt1mn2nfoh0c4oeh2r?created=202509042307",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=19173890",
+    "price": 16630
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "풀핏 프로폴리스 라이트 앰플",
+    "naverSearchQuery": "코스알엑스 풀핏 프로폴리스 라이트 앰플",
+    "imageUrl": "https://contents.lotteon.com/itemimage/20260310132912/LO/18/78/60/02/68/_1/87/86/00/26/9/LO1878600268_1878600269_1.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=119929983",
+    "price": 14400
+  },
+  {
+    "brandName": "토리든",
+    "productName": "밸런스풀 시카 진정 앰플",
+    "naverSearchQuery": "토리든 밸런스풀 시카 진정 앰플",
+    "imageUrl": "https://shop-phinf.pstatic.net/20240909_139/1725881880582rbU5z_PNG/8957345388548256_1721033076.png",
+    "purchaseUrl": null,
+    "price": null
+  },
+  {
+    "brandName": "앰플엔",
+    "productName": "세라마이드샷 앰플",
+    "naverSearchQuery": "앰플엔 세라마이드샷 앰플",
+    "imageUrl": "https://img.danuri.io/catalog-image/198/824/096/301f86fc0ea94f69a45b690ee472f3d3.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=96824198",
+    "price": 9729
+  },
+  {
+    "brandName": "아비브",
+    "productName": "어성초 카밍 앰플",
+    "naverSearchQuery": "아비브 어성초 카밍 앰플",
+    "imageUrl": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0016/A00000016666208ko.jpg?l=ko",
+    "purchaseUrl": null,
+    "price": null
+  },
+  {
+    "brandName": "라운드랩",
+    "productName": "소나무 진정 시카 앰플",
+    "naverSearchQuery": "라운드랩 소나무 진정 시카 앰플",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260209_160/1770636955174z1j7g_JPEG/3419708173227431_601493810.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=67551356",
+    "price": 7840
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "어드밴스드 스네일 96 뮤신 파워 에센스",
+    "naverSearchQuery": "코스알엑스 어드밴스드 스네일 96 뮤신 파워 에센스",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260719_84/1784424463533yXfm3_PNG/40839692598742054_1879845789.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=3929170",
+    "price": 21510
+  },
+  {
+    "brandName": "미샤",
+    "productName": "타임 레볼루션 더 퍼스트 에센스 5X",
+    "naverSearchQuery": "미샤 타임 레볼루션 더 퍼스트 에센스 5X",
+    "imageUrl": "https://shop-phinf.pstatic.net/20220516_109/1652678125662ekmTd_JPEG/53814021146917313_1245635364.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=30650879",
+    "price": 17600
+  },
+  {
+    "brandName": "조선미녀",
+    "productName": "진생 에센스 워터",
+    "naverSearchQuery": "조선미녀 진생 에센스 워터",
+    "imageUrl": "https://img.danuri.io/catalog-image/265/825/049/0ebfaa0b520a40969073c5b701b8e92d.jpg",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228064&cate_c3=228238&cate_c4=0&cmpny_c=TXB15E&link_prod_c=FAJVXX00006&keyword=%EC%A1%B0%EC%84%A0%EB%AF%B8%EB%85%80+%EC%A7%84%EC%83%9D+%EC%97%90%EC%84%BC%EC%8A%A4+%EC%9B%8C%ED%84%B0&r=17854926508059",
+    "price": 18490
+  },
+  {
+    "brandName": "믹순",
+    "productName": "콩 에센스",
+    "naverSearchQuery": "믹순 콩 에센스",
+    "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/b60f/e3b59b208f409a621040658067df15f53df9c9802fb3983bf5cf765ed0a5.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=119432685",
+    "price": 17460
+  },
+  {
+    "brandName": "아임프롬",
+    "productName": "머그워트 에센스",
+    "naverSearchQuery": "아임프롬 머그워트 에센스",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260701_96/1782854596702Dnkpu_JPEG/32278982513699117_1333458495.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=122629894",
+    "price": 16020
+  },
+  {
+    "brandName": "네오젠",
+    "productName": "리얼 발효 마이크로 에센스",
+    "naverSearchQuery": "네오젠 리얼 발효 마이크로 에센스",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260525_35/1779674247462rwSKU_JPEG/2457919621993216_1409876692.jpeg",
+    "purchaseUrl": null,
+    "price": null
+  },
+  {
+    "brandName": "닥터슈라클",
+    "productName": "비건 콤부차 티 에센스",
+    "naverSearchQuery": "닥터슈라클 비건 콤부차 티 에센스",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260303_14/1772526758444EYQQA_JPEG/106659567474067509_1030531858.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=94853897",
+    "price": 32350
+  },
+  {
+    "brandName": "벤튼",
+    "productName": "스네일비 하이 콘텐츠 에센스",
+    "naverSearchQuery": "벤튼 스네일비 하이 콘텐츠 에센스",
+    "imageUrl": "https://thumbnail.10x10.co.kr/webimage/image/basic600/535/B005355338.jpg?cmd=thumb&w=500&h=500&fit=true&ws=false",
+    "purchaseUrl": "https://bentoncosmetic.com/product/%EC%8A%A4%EB%84%A4%EC%9D%BC%EB%B9%84-%ED%95%98%EC%9D%B4%EC%BD%98%ED%85%90%ED%8A%B8-%EC%97%90%EC%84%BC%EC%8A%A4-100ml/19/",
+    "price": 20000
+  },
+  {
+    "brandName": "프리메라",
+    "productName": "미라클 씨드 에센스",
+    "naverSearchQuery": "프리메라 미라클 씨드 에센스",
+    "imageUrl": null,
+    "purchaseUrl": null,
+    "price": null
+  },
+  {
+    "brandName": "닥터지",
+    "productName": "레드 블레미쉬 클리어 수딩 크림",
+    "naverSearchQuery": "닥터지 레드 블레미쉬 클리어 수딩 크림",
+    "imageUrl": "https://shop-phinf.pstatic.net/20250317_85/1742192469035dPVwR_PNG/23166060854591712_1907494300.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=12727799",
+    "price": 11990
+  },
+  {
+    "brandName": "토리든",
+    "productName": "다이브인 저분자 히알루론산 수딩 크림",
+    "naverSearchQuery": "토리든 다이브인 저분자 히알루론산 수딩 크림",
+    "imageUrl": "https://ai.esmplus.com/torriden/product/oliveyoung/OY_soothing_set_x2_mona_.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=14881277",
+    "price": 12970
+  },
+  {
+    "brandName": "조선미녀",
+    "productName": "레드빈 워터 젤",
+    "naverSearchQuery": "조선미녀 레드빈 워터 젤",
+    "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/9e79/53d98b1b960fc3a5bddc746f565c6fbc547ca980879f2586e1096290716b.png",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228214&cate_c4=229630&cmpny_c=EE715&link_prod_c=E786653786&keyword=%EC%A1%B0%EC%84%A0%EB%AF%B8%EB%85%80+%EB%A0%88%EB%93%9C%EB%B9%88+%EC%9B%8C%ED%84%B0+%EC%A0%A4&r=17854926638625&cate=18311118",
+    "price": 24660
+  },
+  {
+    "brandName": "이니스프리",
+    "productName": "체리 블라썸 글로우 젤리 크림",
+    "naverSearchQuery": "이니스프리 체리 블라썸 글로우 젤리 크림",
+    "imageUrl": "https://shop-phinf.pstatic.net/20250831_273/1756605395569rRUzU_JPEG/11062013382160822_2040408143.jpg",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228190&cate_c4=0&cmpny_c=EE715&link_prod_c=F599104286&keyword=%EC%9D%B4%EB%8B%88%EC%8A%A4%ED%94%84%EB%A6%AC+%EC%B2%B4%EB%A6%AC+%EB%B8%94%EB%9D%BC%EC%8D%B8+%EA%B8%80%EB%A1%9C%EC%9A%B0+%EC%A0%A4%EB%A6%AC+%ED%81%AC%EB%A6%BC&r=17854926646424&cate=18255394",
+    "price": 74000
+  },
+  {
+    "brandName": "빌리프",
+    "productName": "더 트루 크림 아쿠아 밤",
+    "naverSearchQuery": "빌리프 더 트루 크림 아쿠아 밤",
+    "imageUrl": "https://shop-phinf.pstatic.net/20251113_176/1763035953977FdszI_JPEG/97168879114534494_1173872558.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=119053813",
+    "price": 25770
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "AC 컬렉션 라이트웨이트 수딩 모이스처라이저",
+    "naverSearchQuery": "코스알엑스 AC 컬렉션 라이트웨이트 수딩 모이스처라이저",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260401_116/1774985002208oyRDv_JPEG/4096781341501167_1178446182.jpg",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228199&cate_c4=0&cmpny_c=EE715&link_prod_c=F396335613&keyword=%EC%BD%94%EC%8A%A4%EC%95%8C%EC%97%91%EC%8A%A4+AC+%EC%BB%AC%EB%A0%89%EC%85%98+%EB%9D%BC%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4%ED%8A%B8+%EC%88%98%EB%94%A9+%EB%AA%A8%EC%9D%B4%EC%8A%A4%EC%B2%98%EB%9D%BC%EC%9D%B4%EC%A0%80&r=17854926661582&cate=18255393",
+    "price": 28510
+  },
+  {
+    "brandName": "라운드랩",
+    "productName": "자작나무 수분 크림",
+    "naverSearchQuery": "라운드랩 자작나무 수분 크림",
+    "imageUrl": "https://shop-phinf.pstatic.net/20250109_24/1736417083441VRDF5_JPEG/18350755466061728_1033450410.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=19786040",
+    "price": 12580
+  },
+  {
+    "brandName": "스킨1004",
+    "productName": "마다가스카르 센텔라 히알루시카 모이스처 크림",
+    "naverSearchQuery": "스킨1004 마다가스카르 센텔라 히알루시카 모이스처 크림",
+    "imageUrl": "https://shop-phinf.pstatic.net/20250808_143/1754639329529Vlfwg_JPEG/1000003954_www.ggsan.jpg",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228184&cate_c4=229555&cmpny_c=EE128&link_prod_c=4778503045&keyword=%EC%8A%A4%ED%82%A81004+%EB%A7%88%EB%8B%A4%EA%B0%80%EC%8A%A4%EC%B9%B4%EB%A5%B4+%EC%84%BC%ED%85%94%EB%9D%BC+%ED%9E%88%EC%95%8C%EB%A3%A8%EC%8B%9C%EC%B9%B4+%EB%AA%A8%EC%9D%B4%EC%8A%A4%EC%B2%98+%ED%81%AC%EB%A6%BC&r=17854926681100&cate=18355397",
+    "price": 18900
+  },
+  {
+    "brandName": "에스트라",
+    "productName": "아토베리어365 하이드로 수딩 크림",
+    "naverSearchQuery": "에스트라 아토베리어365 하이드로 수딩 크림",
+    "imageUrl": "https://static.lottedfs.com/prod/prd-img/47/28/33/01/00/02/20001332847_2.jpg/dims/resize/460x460",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=122690390",
+    "price": 21800
+  },
+  {
+    "brandName": "퓨리토",
+    "productName": "오트 인 카밍 젤 크림",
+    "naverSearchQuery": "퓨리토 오트 인 카밍 젤 크림",
+    "imageUrl": "https://shopping-phinf.pstatic.net/main_4392031/43920312620.20240923123521.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=30663242",
+    "price": 19300
+  },
+  {
+    "brandName": "라네즈",
+    "productName": "워터뱅크 블루 히알루로닉 크림",
+    "naverSearchQuery": "라네즈 워터뱅크 블루 히알루로닉 크림",
+    "imageUrl": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/5a3f/5a7882e88eb6ccb2d3da04bc78bf96614b2e58c3b2dd276cfa03e8e834a2.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=31663259",
+    "price": 23850
+  },
+  {
+    "brandName": "라운드랩",
+    "productName": "1025 독도 크림",
+    "naverSearchQuery": "라운드랩 1025 독도 크림",
+    "imageUrl": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0014/A00000014484321ko.jpg?l=ko",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=5895438",
+    "price": 12510
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "어드밴스드 스네일 92 올인원 크림",
+    "naverSearchQuery": "코스알엑스 어드밴스드 스네일 92 올인원 크림",
+    "imageUrl": "https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/crx/crx47001/v/59.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=53835188",
+    "price": 23700
+  },
+  {
+    "brandName": "에뛰드",
+    "productName": "순정 2x 베리어 인텐시브 크림",
+    "naverSearchQuery": "에뛰드 순정 2x 베리어 인텐시브 크림",
+    "imageUrl": "https://contents.lotteon.com/itemimage/20260219155053/LO/26/23/79/18/13/_2/62/37/91/81/4/LO2623791813_2623791814_1.jpg",
+    "purchaseUrl": "https://prod.danawa.com/bridge/go_link_goods.php?cate_c1=9875&cate_c2=228061&cate_c3=228184&cate_c4=229555&cmpny_c=TH201&link_prod_c=3015016900&keyword=%EC%97%90%EB%9B%B0%EB%93%9C+%EC%88%9C%EC%A0%95+2x+%EB%B2%A0%EB%A6%AC%EC%96%B4&r=17854926759993&cate=18355397",
+    "price": 15810
+  },
+  {
+    "brandName": "이즈앤트리",
+    "productName": "히알루론산 모이스트 크림",
+    "naverSearchQuery": "이즈앤트리 히알루론산 모이스트 크림",
+    "imageUrl": "https://usercontents-c.styleshare.io/images/i5ca2a710dbaca/700x700",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=120718153",
+    "price": 11000
+  },
+  {
+    "brandName": "아누아",
+    "productName": "어성초 70 인텐스 카밍 크림",
+    "naverSearchQuery": "아누아 어성초 70 인텐스 카밍 크림",
+    "imageUrl": "https://shop-phinf.pstatic.net/20231108_81/1699428820164nQdy8_JPEG/22955010170411198_1027592683.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=113574673",
+    "price": 24210
+  },
+  {
+    "brandName": "메디힐",
+    "productName": "티트리바이옴 블레미쉬 시카 크림",
+    "naverSearchQuery": "메디힐 티트리바이옴 블레미쉬 시카 크림",
+    "imageUrl": null,
+    "purchaseUrl": null,
+    "price": null
+  },
+  {
+    "brandName": "아비브",
+    "productName": "어성초 카밍 크림 튜브",
+    "naverSearchQuery": "아비브 어성초 카밍 크림 튜브",
+    "imageUrl": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/html/crop/A000000198721/202503311221/crop4/abib.com/images/OY/CT-H/240820_CT-H_12.jpg?created=202503311221",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=30653489",
+    "price": 13050
+  },
+  {
+    "brandName": "한율",
+    "productName": "어린쑥 수분진정 크림",
+    "naverSearchQuery": "한율 어린쑥 수분진정 크림",
+    "imageUrl": "https://imgnews.naver.net/image/5721/2020/05/12/0000012145_001_20200512102003667.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=28887698",
+    "price": 35270
+  },
+  {
+    "brandName": "브링그린",
+    "productName": "티트리시카 수딩 크림",
+    "naverSearchQuery": "브링그린 티트리시카 수딩 크림",
+    "imageUrl": "https://image.oliveyoung.co.kr/uploads/images/editor/QuickUpload/SYS/image/20250227091557/qdoo_20250227091557.gif",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=12036014",
+    "price": 8010
+  },
+  {
+    "brandName": "에스트라",
+    "productName": "아토베리어365 크림",
+    "naverSearchQuery": "에스트라 아토베리어365 크림",
+    "imageUrl": "https://static.lottedfs.com/prod/prd-img/73/75/15/01/00/02/20001157573_2.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=6521915",
+    "price": 18400
+  },
+  {
+    "brandName": "일리윤",
+    "productName": "세라마이드 아토 집중 크림",
+    "naverSearchQuery": "일리윤 세라마이드 아토 집중 크림",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260713_101/1783939119377OM62O_PNG/4028935152642549_1595433216.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=10096686",
+    "price": 8750
+  },
+  {
+    "brandName": "제로이드",
+    "productName": "인텐시브 크림",
+    "naverSearchQuery": "제로이드 인텐시브 크림",
+    "imageUrl": "https://shop-phinf.pstatic.net/20241215_37/1734195409610e7Y07_PNG/49704300397720554_1405138762.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=121508806",
+    "price": 28160
+  },
+  {
+    "brandName": "피지오겔",
+    "productName": "데일리 모이스쳐 테라피 페이셜 크림",
+    "naverSearchQuery": "피지오겔 데일리 모이스쳐 테라피 페이셜 크림",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260325_103/1774426990094i8LIq_JPEG/86980197058337410_766113754.jpeg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=4195804",
+    "price": 26300
+  },
+  {
+    "brandName": "닥터자르트",
+    "productName": "세라마이딘 스킨 베리어 모이스처라이징 크림",
+    "naverSearchQuery": "닥터자르트 세라마이딘 스킨 베리어 모이스처라이징 크림",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260206_25/17703210603086IwOq_JPEG/3103813309897592_652560371.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=18614939",
+    "price": 14830
+  },
+  {
+    "brandName": "스킨1004",
+    "productName": "마다가스카르 센텔라 프로바이오 시카 인리치 크림",
+    "naverSearchQuery": "스킨1004 마다가스카르 센텔라 프로바이오 시카 인리치 크림",
+    "imageUrl": "https://contents.lotteon.com/itemimage/20260604112515/LO/26/93/79/28/40/_2/69/37/92/84/1/LO2693792840_2693792841_1.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=116261969",
+    "price": 23910
+  },
+  {
+    "brandName": "오휘",
+    "productName": "미라클 모이스처 세라마이드 부스팅 크림",
+    "naverSearchQuery": "오휘 미라클 모이스처 세라마이드 부스팅 크림",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260211_24/1770785809685OOaiL_JPEG/38532236515930701_338346008.jpeg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=118537399",
+    "price": 31290
+  },
+  {
+    "brandName": "설화수",
+    "productName": "자음생크림",
+    "naverSearchQuery": "설화수 자음생크림",
+    "imageUrl": "https://item.elandrs.com/r/image/oa/2024-01-02/89a28316-ab98-4bc4-b3ae-8f75d3604984.jpg?w=1020&h=&q=100",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=116643780",
+    "price": 76320
+  },
+  {
+    "brandName": "라네즈",
+    "productName": "워터뱅크 블루 히알루로닉 인텐시브 모이스처라이저",
+    "naverSearchQuery": "라네즈 워터뱅크 블루 히알루로닉 인텐시브 모이스처라이저",
+    "imageUrl": "https://shop-phinf.pstatic.net/20260125_143/1769349695694zux7e_PNG/53948347417933426_1967375675.png",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=56136260",
+    "price": 25730
+  },
+  {
+    "brandName": "아토팜",
+    "productName": "MLE 크림",
+    "naverSearchQuery": "아토팜 MLE 크림",
+    "imageUrl": "https://contents.lotteon.com/itemimage/20251206225227/LO/25/87/61/28/47/_2/58/76/12/84/8/LO2587612847_2587612848_1.jpg",
+    "purchaseUrl": "https://prod.danawa.com/info/?pcode=4992897",
+    "price": 17800
+  }
+]
