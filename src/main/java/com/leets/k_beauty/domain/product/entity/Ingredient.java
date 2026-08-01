@@ -42,6 +42,10 @@ public class Ingredient {
         this.cautionDescription = cautionDescription;
     }
 
+    public void updateCautionDescription(String cautionDescription) {
+        this.cautionDescription = cautionDescription;
+    }
+
     @PrePersist
     private void prePersist() {
         this.createdAt = LocalDateTime.now();
