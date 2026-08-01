@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -207,7 +208,8 @@ public class RecommendationService {
         List<RecommendationCandidateResponse> others = new ArrayList<>();
 
         for (RecommendationCandidate candidate : step.getCandidates()) {
-            ProductCandidate product = productMap.get(candidate.getProductId());
+            ProductCandidate product = Optional.ofNullable(productMap.get(candidate.getProductId()))
+                    .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
             RecommendationCandidateResponse response = RecommendationCandidateResponse.of(candidate, product);
 
             if (candidate.getId().equals(step.getSelectedCandidateId())) {

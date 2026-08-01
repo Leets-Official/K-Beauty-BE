@@ -40,6 +40,9 @@ public enum ErrorCode {
     RECOMMENDATION_STEP_NOT_FOUND(404, "해당 단계의 추천 정보를 찾을 수 없습니다."),
     CANDIDATE_NOT_IN_STEP(400, "해당 단계의 후보 목록에 없는 상품입니다."),
 
+    // ---- Product ----
+    PRODUCT_NOT_FOUND(404, "상품 정보를 찾을 수 없습니다."),
+
     // ---- Share ----
     SHARE_NOT_FOUND(404, "공유 링크를 찾을 수 없습니다.");
 
