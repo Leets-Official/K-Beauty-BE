@@ -30,7 +30,15 @@ public enum ErrorCode {
 
     // ---- Survey: 진단 경로 ----
     INVALID_DIAGNOSIS_MODE(400, "유효하지 않은 진단 경로입니다."),
-    DIAGNOSIS_MODE_PREREQUISITE_MISSING(409, "핵심 고민과 피부 타입을 먼저 선택해야 합니다.");
+    DIAGNOSIS_MODE_PREREQUISITE_MISSING(409, "핵심 고민과 피부 타입을 먼저 선택해야 합니다."),
+
+    // ---- Recommendation ----
+    SURVEY_NOT_COMPLETED(409, "설문이 완료되지 않아 추천을 생성할 수 없습니다."),
+    RECOMMENDATION_NOT_FOUND(404, "추천 결과를 찾을 수 없습니다."),
+    RECOMMENDATION_FORBIDDEN(403, "해당 추천 결과에 접근할 권한이 없습니다."),
+    RECOMMENDATION_STEP_NOT_FOUND(404, "해당 단계의 추천 정보를 찾을 수 없습니다."),
+    CANDIDATE_NOT_IN_STEP(400, "해당 단계의 후보 목록에 없는 상품입니다.");
+
     private final int status;
     private final String message;
 }
