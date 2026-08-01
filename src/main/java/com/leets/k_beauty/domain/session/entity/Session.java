@@ -82,4 +82,8 @@ public class Session {
     public void markAsRestarted() {
         this.status = SessionStatus.RESTARTED;
     }
+
+    public void linkRecommendation(Long recommendationId) {
+        this.recommendationId = recommendationId;
+    }
 }
