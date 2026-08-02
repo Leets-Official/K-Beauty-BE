@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -18,9 +20,10 @@ public class SessionService {
 
     @Transactional
     public SessionCreateResponse createSession() {
-        Session session = Session.create();
+        String rawToken = UUID.randomUUID().toString();
+        Session session = Session.create(rawToken);
         sessionRepository.save(session);
-        return SessionCreateResponse.from(session);
+        return SessionCreateResponse.from(session, rawToken);
     }
 
     public SessionCurrentResponse getCurrentSession(String sessionToken) {
@@ -31,15 +34,18 @@ public class SessionService {
     @Transactional
     public SessionCreateResponse restartSession(String sessionToken) {
         Session oldSession = findByToken(sessionToken);
+        oldSession.validateInProgress();
         oldSession.markAsRestarted();
 
-        Session newSession = Session.create();
+        String newRawToken = UUID.randomUUID().toString();
+        Session newSession = Session.create(newRawToken);
         sessionRepository.save(newSession);
-        return SessionCreateResponse.from(newSession);
+        return SessionCreateResponse.from(newSession, newRawToken);
     }
 
     private Session findByToken(String sessionToken) {
-        return sessionRepository.findBySessionToken(sessionToken)
+        String hash = Session.hashToken(sessionToken);
+        return sessionRepository.findBySessionTokenHash(hash)
                 .orElseThrow(SessionNotFoundException::new);
     }
 }

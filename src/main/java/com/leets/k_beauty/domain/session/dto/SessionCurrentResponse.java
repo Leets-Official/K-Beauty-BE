@@ -1,12 +1,12 @@
 package com.leets.k_beauty.domain.session.dto;
 
+import com.leets.k_beauty.domain.common.enums.*;
 import com.leets.k_beauty.domain.session.entity.Session;
-import com.leets.k_beauty.domain.session.enums.*;
+import com.leets.k_beauty.domain.session.enums.SessionStatus;
 
 import java.util.List;
 
 public record SessionCurrentResponse(
-        String sessionToken,
         DiagnosisType diagnosisType,
         SessionStatus status,
         SurveyAnswers surveyAnswers,
@@ -17,8 +17,7 @@ public record SessionCurrentResponse(
             SkinType skinType,
             boolean typeNeutralMode,
             SensitivityStatus sensitivityStatus,
-            List<CautionCategory> cautionCategories,
-            SearchHabit searchHabit
+            List<CautionCategory> cautionCategories
     ) {}
 
     public static SessionCurrentResponse from(Session session) {
@@ -27,11 +26,9 @@ public record SessionCurrentResponse(
                 session.getSkinType(),
                 session.isTypeNeutralMode(),
                 session.getSensitivityStatus(),
-                session.getCautionCategories(),
-                session.getSearchHabit()
+                session.getCautionCategories()
         );
         return new SessionCurrentResponse(
-                session.getSessionToken(),
                 session.getDiagnosisType(),
                 session.getStatus(),
                 surveyAnswers,

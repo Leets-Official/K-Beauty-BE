@@ -1,3 +1,7 @@
 spring:
   application:
     name: k-beauty
+
+product:
+  seed:
+    enabled: true

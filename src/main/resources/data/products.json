@@ -1,0 +1,1973 @@
+[
+  {
+    "brandName": "라운드랩",
+    "productName": "1025 독도 토너",
+    "category": "TONER",
+    "naverSearchQuery": "라운드랩 1025 독도 토너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "글리세린",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "아누아",
+    "productName": "어성초 77 수딩 토너",
+    "category": "TONER",
+    "naverSearchQuery": "아누아 어성초 77 수딩 토너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "어성초추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "브링그린",
+    "productName": "티트리시카 수딩 토너",
+    "category": "TONER",
+    "naverSearchQuery": "브링그린 티트리시카 수딩 토너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "티트리",
+        "displayOrder": 1
+      },
+      {
+        "name": "병풀추출물",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "넘버즈인",
+    "productName": "1번 진정 맑게담은 청초 토너",
+    "category": "TONER",
+    "naverSearchQuery": "넘버즈인 1번 진정 맑게담은 청초 토너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "어성초추출물",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "원씽",
+    "productName": "병풀추출물 토너",
+    "category": "TONER",
+    "naverSearchQuery": "원씽 병풀추출물 토너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      }
+    ]
+  },
+  {
+    "brandName": "이즈앤트리",
+    "productName": "히알루론산 토너",
+    "category": "TONER",
+    "naverSearchQuery": "이즈앤트리 히알루론산 토너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "토니모리",
+    "productName": "원더 세라마이드 모찌 토너",
+    "category": "TONER",
+    "naverSearchQuery": "토니모리 원더 세라마이드 모찌 토너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "닥터지",
+    "productName": "레드 블레미쉬 클리어 수딩 토너",
+    "category": "TONER",
+    "naverSearchQuery": "닥터지 레드 블레미쉬 클리어 수딩 토너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "AHA/BHA 클래리파잉 트리트먼트 토너",
+    "category": "TONER",
+    "naverSearchQuery": "코스알엑스 AHA BHA 클래리파잉 트리트먼트 토너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "AHA",
+        "displayOrder": 1
+      },
+      {
+        "name": "BHA",
+        "displayOrder": 2
+      },
+      {
+        "name": "PHA",
+        "displayOrder": 3
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "마몽드",
+    "productName": "로즈워터 토너",
+    "category": "TONER",
+    "naverSearchQuery": "마몽드 로즈워터 토너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "글리세린",
+        "displayOrder": 1
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "라네즈",
+    "productName": "크림 스킨 세라펩타이드 리파이너",
+    "category": "SKIN",
+    "naverSearchQuery": "라네즈 크림 스킨 세라펩타이드 리파이너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "판테놀",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "펩타이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "이니스프리",
+    "productName": "블랙티 유스 인핸싱 스킨",
+    "category": "SKIN",
+    "naverSearchQuery": "이니스프리 블랙티 유스 인핸싱 스킨",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "아데노신",
+        "displayOrder": 2
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 3
+      },
+      {
+        "name": "펩타이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "라네즈",
+    "productName": "워터뱅크 블루 히알루로닉 스킨",
+    "category": "SKIN",
+    "naverSearchQuery": "라네즈 워터뱅크 블루 히알루로닉 스킨",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "헤라",
+    "productName": "옴므 에센스 인 스킨",
+    "category": "SKIN",
+    "naverSearchQuery": "헤라 옴므 에센스 인 스킨",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "아데노신",
+        "displayOrder": 2
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "토니모리",
+    "productName": "더 촉촉 그린티 수분 스킨",
+    "category": "SKIN",
+    "naverSearchQuery": "토니모리 더 촉촉 그린티 수분 스킨",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "글리세린",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 3
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "더페이스샵",
+    "productName": "닥터벨머 데일리리페어 스킨",
+    "category": "SKIN",
+    "naverSearchQuery": "더페이스샵 닥터벨머 데일리리페어 스킨",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "판테놀",
+        "displayOrder": 1
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "병풀추출물",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "마몽드",
+    "productName": "플로랄 하이드로 스킨 소프너",
+    "category": "SKIN",
+    "naverSearchQuery": "마몽드 플로랄 하이드로 스킨 소프너",
+    "isActive": false,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "설화수",
+    "productName": "자음수",
+    "category": "SKIN",
+    "naverSearchQuery": "설화수 자음수",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "글리세린",
+        "displayOrder": 1
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "펩타이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "아이오페",
+    "productName": "슈퍼바이탈 소프너",
+    "category": "SKIN",
+    "naverSearchQuery": "아이오페 슈퍼바이탈 소프너",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "아데노신",
+        "displayOrder": 2
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 3
+      },
+      {
+        "name": "펩타이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "프리메라",
+    "productName": "오가니언스 베리어 리페어 워터",
+    "category": "SKIN",
+    "naverSearchQuery": "프리메라 오가니언스 베리어 리페어 워터",
+    "isActive": false,
+    "ingredients": [
+      {
+        "name": "판테놀",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "펩타이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "토리든",
+    "productName": "다이브인 저분자 히알루론산 세럼",
+    "category": "SERUM",
+    "naverSearchQuery": "토리든 다이브인 저분자 히알루론산 세럼",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "저분자 히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "구달",
+    "productName": "청귤 비타C 잡티케어 세럼",
+    "category": "SERUM",
+    "naverSearchQuery": "구달 청귤 비타C 잡티케어 세럼",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "비타민 C",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "아누아",
+    "productName": "나이아신아마이드 10 TXA 4 세럼",
+    "category": "SERUM",
+    "naverSearchQuery": "아누아 나이아신아마이드 10 TXA 4 세럼",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "트라넥사믹애씨드",
+        "displayOrder": 2
+      },
+      {
+        "name": "알부틴",
+        "displayOrder": 3
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "더 나이아신아마이드 15 세럼",
+    "category": "SERUM",
+    "naverSearchQuery": "코스알엑스 더 나이아신아마이드 15 세럼",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "징크 PCA",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "BHA",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "넘버즈인",
+    "productName": "3번 보들보들 결 세럼",
+    "category": "SERUM",
+    "naverSearchQuery": "넘버즈인 3번 보들보들 결 세럼",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "PHA",
+        "displayOrder": 1
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "아데노신",
+        "displayOrder": 3
+      },
+      {
+        "name": "펩타이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "조선미녀",
+    "productName": "글로우 세럼 프로폴리스 나이아신아마이드",
+    "category": "SERUM",
+    "naverSearchQuery": "조선미녀 글로우 세럼 프로폴리스 나이아신아마이드",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "병풀추출물",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "아이소이",
+    "productName": "블레미쉬 케어 업 세럼",
+    "category": "SERUM",
+    "naverSearchQuery": "아이소이 블레미쉬 케어 업 세럼",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "알부틴",
+        "displayOrder": 1
+      },
+      {
+        "name": "비타민 C",
+        "displayOrder": 2
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "메디힐",
+    "productName": "마데카소사이드 흔적 세럼",
+    "category": "SERUM",
+    "naverSearchQuery": "메디힐 마데카소사이드 흔적 세럼",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "병풀추출물",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "라운드랩",
+    "productName": "자작나무 수분 세럼",
+    "category": "SERUM",
+    "naverSearchQuery": "라운드랩 자작나무 수분 세럼",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "저분자 히알루론산",
+        "displayOrder": 2
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "비플레인",
+    "productName": "녹두 모공 타이트업 세럼",
+    "category": "SERUM",
+    "naverSearchQuery": "비플레인 녹두 모공 타이트업 세럼",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "징크 PCA",
+        "displayOrder": 2
+      },
+      {
+        "name": "BHA",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "스킨1004",
+    "productName": "마다가스카르 센텔라 앰플",
+    "category": "AMPOULE",
+    "naverSearchQuery": "스킨1004 마다가스카르 센텔라 앰플",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "시카",
+        "displayOrder": 2
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "마녀공장",
+    "productName": "비피다 바이옴 콤플렉스 앰플",
+    "category": "AMPOULE",
+    "naverSearchQuery": "마녀공장 비피다 바이옴 콤플렉스 앰플",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "비피다발효용해물",
+        "displayOrder": 1
+      },
+      {
+        "name": "세라마이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "펩타이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "웰라쥬",
+    "productName": "리얼 히알루로닉 블루 앰플",
+    "category": "AMPOULE",
+    "naverSearchQuery": "웰라쥬 리얼 히알루로닉 블루 앰플",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "세라마이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "메디힐",
+    "productName": "티트리바이옴 블레미쉬 시카 앰플",
+    "category": "AMPOULE",
+    "naverSearchQuery": "메디힐 티트리바이옴 블레미쉬 시카 앰플",
+    "isActive": false,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "시카",
+        "displayOrder": 2
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "이니스프리",
+    "productName": "레티놀 시카 흔적 앰플",
+    "category": "AMPOULE",
+    "naverSearchQuery": "이니스프리 레티놀 시카 흔적 앰플",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "레티놀",
+        "displayOrder": 1
+      },
+      {
+        "name": "병풀추출물",
+        "displayOrder": 2
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "풀핏 프로폴리스 라이트 앰플",
+    "category": "AMPOULE",
+    "naverSearchQuery": "코스알엑스 풀핏 프로폴리스 라이트 앰플",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "글리세린",
+        "displayOrder": 1
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "세라마이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "토리든",
+    "productName": "밸런스풀 시카 진정 앰플",
+    "category": "AMPOULE",
+    "naverSearchQuery": "토리든 밸런스풀 시카 진정 앰플",
+    "isActive": false,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "시카",
+        "displayOrder": 2
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "앰플엔",
+    "productName": "세라마이드샷 앰플",
+    "category": "AMPOULE",
+    "naverSearchQuery": "앰플엔 세라마이드샷 앰플",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 3
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "아비브",
+    "productName": "어성초 카밍 앰플",
+    "category": "AMPOULE",
+    "naverSearchQuery": "아비브 어성초 카밍 앰플",
+    "isActive": false,
+    "ingredients": [
+      {
+        "name": "어성초추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "라운드랩",
+    "productName": "소나무 진정 시카 앰플",
+    "category": "AMPOULE",
+    "naverSearchQuery": "라운드랩 소나무 진정 시카 앰플",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "시카",
+        "displayOrder": 2
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "어드밴스드 스네일 96 뮤신 파워 에센스",
+    "category": "ESSENCE",
+    "naverSearchQuery": "코스알엑스 어드밴스드 스네일 96 뮤신 파워 에센스",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "미샤",
+    "productName": "타임 레볼루션 더 퍼스트 에센스 5X",
+    "category": "ESSENCE",
+    "naverSearchQuery": "미샤 타임 레볼루션 더 퍼스트 에센스 5X",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "발효성분",
+        "displayOrder": 1
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "아데노신",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "조선미녀",
+    "productName": "진생 에센스 워터",
+    "category": "ESSENCE",
+    "naverSearchQuery": "조선미녀 진생 에센스 워터",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "믹순",
+    "productName": "콩 에센스",
+    "category": "ESSENCE",
+    "naverSearchQuery": "믹순 콩 에센스",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "발효성분",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "아임프롬",
+    "productName": "머그워트 에센스",
+    "category": "ESSENCE",
+    "naverSearchQuery": "아임프롬 머그워트 에센스",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "글리세린",
+        "displayOrder": 1
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "병풀추출물",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "네오젠",
+    "productName": "리얼 발효 마이크로 에센스",
+    "category": "ESSENCE",
+    "naverSearchQuery": "네오젠 리얼 발효 마이크로 에센스",
+    "isActive": false,
+    "ingredients": [
+      {
+        "name": "발효성분",
+        "displayOrder": 1
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "아데노신",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "닥터슈라클",
+    "productName": "비건 콤부차 티 에센스",
+    "category": "ESSENCE",
+    "naverSearchQuery": "닥터슈라클 비건 콤부차 티 에센스",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "판테놀",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 3
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "벤튼",
+    "productName": "스네일비 하이 콘텐츠 에센스",
+    "category": "ESSENCE",
+    "naverSearchQuery": "벤튼 스네일비 하이 콘텐츠 에센스",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "프리메라",
+    "productName": "미라클 씨드 에센스",
+    "category": "ESSENCE",
+    "naverSearchQuery": "프리메라 미라클 씨드 에센스",
+    "isActive": false,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "닥터지",
+    "productName": "레드 블레미쉬 클리어 수딩 크림",
+    "category": "GEL_CREAM",
+    "naverSearchQuery": "닥터지 레드 블레미쉬 클리어 수딩 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "토리든",
+    "productName": "다이브인 저분자 히알루론산 수딩 크림",
+    "category": "GEL_CREAM",
+    "naverSearchQuery": "토리든 다이브인 저분자 히알루론산 수딩 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "조선미녀",
+    "productName": "레드빈 워터 젤",
+    "category": "GEL_CREAM",
+    "naverSearchQuery": "조선미녀 레드빈 워터 젤",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "펩타이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 3
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "이니스프리",
+    "productName": "체리 블라썸 글로우 젤리 크림",
+    "category": "GEL_CREAM",
+    "naverSearchQuery": "이니스프리 체리 블라썸 글로우 젤리 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 2
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "빌리프",
+    "productName": "더 트루 크림 아쿠아 밤",
+    "category": "GEL_CREAM",
+    "naverSearchQuery": "빌리프 더 트루 크림 아쿠아 밤",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "AC 컬렉션 라이트웨이트 수딩 모이스처라이저",
+    "category": "GEL_CREAM",
+    "naverSearchQuery": "코스알엑스 AC 컬렉션 라이트웨이트 수딩 모이스처라이저",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "티트리",
+        "displayOrder": 1
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 2
+      },
+      {
+        "name": "나이아신아마이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "BHA",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "라운드랩",
+    "productName": "자작나무 수분 크림",
+    "category": "GEL_CREAM",
+    "naverSearchQuery": "라운드랩 자작나무 수분 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "스킨1004",
+    "productName": "마다가스카르 센텔라 히알루시카 모이스처 크림",
+    "category": "GEL_CREAM",
+    "naverSearchQuery": "스킨1004 마다가스카르 센텔라 히알루시카 모이스처 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "에스트라",
+    "productName": "아토베리어365 하이드로 수딩 크림",
+    "category": "GEL_CREAM",
+    "naverSearchQuery": "에스트라 아토베리어365 하이드로 수딩 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "징크 PCA",
+        "displayOrder": 3
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "퓨리토",
+    "productName": "오트 인 카밍 젤 크림",
+    "category": "GEL_CREAM",
+    "naverSearchQuery": "퓨리토 오트 인 카밍 젤 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "판테놀",
+        "displayOrder": 1
+      },
+      {
+        "name": "베타인",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "라네즈",
+    "productName": "워터뱅크 블루 히알루로닉 크림",
+    "category": "MOISTURE_CREAM",
+    "naverSearchQuery": "라네즈 워터뱅크 블루 히알루로닉 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 3
+      },
+      {
+        "name": "세라마이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "라운드랩",
+    "productName": "1025 독도 크림",
+    "category": "MOISTURE_CREAM",
+    "naverSearchQuery": "라운드랩 1025 독도 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "코스알엑스",
+    "productName": "어드밴스드 스네일 92 올인원 크림",
+    "category": "MOISTURE_CREAM",
+    "naverSearchQuery": "코스알엑스 어드밴스드 스네일 92 올인원 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "에뛰드",
+    "productName": "순정 2x 베리어 인텐시브 크림",
+    "category": "MOISTURE_CREAM",
+    "naverSearchQuery": "에뛰드 순정 2x 베리어 인텐시브 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "판테놀",
+        "displayOrder": 1
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "세라마이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "이즈앤트리",
+    "productName": "히알루론산 모이스트 크림",
+    "category": "MOISTURE_CREAM",
+    "naverSearchQuery": "이즈앤트리 히알루론산 모이스트 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "히알루론산",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "세라마이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "아누아",
+    "productName": "어성초 70 인텐스 카밍 크림",
+    "category": "MOISTURE_CREAM",
+    "naverSearchQuery": "아누아 어성초 70 인텐스 카밍 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "판테놀",
+        "displayOrder": 1
+      },
+      {
+        "name": "세라마이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "메디힐",
+    "productName": "티트리바이옴 블레미쉬 시카 크림",
+    "category": "MOISTURE_CREAM",
+    "naverSearchQuery": "메디힐 티트리바이옴 블레미쉬 시카 크림",
+    "isActive": false,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "아비브",
+    "productName": "어성초 카밍 크림 튜브",
+    "category": "MOISTURE_CREAM",
+    "naverSearchQuery": "아비브 어성초 카밍 크림 튜브",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "판테놀",
+        "displayOrder": 1
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 2
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "세라마이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "한율",
+    "productName": "어린쑥 수분진정 크림",
+    "category": "MOISTURE_CREAM",
+    "naverSearchQuery": "한율 어린쑥 수분진정 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "판테놀",
+        "displayOrder": 1
+      },
+      {
+        "name": "글리세린",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "히알루론산",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "브링그린",
+    "productName": "티트리시카 수딩 크림",
+    "category": "MOISTURE_CREAM",
+    "naverSearchQuery": "브링그린 티트리시카 수딩 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "알란토인",
+        "displayOrder": 3
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "에스트라",
+    "productName": "아토베리어365 크림",
+    "category": "NUTRIENT_DEEP_CREAM",
+    "naverSearchQuery": "에스트라 아토베리어365 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "스쿠알란",
+        "displayOrder": 3
+      },
+      {
+        "name": "시어버터",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "일리윤",
+    "productName": "세라마이드 아토 집중 크림",
+    "category": "NUTRIENT_DEEP_CREAM",
+    "naverSearchQuery": "일리윤 세라마이드 아토 집중 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "시어버터",
+        "displayOrder": 3
+      },
+      {
+        "name": "스쿠알란",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "제로이드",
+    "productName": "인텐시브 크림",
+    "category": "NUTRIENT_DEEP_CREAM",
+    "naverSearchQuery": "제로이드 인텐시브 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "스쿠알란",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "시어버터",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "피지오겔",
+    "productName": "데일리 모이스쳐 테라피 페이셜 크림",
+    "category": "NUTRIENT_DEEP_CREAM",
+    "naverSearchQuery": "피지오겔 데일리 모이스쳐 테라피 페이셜 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "스쿠알란",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "시어버터",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "닥터자르트",
+    "productName": "세라마이딘 스킨 베리어 모이스처라이징 크림",
+    "category": "NUTRIENT_DEEP_CREAM",
+    "naverSearchQuery": "닥터자르트 세라마이딘 스킨 베리어 모이스처라이징 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "스쿠알란",
+        "displayOrder": 3
+      },
+      {
+        "name": "펩타이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "스킨1004",
+    "productName": "마다가스카르 센텔라 프로바이오 시카 인리치 크림",
+    "category": "NUTRIENT_DEEP_CREAM",
+    "naverSearchQuery": "스킨1004 마다가스카르 센텔라 프로바이오 시카 인리치 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "병풀추출물",
+        "displayOrder": 1
+      },
+      {
+        "name": "세라마이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "마데카소사이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "오휘",
+    "productName": "미라클 모이스처 세라마이드 부스팅 크림",
+    "category": "NUTRIENT_DEEP_CREAM",
+    "naverSearchQuery": "오휘 미라클 모이스처 세라마이드 부스팅 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "펩타이드",
+        "displayOrder": 2
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 3
+      },
+      {
+        "name": "스쿠알란",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "설화수",
+    "productName": "자음생크림",
+    "category": "NUTRIENT_DEEP_CREAM",
+    "naverSearchQuery": "설화수 자음생크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "펩타이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "스쿠알란",
+        "displayOrder": 2
+      },
+      {
+        "name": "아데노신",
+        "displayOrder": 3
+      },
+      {
+        "name": "세라마이드",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "라네즈",
+    "productName": "워터뱅크 블루 히알루로닉 인텐시브 모이스처라이저",
+    "category": "NUTRIENT_DEEP_CREAM",
+    "naverSearchQuery": "라네즈 워터뱅크 블루 히알루로닉 인텐시브 모이스처라이저",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "스쿠알란",
+        "displayOrder": 2
+      },
+      {
+        "name": "펩타이드",
+        "displayOrder": 3
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 4
+      }
+    ]
+  },
+  {
+    "brandName": "아토팜",
+    "productName": "MLE 크림",
+    "category": "NUTRIENT_DEEP_CREAM",
+    "naverSearchQuery": "아토팜 MLE 크림",
+    "isActive": true,
+    "ingredients": [
+      {
+        "name": "세라마이드",
+        "displayOrder": 1
+      },
+      {
+        "name": "판테놀",
+        "displayOrder": 2
+      },
+      {
+        "name": "스쿠알란",
+        "displayOrder": 3
+      },
+      {
+        "name": "시어버터",
+        "displayOrder": 4
+      }
+    ]
+  }
+]

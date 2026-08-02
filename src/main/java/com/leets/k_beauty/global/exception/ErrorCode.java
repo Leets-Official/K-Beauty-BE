@@ -9,6 +9,7 @@ public enum ErrorCode {
 
     SESSION_NOT_FOUND(404, "세션을 찾을 수 없습니다."),
     MISSING_SESSION_TOKEN(400, "X-Session-Token 헤더가 필요합니다."),
+    SESSION_NOT_IN_PROGRESS(400, "진행 중인 세션만 재시작할 수 있습니다."),
 
     // ---- Survey: 조회/소유권 ----
     SURVEY_NOT_FOUND(404, "설문 진행 정보를 찾을 수 없습니다."),
@@ -30,7 +31,22 @@ public enum ErrorCode {
 
     // ---- Survey: 진단 경로 ----
     INVALID_DIAGNOSIS_MODE(400, "유효하지 않은 진단 경로입니다."),
-    DIAGNOSIS_MODE_PREREQUISITE_MISSING(409, "핵심 고민과 피부 타입을 먼저 선택해야 합니다.");
+    DIAGNOSIS_MODE_PREREQUISITE_MISSING(409, "핵심 고민과 피부 타입을 먼저 선택해야 합니다."),
+
+    // ---- Recommendation ----
+    SURVEY_NOT_COMPLETED(409, "설문이 완료되지 않아 추천을 생성할 수 없습니다."),
+    RECOMMENDATION_NOT_FOUND(404, "추천 결과를 찾을 수 없습니다."),
+    RECOMMENDATION_FORBIDDEN(403, "해당 추천 결과에 접근할 권한이 없습니다."),
+    RECOMMENDATION_STEP_NOT_FOUND(404, "해당 단계의 추천 정보를 찾을 수 없습니다."),
+    CANDIDATE_NOT_IN_STEP(400, "해당 단계의 후보 목록에 없는 상품입니다."),
+    NO_ACTIVE_PRODUCT_FOR_STEP(503, "해당 단계에 활성화된 후보 상품이 없어 추천을 표시할 수 없습니다."),
+
+    // ---- Product ----
+    PRODUCT_NOT_FOUND(404, "상품 정보를 찾을 수 없습니다."),
+
+    // ---- Share ----
+    SHARE_NOT_FOUND(404, "공유 링크를 찾을 수 없습니다.");
+
     private final int status;
     private final String message;
 }

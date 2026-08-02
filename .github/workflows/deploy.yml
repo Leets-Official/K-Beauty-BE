@@ -1,0 +1,126 @@
+name: CI/CD
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: kbeauty_test
+          MYSQL_USER: kbeauty
+          MYSQL_PASSWORD: kbeauty_test_password
+          MYSQL_ROOT_PASSWORD: root_test_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot_test_password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
+      - name: Run tests
+        env:
+          SPRING_PROFILES_ACTIVE: local
+          DB_URL: jdbc:mysql://localhost:3306/kbeauty_test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
+          DB_USERNAME: kbeauty
+          DB_PASSWORD: kbeauty_test_password
+          NAVER_CLIENT_ID: test
+          NAVER_CLIENT_SECRET: test
+        run: |
+          chmod +x ./gradlew
+          ./gradlew test --no-daemon
+
+  deploy:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: self-hosted
+    timeout-minutes: 15
+
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+
+    steps:
+      - name: Deploy application
+        run: |
+          set -e
+
+          cd /home/ubuntu/K-Beauty-BE
+
+          git checkout main
+          PREVIOUS_COMMIT=$(git rev-parse HEAD)
+
+          git fetch origin main
+          git reset --hard origin/main
+          TARGET_COMMIT=$(git rev-parse HEAD)
+
+          echo "Deploying ${TARGET_COMMIT} (previous: ${PREVIOUS_COMMIT})"
+
+          docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
+
+          echo "Waiting for application to start..."
+          SUCCESS=0
+
+          for i in {1..12}; do
+            if curl -f http://localhost:8080/health; then
+              echo "Health check passed!"
+              SUCCESS=1
+              break
+            fi
+
+            echo "Health check failed, retrying in 5s... ($i/12)"
+            sleep 5
+          done
+
+          if [ $SUCCESS -ne 1 ]; then
+            echo "Health check failed after multiple attempts."
+            docker compose -f docker-compose.prod.yml logs app --tail=100 || true
+
+            echo "Rolling back to previous commit: ${PREVIOUS_COMMIT}"
+            git reset --hard "${PREVIOUS_COMMIT}"
+            docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
+
+            echo "Waiting for rollback application to start..."
+            ROLLBACK_SUCCESS=0
+
+            for i in {1..12}; do
+              if curl -f http://localhost:8080/health; then
+                echo "Rollback health check passed!"
+                ROLLBACK_SUCCESS=1
+                break
+              fi
+
+              echo "Rollback health check failed, retrying in 5s... ($i/12)"
+              sleep 5
+            done
+
+            if [ $ROLLBACK_SUCCESS -ne 1 ]; then
+              echo "Rollback health check failed after multiple attempts."
+              docker compose -f docker-compose.prod.yml logs app --tail=100 || true
+            fi
+
+            exit 1
+          fi

@@ -1,5 +1,6 @@
 package com.leets.k_beauty.domain.survey.service;
 
+import com.leets.k_beauty.domain.session.entity.Session;
 import com.leets.k_beauty.domain.session.repository.SessionRepository;
 import com.leets.k_beauty.domain.survey.dto.*;
 import com.leets.k_beauty.global.exception.BusinessException;
@@ -265,7 +266,7 @@ public class SurveyService {
 
     // 세션 토큰으로 세션 ID 조회
     private Long resolveSessionId(String sessionToken) {
-        return sessionRepository.findBySessionToken(sessionToken)
+        return sessionRepository.findBySessionTokenHash(Session.hashToken(sessionToken))
                 .orElseThrow(() -> new BusinessException(ErrorCode.SESSION_NOT_FOUND))
                 .getId();
     }
