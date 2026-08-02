@@ -29,9 +29,9 @@ public class SurveyDataInitializer implements ApplicationRunner {
         Survey concern = surveyRepository.save(Survey.create(
                 QuestionCode.CONCERN, "현재 가장 고민되는 피부 고민을 선택해주세요.",
                 SelectionType.SINGLE, 1, 1, 1, true, true));
-        saveOption(concern, "MOISTURE", "수분 부족", null, 1, false, null);
-        saveOption(concern, "TONE", "피부톤 불균형·잡티·칙칙함", null, 2, false, null);
-        saveOption(concern, "SENSITIVE", "예민함", null, 3, false, null);
+        saveOption(concern, "MOISTURE", "수분이 부족해요", null, 1, false, null);
+        saveOption(concern, "TONE", "피부톤이 고르지 않아요", null, 2, false, null);
+        saveOption(concern, "SENSITIVE", "예민한 편이에요", null, 3, false, null);
         saveOption(concern, "AGING", "처짐·주름·탄력", null, 4, false, null);
         saveOption(concern, "TROUBLE", "트러블·모공", null, 5, false, null);
 
@@ -47,8 +47,8 @@ public class SurveyDataInitializer implements ApplicationRunner {
         Survey sensitivity = surveyRepository.save(Survey.create(
                 QuestionCode.SENSITIVITY, "새로운 제품 사용 시 예민해지나요?",
                 SelectionType.SINGLE, 1, 3, 1, true, true));
-        saveOption(sensitivity, "SENSITIVE_YES", "예", null, 1, false, QuestionCode.CAUTION);
-        saveOption(sensitivity, "SENSITIVE_NO", "아니요", null, 2, false, QuestionCode.EXPLORATION_HABIT);
+        saveOption(sensitivity, "SENSITIVE_YES", "네, 쉽게 예민해져요", null, 1, false, QuestionCode.CAUTION);
+        saveOption(sensitivity, "SENSITIVE_NO", "아니요, 괜찮아요", null, 2, false, QuestionCode.EXPLORATION_HABIT);
 
         Survey caution = surveyRepository.save(Survey.create(
                 QuestionCode.CAUTION, "어떤 제품이 불편했나요?",
