@@ -227,8 +227,10 @@ public class SurveyService {
     @Transactional
     public CompletionResponse complete(Long surveyId, String sessionToken) {
         UserCondition userCondition = getOwnedCondition(surveyId, sessionToken);
+
+        // 이미 완료된 설문을 다시 완료해도 오류로 보지 않고, 답을 바꿨다면 저장 시점에 진행 중으로 되돌아가므로 여기까지 오지 않음
         if (userCondition.getStatus() == SurveyStatus.COMPLETED) {
-            throw new BusinessException(ErrorCode.SURVEY_ALREADY_COMPLETED);
+            return CompletionResponse.from(userCondition);
         }
 
         List<QuestionCode> missing = missingRequiredAnswers(userCondition, requiredQuestionCodes(userCondition));

@@ -15,13 +15,14 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * 설문 시작부터 완료·재시작까지의 흐름 검증 (CLAUDE.md 2장 플로우 기준).
+ * 설문 시작부터 완료·재시작까지의 흐름 검증 
  */
 @DisplayName("설문 흐름")
 class SurveyServiceFlowTest extends IntegrationTestSupport {
@@ -309,14 +310,16 @@ class SurveyServiceFlowTest extends IntegrationTestSupport {
         }
 
         @Test
-        @DisplayName("바뀐 게 없는데 완료를 다시 호출하면 막힌다")
-        void cannotCompleteTwiceWithoutChange() {
+        @DisplayName("바뀐 게 없는데 완료를 다시 호출해도 처음 완료 상태를 그대로 돌려준다")
+        void completingAgainWithoutChangeKeepsFirstResult() {
             Fixture fixture = completedQuickSurvey();
+            LocalDateTime firstCompletedAt = userConditionRepository.findById(fixture.surveyId())
+                    .orElseThrow().getCompletedAt();
 
-            assertThatThrownBy(() -> surveyService.complete(fixture.surveyId(), fixture.sessionToken()))
-                    .isInstanceOf(BusinessException.class)
-                    .extracting(thrown -> ((BusinessException) thrown).getErrorCode())
-                    .isEqualTo(ErrorCode.SURVEY_ALREADY_COMPLETED);
+            var completion = surveyService.complete(fixture.surveyId(), fixture.sessionToken());
+
+            assertThat(completion.status()).isEqualTo(SurveyStatus.COMPLETED);
+            assertThat(completion.completedAt()).isEqualTo(firstCompletedAt);
         }
     }
 
