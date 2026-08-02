@@ -194,7 +194,9 @@ class SurveyServiceValidationTest extends IntegrationTestSupport {
     }
 
     private String newSessionToken() {
-        return sessionRepository.save(Session.create()).getSessionToken();
+        String rawToken = UUID.randomUUID().toString();
+        sessionRepository.save(Session.create(rawToken));
+        return rawToken;
     }
 
     private Fixture newSurvey() {

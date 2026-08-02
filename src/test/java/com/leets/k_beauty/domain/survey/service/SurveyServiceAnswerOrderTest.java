@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -154,7 +155,8 @@ class SurveyServiceAnswerOrderTest extends IntegrationTestSupport {
 
     /** 새 세션으로 설문만 시작한 상태 (답변 없음) */
     private Fixture newSurvey() {
-        String sessionToken = sessionRepository.save(Session.create()).getSessionToken();
+        String sessionToken = UUID.randomUUID().toString();
+        sessionRepository.save(Session.create(sessionToken));
         Long surveyId = surveyService.create(sessionToken).id();
         return new Fixture(surveyId, sessionToken);
     }

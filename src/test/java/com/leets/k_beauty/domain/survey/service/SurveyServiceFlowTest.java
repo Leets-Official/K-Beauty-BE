@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -352,7 +353,9 @@ class SurveyServiceFlowTest extends IntegrationTestSupport {
     }
 
     private String newSessionToken() {
-        return sessionRepository.save(Session.create()).getSessionToken();
+        String rawToken = UUID.randomUUID().toString();
+        sessionRepository.save(Session.create(rawToken));
+        return rawToken;
     }
 
     private Fixture newSurvey() {

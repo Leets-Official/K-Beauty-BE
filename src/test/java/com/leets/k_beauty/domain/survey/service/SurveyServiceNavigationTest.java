@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -220,7 +221,8 @@ class SurveyServiceNavigationTest extends IntegrationTestSupport {
 
     /** CONCERN/SKIN_TYPE까지 답한 상태 (진단 경로 미선택) */
     private Fixture answeredBasicQuestions() {
-        String sessionToken = sessionRepository.save(Session.create()).getSessionToken();
+        String sessionToken = UUID.randomUUID().toString();
+        sessionRepository.save(Session.create(sessionToken));
         Long surveyId = surveyService.create(sessionToken).id();
         Fixture fixture = new Fixture(surveyId, sessionToken);
 

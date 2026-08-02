@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -172,7 +173,8 @@ class SurveyServiceProgressTest extends IntegrationTestSupport {
     }
 
     private Fixture newSurvey() {
-        String sessionToken = sessionRepository.save(Session.create()).getSessionToken();
+        String sessionToken = UUID.randomUUID().toString();
+        sessionRepository.save(Session.create(sessionToken));
         return new Fixture(surveyService.create(sessionToken).id(), sessionToken);
     }
 
