@@ -1,4 +1,4 @@
-package com.leets.k_beauty.domain.session.enums;
+package com.leets.k_beauty.domain.common.enums;
 
 public enum SensitivityStatus {
     UNASSESSED, // 빠른 진단으로 민감도 미응답

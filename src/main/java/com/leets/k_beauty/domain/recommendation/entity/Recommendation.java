@@ -1,7 +1,6 @@
 package com.leets.k_beauty.domain.recommendation.entity;
 
 import com.leets.k_beauty.domain.recommendation.enums.RecommendationStatus;
-import com.leets.k_beauty.domain.session.enums.SearchHabit;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,10 +29,6 @@ public class Recommendation {
     private Long userConditionId;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private SearchHabit searchHabit;
-
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private RecommendationStatus status;
 
@@ -48,11 +43,10 @@ public class Recommendation {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public static Recommendation create(Long sessionId, Long userConditionId, SearchHabit searchHabit) {
+    public static Recommendation create(Long sessionId, Long userConditionId) {
         Recommendation recommendation = new Recommendation();
         recommendation.sessionId = sessionId;
         recommendation.userConditionId = userConditionId;
-        recommendation.searchHabit = searchHabit;
         recommendation.status = RecommendationStatus.GENERATED;
         return recommendation;
     }

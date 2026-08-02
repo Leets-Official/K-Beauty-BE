@@ -16,7 +16,7 @@ public record RecommendationCandidateResponse(
         String imageUrl,
         String purchaseUrl,
         Integer price,
-        int rank,
+        int candidateRank,
         List<IngredientInfo> topIngredients  // 주요 성분 칩 최대 3개
 ) {
     public static RecommendationCandidateResponse of(RecommendationCandidate candidate, ProductCandidate product) {
@@ -33,7 +33,7 @@ public record RecommendationCandidateResponse(
                 product.imageUrl(),
                 product.purchaseUrl(),
                 product.price(),
-                candidate.getRank(),
+                candidate.getCandidateRank(),
                 top3
         );
     }

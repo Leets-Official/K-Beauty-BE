@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ShareRepository extends JpaRepository<Share, Long> {
 
     Optional<Share> findByShareToken(String shareToken);
+
+    Optional<Share> findByRecommendationId(Long recommendationId);
 }

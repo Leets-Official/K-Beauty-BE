@@ -1,4 +1,4 @@
-package com.leets.k_beauty.domain.session.enums;
+package com.leets.k_beauty.domain.common.enums;
 
 public enum SkinConcern {
     MOISTURE,       // 수분 부족
