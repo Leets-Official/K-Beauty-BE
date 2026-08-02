@@ -97,6 +97,13 @@ public class RecommendationService {
         return toResponse(recommendation);
     }
 
+    // 공유 링크에서 인증 없이 추천 결과 조회 (ShareService 전용)
+    public RecommendationResponse getByIdWithoutAuth(Long recommendationId) {
+        Recommendation recommendation = recommendationRepository.findByIdWithSteps(recommendationId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RECOMMENDATION_NOT_FOUND));
+        return toResponse(recommendation);
+    }
+
     // PATCH /api/recommendations/{recommendationId}/steps/{step}/select - 후보 상품 교체
     @Transactional
     public RecommendationResponse selectCandidate(Long recommendationId, int step,

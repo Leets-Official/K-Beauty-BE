@@ -37,7 +37,10 @@ public enum ErrorCode {
     RECOMMENDATION_NOT_FOUND(404, "추천 결과를 찾을 수 없습니다."),
     RECOMMENDATION_FORBIDDEN(403, "해당 추천 결과에 접근할 권한이 없습니다."),
     RECOMMENDATION_STEP_NOT_FOUND(404, "해당 단계의 추천 정보를 찾을 수 없습니다."),
-    CANDIDATE_NOT_IN_STEP(400, "해당 단계의 후보 목록에 없는 상품입니다.");
+    CANDIDATE_NOT_IN_STEP(400, "해당 단계의 후보 목록에 없는 상품입니다."),
+
+    // ---- Share ----
+    SHARE_NOT_FOUND(404, "공유 링크를 찾을 수 없습니다.");
 
     private final int status;
     private final String message;
