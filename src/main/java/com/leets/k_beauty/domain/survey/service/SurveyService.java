@@ -86,7 +86,8 @@ public class SurveyService {
         } else if (index == -1 && !answeredOrder.isEmpty()) {
             previousCode = answeredOrder.get(answeredOrder.size() - 1);
         } else {
-            throw new BusinessException(ErrorCode.NO_PREVIOUS_QUESTION);
+            // 첫 질문에서 뒤로 간 경우. 정상 동선이므로 오류 대신 온보딩으로 가라고 알려준다
+            return PreviousQuestionResponse.onboarding();
         }
 
         Survey survey = findActiveSurvey(previousCode);

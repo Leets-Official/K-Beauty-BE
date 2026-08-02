@@ -4,6 +4,7 @@ import com.leets.k_beauty.domain.session.entity.Session;
 import com.leets.k_beauty.domain.session.repository.SessionRepository;
 import com.leets.k_beauty.domain.survey.dto.AnswerSaveRequest;
 import com.leets.k_beauty.domain.survey.dto.DiagnosisModeRequest;
+import com.leets.k_beauty.domain.survey.enums.NextAction;
 import com.leets.k_beauty.domain.survey.enums.QuestionCode;
 import com.leets.k_beauty.domain.survey.enums.SurveyStatus;
 import com.leets.k_beauty.domain.survey.repository.UserConditionRepository;
@@ -160,14 +161,36 @@ class SurveyServiceFlowTest extends IntegrationTestSupport {
         }
 
         @Test
-        @DisplayName("첫 질문에서는 더 뒤로 갈 수 없다")
-        void cannotGoBackFromFirstQuestion() {
+        @DisplayName("첫 질문에서 뒤로 가면 오류 대신 온보딩으로 안내한다")
+        void goingBackFromFirstQuestionLeadsToOnboarding() {
             Fixture fixture = answeredAllQuestions();
 
-            assertThatThrownBy(() -> previousOf(fixture, QuestionCode.CONCERN))
-                    .isInstanceOf(BusinessException.class)
-                    .extracting(thrown -> ((BusinessException) thrown).getErrorCode())
-                    .isEqualTo(ErrorCode.NO_PREVIOUS_QUESTION);
+            var previous = previousOf(fixture, QuestionCode.CONCERN);
+
+            assertThat(previous.nextAction()).isEqualTo(NextAction.GO_TO_ONBOARDING);
+            assertThat(previous.questionCode()).isNull();
+            assertThat(previous.options()).isNull();
+        }
+
+        @Test
+        @DisplayName("답변이 하나도 없을 때 뒤로 가도 온보딩으로 안내한다")
+        void goingBackWithoutAnyAnswerLeadsToOnboarding() {
+            Fixture fixture = newSurvey();
+
+            var previous = previousOf(fixture, QuestionCode.CONCERN);
+
+            assertThat(previous.nextAction()).isEqualTo(NextAction.GO_TO_ONBOARDING);
+        }
+
+        @Test
+        @DisplayName("이전 질문으로 돌아갈 때는 다음 행동이 질문 답하기다")
+        void goingBackToAnsweredQuestionAsksToAnswer() {
+            Fixture fixture = answeredAllQuestions();
+
+            var previous = previousOf(fixture, QuestionCode.SENSITIVITY);
+
+            assertThat(previous.nextAction()).isEqualTo(NextAction.ANSWER_QUESTION);
+            assertThat(previous.questionCode()).isEqualTo(QuestionCode.SKIN_TYPE);
         }
 
         @Test
