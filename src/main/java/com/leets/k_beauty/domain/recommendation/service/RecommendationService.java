@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -204,15 +203,30 @@ public class RecommendationService {
     }
 
     private RecommendationStepResponse toStepResponse(RecommendationStep step, Map<Long, ProductCandidate> productMap) {
+        // 활성 상태인 후보만 필터링 (candidates는 candidateRank ASC 정렬 상태)
+        List<RecommendationCandidate> activeCandidates = step.getCandidates().stream()
+                .filter(c -> productMap.containsKey(c.getProductId()))
+                .toList();
+
+        if (activeCandidates.isEmpty()) {
+            throw new BusinessException(ErrorCode.NO_ACTIVE_PRODUCT_FOR_STEP);
+        }
+
+        // 원래 선택된 후보가 여전히 활성이면 유지, 비활성이면 rank 가장 낮은 활성 후보로 대체
+        boolean originalIsActive = activeCandidates.stream()
+                .anyMatch(c -> c.getId().equals(step.getSelectedCandidateId()));
+        Long effectiveSelectedId = originalIsActive
+                ? step.getSelectedCandidateId()
+                : activeCandidates.get(0).getId();
+
         RecommendationCandidateResponse selected = null;
         List<RecommendationCandidateResponse> others = new ArrayList<>();
 
-        for (RecommendationCandidate candidate : step.getCandidates()) {
-            ProductCandidate product = Optional.ofNullable(productMap.get(candidate.getProductId()))
-                    .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
+        for (RecommendationCandidate candidate : activeCandidates) {
+            ProductCandidate product = productMap.get(candidate.getProductId());
             RecommendationCandidateResponse response = RecommendationCandidateResponse.of(candidate, product);
 
-            if (candidate.getId().equals(step.getSelectedCandidateId())) {
+            if (candidate.getId().equals(effectiveSelectedId)) {
                 selected = response;
             } else {
                 others.add(response);
