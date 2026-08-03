@@ -12,3 +12,8 @@ spring:
       hibernate:
         format_sql: false
     open-in-view: false
+
+# 이 파일이 src/main의 application.yaml을 가려서 그쪽 cors 설정이 읽히지 않는다.
+# 그래서 여기에도 따로 두어야 SecurityConfig가 프로퍼티를 찾을 수 있다.
+cors:
+  allowed-origins: http://localhost:5173
