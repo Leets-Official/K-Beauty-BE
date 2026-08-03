@@ -74,6 +74,16 @@ public class UserCondition {
         this.completedAt = LocalDateTime.now();
     }
 
+    // 추천 화면에서 뒤로 와 답을 바꾼 경우, 다시 진행 중 상태로 되돌림
+    // 답변 변경으로 필수 응답이 빠질 수 있어(민감 여부를 바꾸면 주의 요소가 삭제됨) 완료를 다시 거치도록 설정.
+    public void reopenIfCompleted() {
+        if (this.status != SurveyStatus.COMPLETED) {
+            return;
+        }
+        this.status = SurveyStatus.IN_PROGRESS;
+        this.completedAt = null;
+    }
+
     public void abandon() {
         this.status = SurveyStatus.ABANDONED;
     }

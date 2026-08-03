@@ -87,7 +87,8 @@ public class SurveyService {
         } else if (index == -1 && !answeredOrder.isEmpty()) {
             previousCode = answeredOrder.get(answeredOrder.size() - 1);
         } else {
-            throw new BusinessException(ErrorCode.NO_PREVIOUS_QUESTION);
+            // 첫 질문에서 뒤로 간 경우. 정상 동선이므로 오류 대신 온보딩으로 가라고 알려준다
+            return PreviousQuestionResponse.onboarding();
         }
 
         Survey survey = findActiveSurvey(previousCode);
@@ -98,8 +99,9 @@ public class SurveyService {
     // 답변된 질문을 설문 흐름 순서(surveyStep)대로 정렬
     private List<QuestionCode> answeredQuestionCodesInFlowOrder(UserCondition userCondition) {
         Map<QuestionCode, List<String>> grouped = groupAnswers(userCondition);
+        Map<QuestionCode, Integer> steps = surveyStepsOf(grouped.keySet());
         return grouped.keySet().stream()
-                .sorted(Comparator.comparing(code -> findActiveSurvey(code).getSurveyStep()))
+                .sorted(Comparator.comparing(steps::get))
                 .toList();
     }
 
@@ -107,10 +109,6 @@ public class SurveyService {
     @Transactional
     public AnswerSaveResponse saveAnswer(Long surveyId, QuestionCode questionCode, AnswerSaveRequest request, String sessionToken) {
         UserCondition userCondition = getOwnedCondition(surveyId, sessionToken);
-        if (userCondition.getStatus() == SurveyStatus.COMPLETED) {
-            throw new BusinessException(ErrorCode.SURVEY_ALREADY_COMPLETED);
-        }
-
         Survey survey = findActiveSurvey(questionCode);
         if (questionCode == QuestionCode.CAUTION && !isSensitiveYesAnswered(userCondition)) {
             throw new BusinessException(ErrorCode.CAUTION_PREREQUISITE_MISSING);
@@ -122,6 +120,13 @@ public class SurveyService {
             throw new BusinessException(ErrorCode.SURVEY_OPTION_INVALID);
         }
         validateExclusive(selectedOptions);
+
+        // "다음" 버튼은 답변을 바꿨는지와 상관없이 항상 이 API를 호출.
+        // 값이 그대로면 저장할 필요가 없으므로 지우고 다시 넣지 않음.
+        // 불필요하게 행이 새로 만들어져 저장 시각과 순서가 바뀌는 것을 막음.
+        if (isSameAsSaved(userCondition, survey, request.optionCodes())) {
+            return unchangedResponse(userCondition, survey, questionCode, selectedOptions, request.optionCodes());
+        }
 
         if (questionCode == QuestionCode.SKIN_TYPE) {
             boolean isTypeNeutral = selectedOptions.get(0).getOptionCode().equals(SKIN_TYPE_UNKNOWN);
@@ -170,6 +175,12 @@ public class SurveyService {
                 ? RecommendationImpact.NONE
                 : RecommendationImpact.RECALCULATE_REQUIRED;
 
+        // 추천에 반영되는 답변이 바뀌었으면 완료 상태를 풀어 다시 완료를 거치도록 설정
+        // 탐색 습관은 추천 결과를 바꾸지 않으므로(기획 9.2) 완료 상태를 유지
+        if (impact == RecommendationImpact.RECALCULATE_REQUIRED) {
+            userCondition.reopenIfCompleted();
+        }
+
         return new AnswerSaveResponse(
                 userCondition.getId(), questionCode, request.optionCodes(), clearedQuestionCodes,
                 derivedSensitivityStatus, nextAction, nextQuestionCode, impact
@@ -180,10 +191,6 @@ public class SurveyService {
     @Transactional
     public DiagnosisModeResponse setDiagnosisMode(Long surveyId, DiagnosisModeRequest request, String sessionToken) {
         UserCondition userCondition = getOwnedCondition(surveyId, sessionToken);
-        if (userCondition.getStatus() == SurveyStatus.COMPLETED) {
-            throw new BusinessException(ErrorCode.SURVEY_ALREADY_COMPLETED);
-        }
-
         DiagnosisMode mode = parseDiagnosisMode(request.diagnosisMode());
 
         List<QuestionCode> missing = missingRequiredAnswers(userCondition, List.of(QuestionCode.CONCERN, QuestionCode.SKIN_TYPE));
@@ -191,16 +198,41 @@ public class SurveyService {
             throw new BusinessException(ErrorCode.DIAGNOSIS_MODE_PREREQUISITE_MISSING);
         }
 
+        // 추천 화면에서 뒤로 와 경로를 실제로 바꾼 경우에만 완료 상태를 푼다.
+        // 같은 경로를 다시 고른 것(이동만 한 경우)은 완료 상태를 유지한다.
+        if (mode != userCondition.getDiagnosisMode()) {
+            userCondition.reopenIfCompleted();
+        }
+
         userCondition.updateDiagnosisMode(mode);
-        return DiagnosisModeResponse.from(userCondition);
+        // 진단 경로가 바뀌면 민감도 상태도 다시 계산한다.
+        // 원본 답변은 지우지 않고(프리필 유지) 파생값만 현재 경로에 맞춘다.
+        userCondition.updateSensitivityStatus(
+                mode == DiagnosisMode.QUICK
+                        ? SensitivityStatus.UNASSESSED           // 빠른 진단 = 민감도를 확인하지 않은 상태
+                        : deriveSensitivityStatus(userCondition) // 상세 진단 = 남아있는 답변으로 복원
+        );
+        // 상세 진단이면 다음 질문으로, 빠른 진단이면 바로 완료 단계
+        // 다음 질문은 시드 데이터에서 찾으므로 설문 구성이 바뀌어도 따라감.
+        QuestionCode nextQuestionCode = (mode == DiagnosisMode.DETAILED)
+                ? surveyRepository.findNext(findActiveSurvey(QuestionCode.SKIN_TYPE).getSurveyStep())
+                        .map(Survey::getQuestionCode).orElse(null)
+                : null;
+        NextAction nextAction = (nextQuestionCode != null)
+                ? NextAction.ANSWER_QUESTION
+                : NextAction.READY_TO_COMPLETE;
+
+        return DiagnosisModeResponse.of(userCondition, nextAction, nextQuestionCode);
     }
 
     // 설문 완료 처리
     @Transactional
     public CompletionResponse complete(Long surveyId, String sessionToken) {
         UserCondition userCondition = getOwnedCondition(surveyId, sessionToken);
+
+        // 이미 완료된 설문을 다시 완료해도 오류로 보지 않고, 답을 바꿨다면 저장 시점에 진행 중으로 되돌아가므로 여기까지 오지 않음
         if (userCondition.getStatus() == SurveyStatus.COMPLETED) {
-            throw new BusinessException(ErrorCode.SURVEY_ALREADY_COMPLETED);
+            return CompletionResponse.from(userCondition);
         }
 
         List<QuestionCode> missing = missingRequiredAnswers(userCondition, requiredQuestionCodes(userCondition));
@@ -280,9 +312,59 @@ public class SurveyService {
                 });
     }
 
+    // 이미 저장된 답변과 요청한 답변이 같은지 확인 
+    private boolean isSameAsSaved(UserCondition userCondition, Survey survey, List<String> optionCodes) {
+        List<String> savedOptionCodes = userSurveyAnswerRepository
+                .findByConditionAndSurvey(userCondition, survey).stream()
+                .map(answer -> answer.getOption().getOptionCode())
+                .toList();
+        return !savedOptionCodes.isEmpty()
+                && new HashSet<>(savedOptionCodes).equals(new HashSet<>(optionCodes));
+    }
+
+    // 저장할 내용이 없을 때의 응답.
+    // 값이 그대로이므로 삭제한 질문도 없고 추천 재계산도 필요 없음.
+    private AnswerSaveResponse unchangedResponse(UserCondition userCondition, Survey survey, QuestionCode questionCode,
+                                                  List<SurveyOption> selectedOptions, List<String> optionCodes) {
+        QuestionCode nextQuestionCode = determineNextQuestionCode(survey, selectedOptions);
+        SensitivityStatus derivedSensitivityStatus =
+                (questionCode == QuestionCode.SENSITIVITY || questionCode == QuestionCode.CAUTION)
+                        ? userCondition.getSensitivityStatus()
+                        : null;
+
+        return new AnswerSaveResponse(
+                userCondition.getId(), questionCode, optionCodes, List.of(),
+                derivedSensitivityStatus,
+                determineNextAction(questionCode, nextQuestionCode), nextQuestionCode,
+                RecommendationImpact.NONE
+        );
+    }
+
     // CAUTION 선택지 개수 기준 민감도 산출 (1개=MEDIUM, 2개 이상=HIGH)
     private SensitivityStatus deriveFromCaution(List<SurveyOption> cautionOptions) {
         return cautionOptions.size() >= 2 ? SensitivityStatus.HIGH : SensitivityStatus.MEDIUM;
+    }
+
+    // 저장된 답변만으로 민감도 상태를 산출한다.
+    // 진단 경로(diagnosisMode)는 보지 않는 순수 조회 함수
+    private SensitivityStatus deriveSensitivityStatus(UserCondition userCondition) {
+        List<UserSurveyAnswer> sensitivityAnswers = userSurveyAnswerRepository
+                .findByConditionAndSurvey(userCondition, findActiveSurvey(QuestionCode.SENSITIVITY));
+
+        if (sensitivityAnswers.isEmpty()) {
+            return SensitivityStatus.UNASSESSED;                 // 민감 여부 미응답
+        }
+        if (sensitivityAnswers.get(0).getOption().getOptionCode().equals(SENSITIVE_NO)) {
+            return SensitivityStatus.LOW;                        // 아니요
+        }
+
+        List<SurveyOption> cautionOptions = userSurveyAnswerRepository
+                .findByConditionAndSurvey(userCondition, findActiveSurvey(QuestionCode.CAUTION))
+                .stream().map(UserSurveyAnswer::getOption).toList();
+
+        return cautionOptions.isEmpty()
+                ? SensitivityStatus.UNASSESSED                   // 예 + 주의 요소 미응답
+                : deriveFromCaution(cautionOptions);             // 예 + 주의 요소 응답
     }
 
     // 특정 선택지 응답 여부 확인
@@ -361,6 +443,14 @@ public class SurveyService {
                 .toList();
     }
 
+    // 질문코드 -> surveyStep 매핑.
+    // 정렬할 때마다 질문을 다시 조회하지 않도록 미리 만들어 둠.
+    private Map<QuestionCode, Integer> surveyStepsOf(Collection<QuestionCode> questionCodes) {
+        Map<QuestionCode, Integer> steps = new HashMap<>();
+        questionCodes.forEach(code -> steps.put(code, findActiveSurvey(code).getSurveyStep()));
+        return steps;
+    }
+
     // 질문별 답변 코드 그룹핑 (답변된 순서 유지)
     private Map<QuestionCode, List<String>> groupAnswers(UserCondition userCondition) {
         List<UserSurveyAnswer> answers = userSurveyAnswerRepository.findAllByCondition(userCondition);
@@ -376,8 +466,11 @@ public class SurveyService {
     private SurveyProgressResponse buildProgress(UserCondition userCondition) {
         Map<QuestionCode, List<String>> grouped = groupAnswers(userCondition);
 
-        List<SurveyProgressResponse.AnsweredQuestion> answeredQuestions = grouped.entrySet().stream()
-                .map(entry -> new SurveyProgressResponse.AnsweredQuestion(entry.getKey(), entry.getValue()))
+        // 답변을 다시 저장하면 저장 순서가 바뀌므로, 화면에 보이는 순서(surveyStep)로 맞춰서 내려줌.
+        Map<QuestionCode, Integer> steps = surveyStepsOf(grouped.keySet());
+        List<SurveyProgressResponse.AnsweredQuestion> answeredQuestions = grouped.keySet().stream()
+                .sorted(Comparator.comparing(steps::get))
+                .map(code -> new SurveyProgressResponse.AnsweredQuestion(code, grouped.get(code)))
                 .toList();
 
         QuestionCode currentQuestionCode = null;

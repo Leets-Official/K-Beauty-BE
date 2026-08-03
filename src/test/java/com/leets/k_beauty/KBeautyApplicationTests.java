@@ -1,10 +1,9 @@
 package com.leets.k_beauty;
 
+import com.leets.k_beauty.support.IntegrationTestSupport;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class KBeautyApplicationTests {
+class KBeautyApplicationTests extends IntegrationTestSupport {
 
 	@Test
 	void contextLoads() {
