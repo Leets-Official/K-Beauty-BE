@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: k-beauty
+
+  # datasource는 MySqlTestContainerConfig의 @ServiceConnection이 주입한다.
+  # .env import와 ${DB_URL} 참조를 두지 않으므로 테스트는 환경변수에 의존하지 않는다.
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+    open-in-view: false

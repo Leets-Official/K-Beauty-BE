@@ -35,3 +35,13 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Environment ###
+.env
+
+### Local AI context ###
+CLAUDE.md
+
+### Claude Code ###
+.claude/
+.env.prod
