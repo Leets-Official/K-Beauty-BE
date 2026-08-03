@@ -5,3 +5,18 @@ spring:
 product:
   seed:
     enabled: true
+
+# 프론트엔드 허용 오리진. 운영에서는 .env.prod의 CORS_ALLOWED_ORIGINS로 덮어쓴다.
+# localhost와 127.0.0.1은 브라우저가 서로 다른 오리진으로 보므로 둘 다 넣는다.
+# *.cosmetch.kr은 배포 미리보기 주소까지 한 번에 허용하려는 것이다.
+cors:
+  allowed-origins: http://localhost:3000,http://localhost:5173,http://127.0.0.1:5173,https://cosmetch.kr,https://www.cosmetch.kr,https://*.cosmetch.kr
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+  api-docs:
+    path: /v3/api-docs
