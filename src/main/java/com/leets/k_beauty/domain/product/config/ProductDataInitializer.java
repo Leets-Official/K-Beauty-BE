@@ -49,21 +49,27 @@ public class ProductDataInitializer implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
-        seedIngredients();
-        seedProducts();
+        Set<String> ingredientSeedNames = seedIngredients();
+        seedProducts(ingredientSeedNames);
     }
 
-    private void seedIngredients() {
+    private Set<String> seedIngredients() {
         List<IngredientSeedData> seedData = readSeedData(
                 INGREDIENTS_PATH,
                 new TypeReference<>() {
                 }
         );
+        Set<String> ingredientSeedNames = new HashSet<>();
 
         seedData.forEach(data -> {
-            Ingredient ingredient = ingredientRepository.findByName(data.name())
+            String ingredientName = normalizeIngredientName(data.name(), INGREDIENTS_PATH);
+            if (!ingredientSeedNames.add(ingredientName)) {
+                throw new IllegalStateException("Duplicated ingredient seed data: " + ingredientName);
+            }
+
+            Ingredient ingredient = ingredientRepository.findByName(ingredientName)
                     .orElseGet(() -> ingredientRepository.save(Ingredient.builder()
-                            .name(data.name())
+                            .name(ingredientName)
                             .cautionDescription(data.cautionDescription())
                             .build()));
 
@@ -71,9 +77,11 @@ public class ProductDataInitializer implements ApplicationRunner {
                 ingredient.updateCautionDescription(data.cautionDescription());
             }
         });
+
+        return ingredientSeedNames;
     }
 
-    private void seedProducts() {
+    private void seedProducts(Set<String> ingredientSeedNames) {
         List<ProductSeedData> seedData = readSeedData(
                 PRODUCTS_PATH,
                 new TypeReference<>() {
@@ -86,7 +94,8 @@ public class ProductDataInitializer implements ApplicationRunner {
             String imageUrl = resolveImageUrl(enrichment);
             String purchaseUrl = resolvePurchaseUrl(enrichment);
             Integer price = resolvePrice(enrichment);
-            boolean isActive = resolveIsActive(data, enrichment);
+            boolean hasValidIngredients = hasValidProductIngredients(data, ingredientSeedNames);
+            boolean isActive = resolveIsActive(data, enrichment) && hasValidIngredients;
 
             Product product = productRepository.findByBrandNameAndProductName(data.brandName(), data.productName())
                     .orElseGet(() -> productRepository.save(Product.builder()
@@ -100,7 +109,11 @@ public class ProductDataInitializer implements ApplicationRunner {
                             .build()));
 
             product.updateSeedData(data.category(), imageUrl, purchaseUrl, price, isActive);
-            seedProductIngredients(product, data.ingredients());
+            if (hasValidIngredients) {
+                seedProductIngredients(product, data.ingredients());
+            } else {
+                clearProductIngredients(product);
+            }
         });
     }
 
@@ -150,30 +163,40 @@ public class ProductDataInitializer implements ApplicationRunner {
                 && enrichment.price() != null;
     }
 
-    private void seedProductIngredients(Product product, List<ProductSeedIngredient> seedIngredients) {
-        if (seedIngredients == null) {
-            return;
-        }
-
+    private void seedProductIngredients(
+            Product product,
+            List<ProductSeedIngredient> seedIngredients
+    ) {
         List<ProductIngredient> existingProductIngredients = productIngredientRepository.findByProduct(product);
         Map<String, ProductIngredient> existingByIngredientName = new HashMap<>();
-        existingProductIngredients.forEach(productIngredient ->
-                existingByIngredientName.put(productIngredient.getIngredient().getName(), productIngredient));
+        existingProductIngredients.forEach(productIngredient -> {
+            String savedIngredientName = productIngredient.getIngredient().getName();
+            String ingredientName = normalizeIngredientName(savedIngredientName, formatProductName(product));
+            if (!savedIngredientName.equals(ingredientName)) {
+                return;
+            }
+
+            existingByIngredientName.put(
+                    ingredientName,
+                    productIngredient
+            );
+        });
 
         Set<String> seedIngredientNames = new HashSet<>();
         for (int i = 0; i < seedIngredients.size(); i++) {
             ProductSeedIngredient seedIngredient = seedIngredients.get(i);
-            if (!seedIngredientNames.add(seedIngredient.name())) {
+            String ingredientName = normalizeIngredientName(seedIngredient.name(), formatProductName(product));
+            if (!seedIngredientNames.add(ingredientName)) {
                 throw new IllegalStateException(
                         "Duplicated product ingredient data: "
-                                + product.getBrandName() + " " + product.getProductName()
-                                + " - " + seedIngredient.name()
+                                + formatProductName(product)
+                                + " - " + ingredientName
                 );
             }
 
-            Ingredient ingredient = findOrCreateIngredient(seedIngredient.name());
+            Ingredient ingredient = findIngredientOrThrow(product, ingredientName);
             Integer displayOrder = resolveDisplayOrder(seedIngredient, i);
-            ProductIngredient productIngredient = existingByIngredientName.get(seedIngredient.name());
+            ProductIngredient productIngredient = existingByIngredientName.get(ingredientName);
             if (productIngredient != null) {
                 productIngredient.updateDisplayOrder(displayOrder);
                 continue;
@@ -187,16 +210,79 @@ public class ProductDataInitializer implements ApplicationRunner {
         }
 
         List<ProductIngredient> removedProductIngredients = existingProductIngredients.stream()
-                .filter(productIngredient -> !seedIngredientNames.contains(productIngredient.getIngredient().getName()))
+                .filter(productIngredient -> shouldRemoveProductIngredient(product, productIngredient, seedIngredientNames))
                 .toList();
         productIngredientRepository.deleteAll(removedProductIngredients);
     }
 
-    private Ingredient findOrCreateIngredient(String name) {
+    private boolean hasValidProductIngredients(
+            ProductSeedData product,
+            Set<String> ingredientSeedNames
+    ) {
+        List<ProductSeedIngredient> seedIngredients = product.ingredients();
+        if (seedIngredients == null || seedIngredients.isEmpty()) {
+            return false;
+        }
+
+        String productName = formatProductName(product);
+        Set<String> seedIngredientNames = new HashSet<>();
+        for (ProductSeedIngredient seedIngredient : seedIngredients) {
+            String ingredientName = normalizeIngredientName(seedIngredient.name(), productName);
+            if (!seedIngredientNames.add(ingredientName)) {
+                throw new IllegalStateException(
+                        "Duplicated product ingredient data: "
+                                + productName
+                                + " - " + ingredientName
+                );
+            }
+            if (!ingredientSeedNames.contains(ingredientName)) {
+                throw new IllegalStateException(
+                        "Unknown product ingredient data: "
+                                + productName
+                                + " - " + ingredientName
+                );
+            }
+        }
+        return true;
+    }
+
+    private void clearProductIngredients(Product product) {
+        List<ProductIngredient> productIngredients = productIngredientRepository.findByProduct(product);
+        productIngredientRepository.deleteAll(productIngredients);
+    }
+
+    private boolean shouldRemoveProductIngredient(
+            Product product,
+            ProductIngredient productIngredient,
+            Set<String> seedIngredientNames
+    ) {
+        String savedIngredientName = productIngredient.getIngredient().getName();
+        String ingredientName = normalizeIngredientName(savedIngredientName, formatProductName(product));
+        return !savedIngredientName.equals(ingredientName) || !seedIngredientNames.contains(ingredientName);
+    }
+
+    private Ingredient findIngredientOrThrow(Product product, String name) {
         return ingredientRepository.findByName(name)
-                .orElseGet(() -> ingredientRepository.save(Ingredient.builder()
-                        .name(name)
-                        .build()));
+                .orElseThrow(() -> new IllegalStateException(
+                        "Unknown product ingredient data: "
+                                + formatProductName(product)
+                                + " - " + name
+                ));
+    }
+
+    private String normalizeIngredientName(String name, String source) {
+        if (!StringUtils.hasText(name)) {
+            throw new IllegalStateException("Blank ingredient name: " + source);
+        }
+        return name.trim();
+    }
+
+    private String formatProductName(ProductSeedData product) {
+        return product.brandName() + " " + product.productName();
+    }
+
+    private String formatProductName(Product product) {
+        return product.getBrandName() + " " + product.getProductName();
     }
 
     private Integer resolveDisplayOrder(ProductSeedIngredient seedIngredient, int index) {
