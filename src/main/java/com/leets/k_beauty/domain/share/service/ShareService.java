@@ -46,6 +46,13 @@ public class ShareService {
         Share share = shareRepository.findByShareToken(shareToken)
                 .orElseThrow(ShareNotFoundException::new);
 
+        Recommendation recommendation = recommendationRepository.findById(share.getRecommendationId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RECOMMENDATION_NOT_FOUND));
+
+        if (recommendation.getStatus() == RecommendationStatus.INVALIDATED) {
+            throw new BusinessException(ErrorCode.RECOMMENDATION_INVALIDATED);
+        }
+
         return recommendationService.getByIdWithoutAuth(share.getRecommendationId());
     }
 }

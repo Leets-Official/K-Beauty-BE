@@ -33,9 +33,6 @@ public class RecommendationCandidate {
     @Column(name = "candidate_rank", nullable = false)
     private int candidateRank;
 
-    @Column(nullable = false)
-    private boolean isUserSelected = false;
-
     @Column(precision = 5, scale = 2)
     private BigDecimal matchScore;
 
@@ -51,15 +48,11 @@ public class RecommendationCandidate {
         candidate.step = step;
         candidate.productId = productId;
         candidate.candidateRank = candidateRank;
-        candidate.isUserSelected = false;
         return candidate;
     }
 
-    public void markAsUserSelected() {
-        this.isUserSelected = true;
-    }
-
-    public void clearUserSelected() {
-        this.isUserSelected = false;
+    public void updateScoreAndReason(int score, String reason) {
+        this.matchScore = java.math.BigDecimal.valueOf(score);
+        this.reasonShort = reason;
     }
 }

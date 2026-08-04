@@ -30,6 +30,12 @@ public class ProductQueryService {
         return toCandidates(products);
     }
 
+    public List<ProductCandidate> findCandidatesByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) return List.of();
+        List<Product> products = productRepository.findActiveByIds(ids);
+        return toCandidates(products);
+    }
+
     private List<ProductCandidate> toCandidates(List<Product> products) {
         if (products.isEmpty()) {
             return List.of();
