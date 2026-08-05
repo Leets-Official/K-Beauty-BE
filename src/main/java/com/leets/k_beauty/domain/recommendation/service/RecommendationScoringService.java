@@ -25,7 +25,7 @@ public class RecommendationScoringService {
 
     private final ProductQueryService productQueryService;
 
-    // 피부 고민별 추천 성분 (소문자로 저장 — 비교 시 toLowerCase 불필요)
+    // 피부 고민별 추천 성분
     private static final Map<SkinConcern, Set<String>> CONCERN_INGREDIENT_MAP = Map.of(
             SkinConcern.MOISTURE,
             Set.of("글리세린", "히알루론산", "저분자 히알루론산", "베타인", "판테놀", "세라마이드", "스쿠알란", "시어버터"),
@@ -198,8 +198,8 @@ public class RecommendationScoringService {
     }
 
     private boolean matchesCaution(IngredientInfo ing, CautionCategory caution) {
-        String name = ing.name() != null ? ing.name().toLowerCase() : "";
-        String desc = ing.cautionDescription() != null ? ing.cautionDescription().toLowerCase() : "";
+        String name = normalizeIngredientText(ing.name());
+        String desc = normalizeIngredientText(ing.cautionDescription());
         return switch (caution) {
             case FRAGRANCE ->
                     name.contains("향료") || name.contains("fragrance") || name.contains("parfum")
@@ -209,8 +209,8 @@ public class RecommendationScoringService {
                     name.contains("알코올") || name.contains("에탄올") || name.contains("alcohol")
                     || name.contains("aha") || name.contains("bha") || name.contains("pha")
                     || name.contains("레티놀") || name.contains("retinol")
-                    || name.contains("비타민 c") || name.contains("비타민c") || name.contains("ascorbic")
-                    || name.contains("티트리") || name.contains("tea tree")
+                    || name.contains("비타민c") || name.contains("ascorbic")
+                    || name.contains("티트리") || name.contains("teatree")
                     || desc.contains("알코올") || desc.contains("에탄올");
             case OIL ->
                     name.contains("오일") || name.contains("oil")
@@ -229,26 +229,42 @@ public class RecommendationScoringService {
         Set<String> concernIngredients = skinConcern != null
                 ? CONCERN_INGREDIENT_MAP.getOrDefault(skinConcern, Set.of())
                 : Set.of();
+        Set<String> normalizedConcernIngredients = concernIngredients.stream()
+                .map(this::normalizeIngredientText)
+                .filter(ingredient -> !ingredient.isBlank())
+                .collect(Collectors.toSet());
 
         return pool.stream()
                 .map(product -> {
-                    List<String> matched = matchedIngredientNames(product, concernIngredients);
-                    return new ScoredCandidate(product, matched.size(), buildReason(matched, skinConcern));
+                    List<String> matched = matchedIngredientNames(product, normalizedConcernIngredients);
+                    List<String> reasonIngredientNames = matched.stream()
+                            .limit(3)
+                            .toList();
+                    return new ScoredCandidate(product, matched.size(), buildReason(reasonIngredientNames, skinConcern));
                 })
                 .sorted(Comparator.comparingInt(ScoredCandidate::matchScore).reversed())
                 .collect(Collectors.toList());
     }
 
-    /** 제품 성분 중 피부 고민 성분과 일치하는 원본 성분명 목록 (최대 3개) */
+    /** 제품 성분 중 피부 고민 성분과 일치하는 원본 성분명 목록 */
     private List<String> matchedIngredientNames(ProductCandidate product, Set<String> concernIngredients) {
         if (concernIngredients.isEmpty()) return List.of();
         return product.ingredients().stream()
-                .filter(ing -> concernIngredients.stream()
-                        .anyMatch(ci -> ing.name().toLowerCase().contains(ci)))
                 .map(IngredientInfo::name)
+                .filter(Objects::nonNull)
+                .filter(ing -> concernIngredients.stream()
+                        .anyMatch(ci -> normalizeIngredientText(ing).contains(ci)))
                 .distinct()
-                .limit(3)
                 .toList();
+    }
+
+    private String normalizeIngredientText(String value) {
+        if (value == null) {
+            return "";
+        }
+        return value.trim()
+                .toLowerCase(Locale.ROOT)
+                .replaceAll("\\s+", "");
     }
 
     private String buildReason(List<String> matchedNames, SkinConcern concern) {
