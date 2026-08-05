@@ -1,6 +1,7 @@
 package com.leets.k_beauty.domain.product.repository;
 
 import com.leets.k_beauty.domain.product.entity.Product;
+import com.leets.k_beauty.domain.product.dto.ProductPriceUpdateTarget;
 import com.leets.k_beauty.domain.product.enums.ProductCategory;
 import java.util.List;
 import java.util.Optional;
@@ -24,14 +25,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // 구매 링크가 있는 활성 상품 목록을 조회한다.
     @Query("""
-            SELECT product
+            SELECT new com.leets.k_beauty.domain.product.dto.ProductPriceUpdateTarget(
+                product.id,
+                product.brandName,
+                product.productName,
+                product.purchaseUrl
+            )
             FROM Product product
             WHERE product.isActive = true
               AND product.purchaseUrl IS NOT NULL
               AND product.purchaseUrl <> ''
             ORDER BY product.id ASC
             """)
-    List<Product> findActiveWithPurchaseUrl();
+    List<ProductPriceUpdateTarget> findPriceUpdateTargets();
 
     // productId 목록으로 활성 상품을 한 번에 조회한다.
     @Query("""

@@ -1,38 +1,41 @@
 package com.leets.k_beauty.domain.product.service;
 
 import com.leets.k_beauty.domain.product.dto.ProductPriceUpdateResult;
-import com.leets.k_beauty.domain.product.entity.Product;
+import com.leets.k_beauty.domain.product.dto.ProductPriceUpdateTarget;
 import com.leets.k_beauty.domain.product.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class ProductPriceUpdateService {
 
     private final ProductRepository productRepository;
     private final ProductPriceCrawler productPriceCrawler;
+    private final ProductPriceWriter productPriceWriter;
 
-    @Transactional
     public ProductPriceUpdateResult updatePrices() {
-        List<Product> products = productRepository.findActiveWithPurchaseUrl();
+        List<ProductPriceUpdateTarget> targets = productRepository.findPriceUpdateTargets();
 
         int updatedCount = 0;
         int skippedCount = 0;
         int failedCount = 0;
 
-        for (Product product : products) {
+        for (ProductPriceUpdateTarget target : targets) {
             try {
-                Optional<Integer> price = productPriceCrawler.fetchPrice(product.getPurchaseUrl());
+                Optional<Integer> price = productPriceCrawler.fetchPrice(target.purchaseUrl());
                 if (price.isPresent()) {
-                    product.updatePrice(price.get());
-                    updatedCount++;
+                    if (productPriceWriter.updatePrice(target.productId(), price.get())) {
+                        updatedCount++;
+                    } else {
+                        failedCount++;
+                        log.warn("상품 가격 갱신 실패 - 상품을 찾을 수 없음. productId={}, productName={}",
+                                target.productId(), formatProductName(target));
+                    }
                     continue;
                 }
 
@@ -40,14 +43,14 @@ public class ProductPriceUpdateService {
             } catch (RuntimeException e) {
                 failedCount++;
                 log.warn("상품 가격 갱신 실패 - productId={}, productName={}",
-                        product.getId(), formatProductName(product), e);
+                        target.productId(), formatProductName(target), e);
             }
         }
 
-        return new ProductPriceUpdateResult(products.size(), updatedCount, skippedCount, failedCount);
+        return new ProductPriceUpdateResult(targets.size(), updatedCount, skippedCount, failedCount);
     }
 
-    private String formatProductName(Product product) {
-        return product.getBrandName() + " " + product.getProductName();
+    private String formatProductName(ProductPriceUpdateTarget target) {
+        return target.brandName() + " " + target.productName();
     }
 }

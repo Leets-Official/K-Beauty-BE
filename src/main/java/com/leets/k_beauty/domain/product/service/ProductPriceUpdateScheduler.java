@@ -19,7 +19,8 @@ public class ProductPriceUpdateScheduler {
 
     private final ProductPriceUpdateService productPriceUpdateService;
 
-    @Scheduled(cron = "0 0 7,23 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 7 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 30 23 * * *", zone = "Asia/Seoul")
     public void updateDailyPrices() {
         log.info("상품 가격 정기 갱신 시작");
         ProductPriceUpdateResult result = productPriceUpdateService.updatePrices();
