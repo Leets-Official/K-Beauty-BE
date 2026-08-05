@@ -10,6 +10,8 @@ import com.leets.k_beauty.domain.survey.dto.SurveyQuestionResponse;
 import com.leets.k_beauty.domain.survey.enums.NextAction;
 import com.leets.k_beauty.domain.survey.enums.QuestionCode;
 import com.leets.k_beauty.domain.survey.enums.SelectionType;
+import com.leets.k_beauty.domain.survey.enums.SensitivityStatus;
+import com.leets.k_beauty.domain.survey.enums.SurveyStatus;
 import com.leets.k_beauty.support.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -130,6 +132,130 @@ class SurveyServiceProgressTest extends IntegrationTestSupport {
         }
     }
 
+    /**
+     * 앱을 다시 열었을 때 이 API 한 번으로 화면을 결정할 수 있어야 한다.
+     *
+     * <p>클라이언트는 status를 먼저 보고(완료면 결과 화면), 그 다음 nextAction으로 분기한다.
+     * currentQuestionCode는 없을 수 있으므로 그것만 보고 분기하면 안 된다.
+     */
+    @Nested
+    @DisplayName("앱을 다시 열면")
+    class Reentry {
+
+        @Test
+        @DisplayName("아무것도 답하지 않았으면 첫 질문부터 이어가라고 알려준다")
+        void pointsToFirstQuestion() {
+            Fixture fixture = newSurvey();
+
+            SurveyProgressResponse current = currentOf(fixture);
+
+            assertThat(current.surveyResponseId()).isEqualTo(fixture.surveyId());
+            assertThat(current.status()).isEqualTo(SurveyStatus.IN_PROGRESS);
+            assertThat(current.nextAction()).isEqualTo(NextAction.ANSWER_QUESTION);
+            assertThat(current.currentQuestionCode()).isEqualTo(QuestionCode.CONCERN);
+            assertThat(current.currentStep()).isEqualTo(1);
+            assertThat(current.answers()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("고민만 답했으면 피부 타입부터 이어가고 이전 답변을 함께 준다")
+        void pointsToSkinTypeWithPrefill() {
+            Fixture fixture = newSurvey();
+            answer(fixture, QuestionCode.CONCERN, "MOISTURE");
+
+            SurveyProgressResponse current = currentOf(fixture);
+
+            assertThat(current.nextAction()).isEqualTo(NextAction.ANSWER_QUESTION);
+            assertThat(current.currentQuestionCode()).isEqualTo(QuestionCode.SKIN_TYPE);
+            assertThat(current.answers())
+                    .extracting(SurveyProgressResponse.AnsweredQuestion::questionCode)
+                    .containsExactly(QuestionCode.CONCERN);
+            assertThat(current.answers().get(0).optionCodes()).containsExactly("MOISTURE");
+        }
+
+        @Test
+        @DisplayName("피부 타입까지 답하고 나갔으면 진단 경로를 고르라고 안내한다")
+        void pointsToDiagnosisModeSelection() {
+            Fixture fixture = answeredBasicQuestions();
+
+            SurveyProgressResponse current = currentOf(fixture);
+
+            assertThat(current.nextAction()).isEqualTo(NextAction.SELECT_DIAGNOSIS_MODE);
+            // 이 상태에는 띄울 질문이 없다. 질문 코드 유무로 분기하면 여기서 막힌다
+            assertThat(current.currentQuestionCode()).isNull();
+            assertThat(current.diagnosisMode()).isNull();
+            assertThat(current.answers()).hasSize(2);
+        }
+
+        @Test
+        @DisplayName("상세 진단 중에 나갔으면 남은 질문부터 이어가라고 알려준다")
+        void pointsToRemainingQuestion() {
+            Fixture fixture = answeredBasicQuestions();
+            setMode(fixture, "DETAILED");
+            answer(fixture, QuestionCode.SENSITIVITY, "SENSITIVE_NO");
+
+            SurveyProgressResponse current = currentOf(fixture);
+
+            assertThat(current.nextAction()).isEqualTo(NextAction.ANSWER_QUESTION);
+            assertThat(current.currentQuestionCode()).isEqualTo(QuestionCode.EXPLORATION_HABIT);
+            assertThat(current.sensitivityStatus()).isEqualTo(SensitivityStatus.LOW);
+        }
+
+        @Test
+        @DisplayName("필수 응답을 다 채우고 완료 전에 나갔으면 완료하라고 안내한다")
+        void pointsToCompletion() {
+            Fixture fixture = answeredAllQuestions();
+
+            SurveyProgressResponse current = currentOf(fixture);
+
+            assertThat(current.status()).isEqualTo(SurveyStatus.IN_PROGRESS);
+            assertThat(current.nextAction()).isEqualTo(NextAction.READY_TO_COMPLETE);
+            assertThat(current.currentQuestionCode()).isNull();
+        }
+
+        @Test
+        @DisplayName("완료한 설문은 상태와 답변 전체를 그대로 돌려준다")
+        void returnsCompletedSurveyWithAllAnswers() {
+            Fixture fixture = answeredAllQuestions();
+            surveyService.complete(fixture.surveyId(), fixture.sessionToken());
+
+            SurveyProgressResponse current = currentOf(fixture);
+
+            assertThat(current.status()).isEqualTo(SurveyStatus.COMPLETED);
+            assertThat(current.answers())
+                    .extracting(SurveyProgressResponse.AnsweredQuestion::questionCode)
+                    .containsExactly(
+                            QuestionCode.CONCERN, QuestionCode.SKIN_TYPE,
+                            QuestionCode.SENSITIVITY, QuestionCode.CAUTION,
+                            QuestionCode.EXPLORATION_HABIT);
+        }
+
+        @Test
+        @DisplayName("타입 중립 모드도 그대로 복원된다")
+        void restoresTypeNeutralMode() {
+            Fixture fixture = newSurvey();
+            answer(fixture, QuestionCode.CONCERN, "MOISTURE");
+            answer(fixture, QuestionCode.SKIN_TYPE, "UNKNOWN");
+
+            assertThat(currentOf(fixture).typeNeutralMode()).isTrue();
+        }
+
+        @Test
+        @DisplayName("다시 시작한 뒤에는 이전 설문이 아니라 새 설문을 가리킨다")
+        void pointsToRestartedSurvey() {
+            Fixture fixture = answeredBasicQuestions();
+            Long restartedId = surveyService.restart(fixture.surveyId(), fixture.sessionToken())
+                    .surveyResponseId();
+
+            SurveyProgressResponse current = currentOf(fixture);
+
+            assertThat(current.surveyResponseId()).isEqualTo(restartedId);
+            assertThat(current.status()).isEqualTo(SurveyStatus.IN_PROGRESS);
+            assertThat(current.answers()).isEmpty();
+            assertThat(current.currentQuestionCode()).isEqualTo(QuestionCode.CONCERN);
+        }
+    }
+
     @Nested
     @DisplayName("질문을 조회하면")
     class QuestionLookup {
@@ -207,6 +333,10 @@ class SurveyServiceProgressTest extends IntegrationTestSupport {
 
     private SurveyProgressResponse progressOf(Fixture fixture) {
         return surveyService.getProgress(fixture.surveyId(), fixture.sessionToken());
+    }
+
+    private SurveyProgressResponse currentOf(Fixture fixture) {
+        return surveyService.getCurrent(fixture.sessionToken());
     }
 
     private SurveyOptionResponse optionOf(SurveyQuestionResponse question, String optionCode) {
