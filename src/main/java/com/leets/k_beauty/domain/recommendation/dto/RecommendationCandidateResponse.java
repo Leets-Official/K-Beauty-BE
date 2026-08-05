@@ -18,6 +18,7 @@ public record RecommendationCandidateResponse(
         String purchaseUrl,
         Integer price,
         int candidateRank,
+        boolean userSelected,
         List<IngredientInfo> topIngredients,  // 주요 성분 칩 최대 3개
         BigDecimal matchScore,
         String reasonShort
@@ -37,6 +38,7 @@ public record RecommendationCandidateResponse(
                 product.purchaseUrl(),
                 product.price(),
                 candidate.getCandidateRank(),
+                candidate.isUserSelected(),
                 top3,
                 candidate.getMatchScore(),
                 candidate.getReasonShort()
