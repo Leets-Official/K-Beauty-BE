@@ -44,11 +44,19 @@ public class RecommendationScoringService {
     );
 
     private static final Map<SkinConcern, String> CONCERN_DISPLAY_NAME = Map.of(
-            SkinConcern.MOISTURE, "수분/보습",
-            SkinConcern.SENSITIVE, "피부 진정",
-            SkinConcern.TONE, "피부톤 균형",
-            SkinConcern.TROUBLE, "피부결/모공",
-            SkinConcern.AGING, "노화/탄력"
+            SkinConcern.MOISTURE, "수분 부족",
+            SkinConcern.SENSITIVE, "예민함",
+            SkinConcern.TONE, "피부톤 불균형",
+            SkinConcern.TROUBLE, "트러블/모공",
+            SkinConcern.AGING, "탄력/주름"
+    );
+
+    private static final Map<SkinConcern, String> CONCERN_EFFECT_DESCRIPTION = Map.of(
+            SkinConcern.MOISTURE, "수분감을 채워주는 데 도움을 줄 수 있어요.",
+            SkinConcern.SENSITIVE, "피부를 편안하게 진정시키는 데 도움을 줄 수 있어요.",
+            SkinConcern.TONE, "칙칙한 피부톤을 맑아 보이게 가꾸는 데 도움을 줄 수 있어요.",
+            SkinConcern.TROUBLE, "피부결과 모공 고민을 케어하는 데 도움을 줄 수 있어요.",
+            SkinConcern.AGING, "탄력과 주름 고민을 케어하는 데 도움을 줄 수 있어요."
     );
 
     private enum Season { SUMMER, SPRING_FALL, WINTER }
@@ -65,7 +73,7 @@ public class RecommendationScoringService {
         List<ProductCategory> categories = categoriesForStep(step, skinType, hasOilDiscomfort);
         List<ProductCandidate> pool = fetchPool(categories);
         List<ProductCandidate> filtered = filterCaution(pool, input.sensitivityStatus(), cautionCategories);
-        return scoreAndSort(filtered, input.skinConcern())
+        return scoreAndSort(filtered, input.skinConcern(), step)
                 .stream()
                 .limit(CANDIDATE_COUNT)
                 .toList();
@@ -225,7 +233,7 @@ public class RecommendationScoringService {
 
     // ---- 점수 계산 및 정렬 ----
 
-    private List<ScoredCandidate> scoreAndSort(List<ProductCandidate> pool, SkinConcern skinConcern) {
+    private List<ScoredCandidate> scoreAndSort(List<ProductCandidate> pool, SkinConcern skinConcern, int step) {
         Set<String> concernIngredients = skinConcern != null
                 ? CONCERN_INGREDIENT_MAP.getOrDefault(skinConcern, Set.of())
                 : Set.of();
@@ -240,7 +248,11 @@ public class RecommendationScoringService {
                     List<String> reasonIngredientNames = matched.stream()
                             .limit(3)
                             .toList();
-                    return new ScoredCandidate(product, matched.size(), buildReason(reasonIngredientNames, skinConcern));
+                    return new ScoredCandidate(
+                            product,
+                            matched.size(),
+                            buildReason(reasonIngredientNames, skinConcern, step)
+                    );
                 })
                 .sorted(Comparator.comparingInt(ScoredCandidate::matchScore).reversed())
                 .collect(Collectors.toList());
@@ -267,9 +279,30 @@ public class RecommendationScoringService {
                 .replaceAll("\\s+", "");
     }
 
-    private String buildReason(List<String> matchedNames, SkinConcern concern) {
-        if (matchedNames.isEmpty() || concern == null) return null;
-        String names = String.join(", ", matchedNames);
-        return names + " 함유 · " + CONCERN_DISPLAY_NAME.getOrDefault(concern, "") + " 고민 맞춤";
+    private String buildReason(List<String> matchedNames, SkinConcern concern, int step) {
+        if (matchedNames.isEmpty() || concern == null) {
+            return stepRoleName(step) + " 단계에 맞춰 사용감과 루틴 흐름을 고려해 추천했어요.";
+        }
+
+        String concernName = CONCERN_DISPLAY_NAME.getOrDefault(concern, "선택한 피부");
+        String effectDescription = CONCERN_EFFECT_DESCRIPTION.getOrDefault(
+                concern,
+                "선택한 고민을 케어하는 데 도움을 줄 수 있어요."
+        );
+        return concernName + " 고민에 맞게 " + joinIngredientNames(matchedNames)
+                + " 성분이 " + effectDescription;
+    }
+
+    private String joinIngredientNames(List<String> ingredientNames) {
+        return String.join(", ", ingredientNames);
+    }
+
+    private String stepRoleName(int step) {
+        return switch (step) {
+            case 1 -> "피부결 정돈";
+            case 2 -> "집중 케어";
+            case 3 -> "보습 마무리";
+            default -> "루틴";
+        };
     }
 }
