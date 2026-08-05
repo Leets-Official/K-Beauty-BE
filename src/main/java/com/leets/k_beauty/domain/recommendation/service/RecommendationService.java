@@ -1,10 +1,10 @@
 package com.leets.k_beauty.domain.recommendation.service;
 
 import com.leets.k_beauty.domain.product.dto.ProductCandidate;
-import com.leets.k_beauty.domain.recommendation.dto.RecommendationInput;
 import com.leets.k_beauty.domain.recommendation.dto.ScoredCandidate;
 import com.leets.k_beauty.domain.product.service.ProductQueryService;
 import com.leets.k_beauty.domain.recommendation.dto.CandidateSelectRequest;
+import com.leets.k_beauty.domain.recommendation.dto.RecommendationInput;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationCandidateResponse;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationResponse;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationStepResponse;
@@ -60,8 +60,7 @@ public class RecommendationService {
         UserCondition userCondition = userConditionRepository.findFirstBySessionIdOrderByIdDesc(session.getId())
                 .filter(uc -> uc.getStatus() == SurveyStatus.COMPLETED)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SURVEY_NOT_COMPLETED));
-        List<UserSurveyAnswer> answers = userSurveyAnswerRepository.findAllByCondition(userCondition);
-        RecommendationInput input = recommendationInputMapper.from(userCondition, answers);
+        RecommendationInput input = buildRecommendationInput(userCondition);
 
         // 기존 유효 추천 무효화
         recommendationRepository.findAllBySessionIdAndStatus(session.getId(), RecommendationStatus.GENERATED)
@@ -155,6 +154,11 @@ public class RecommendationService {
                 }
             }
         }
+    }
+
+    private RecommendationInput buildRecommendationInput(UserCondition userCondition) {
+        List<UserSurveyAnswer> answers = userSurveyAnswerRepository.findAllByCondition(userCondition);
+        return recommendationInputMapper.from(userCondition, answers);
     }
 
     private Session resolveSession(String sessionToken) {
