@@ -1,7 +1,7 @@
 package com.leets.k_beauty.domain.recommendation.service;
 
-import com.leets.k_beauty.domain.product.dto.IngredientInfo;
 import com.leets.k_beauty.domain.product.dto.ProductCandidate;
+import com.leets.k_beauty.domain.recommendation.dto.RecommendationInput;
 import com.leets.k_beauty.domain.recommendation.dto.ScoredCandidate;
 import com.leets.k_beauty.domain.product.service.ProductQueryService;
 import com.leets.k_beauty.domain.recommendation.dto.CandidateSelectRequest;
@@ -19,8 +19,10 @@ import com.leets.k_beauty.domain.recommendation.repository.RecommendationStepRep
 import com.leets.k_beauty.domain.session.entity.Session;
 import com.leets.k_beauty.domain.session.repository.SessionRepository;
 import com.leets.k_beauty.domain.survey.entity.UserCondition;
+import com.leets.k_beauty.domain.survey.entity.UserSurveyAnswer;
 import com.leets.k_beauty.domain.survey.enums.SurveyStatus;
 import com.leets.k_beauty.domain.survey.repository.UserConditionRepository;
+import com.leets.k_beauty.domain.survey.repository.UserSurveyAnswerRepository;
 import com.leets.k_beauty.global.exception.BusinessException;
 import com.leets.k_beauty.global.exception.ErrorCode;
 import jakarta.persistence.EntityManager;
@@ -44,7 +46,9 @@ public class RecommendationService {
     private final RecommendationCandidateRepository candidateRepository;
     private final SessionRepository sessionRepository;
     private final UserConditionRepository userConditionRepository;
+    private final UserSurveyAnswerRepository userSurveyAnswerRepository;
     private final ProductQueryService productQueryService;
+    private final RecommendationInputMapper recommendationInputMapper;
     private final RecommendationScoringService scoringService;
     private final EntityManager entityManager;
 
@@ -56,6 +60,8 @@ public class RecommendationService {
         UserCondition userCondition = userConditionRepository.findFirstBySessionIdOrderByIdDesc(session.getId())
                 .filter(uc -> uc.getStatus() == SurveyStatus.COMPLETED)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SURVEY_NOT_COMPLETED));
+        List<UserSurveyAnswer> answers = userSurveyAnswerRepository.findAllByCondition(userCondition);
+        RecommendationInput input = recommendationInputMapper.from(userCondition, answers);
 
         // 기존 유효 추천 무효화
         recommendationRepository.findAllBySessionIdAndStatus(session.getId(), RecommendationStatus.GENERATED)
@@ -67,7 +73,7 @@ public class RecommendationService {
         recommendationRepository.save(recommendation);
 
         // 3단계 후보 생성
-        buildSteps(recommendation, session);
+        buildSteps(recommendation, input);
 
         // 세션에 최신 추천 연결 및 완료 처리
         session.linkRecommendation(recommendation.getId());
@@ -128,14 +134,14 @@ public class RecommendationService {
 
     // ---- private helpers ----
 
-    private void buildSteps(Recommendation recommendation, Session session) {
+    private void buildSteps(Recommendation recommendation, RecommendationInput input) {
         StepRole[] roles = {StepRole.TEXTURE, StepRole.INTENSIVE, StepRole.MOISTURE};
 
         for (int stepNum = 1; stepNum <= 3; stepNum++) {
             RecommendationStep step = RecommendationStep.of(recommendation, stepNum, roles[stepNum - 1]);
             stepRepository.save(step);
 
-            List<ScoredCandidate> candidates = scoringService.getCandidatesForStep(stepNum, session);
+            List<ScoredCandidate> candidates = scoringService.getCandidatesForStep(stepNum, input);
             for (int rank = 1; rank <= candidates.size(); rank++) {
                 ScoredCandidate scored = candidates.get(rank - 1);
                 RecommendationCandidate candidate = RecommendationCandidate.of(

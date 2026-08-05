@@ -8,8 +8,8 @@ import com.leets.k_beauty.domain.product.dto.IngredientInfo;
 import com.leets.k_beauty.domain.product.dto.ProductCandidate;
 import com.leets.k_beauty.domain.product.enums.ProductCategory;
 import com.leets.k_beauty.domain.product.service.ProductQueryService;
+import com.leets.k_beauty.domain.recommendation.dto.RecommendationInput;
 import com.leets.k_beauty.domain.recommendation.dto.ScoredCandidate;
-import com.leets.k_beauty.domain.session.entity.Session;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -57,14 +57,15 @@ public class RecommendationScoringService {
      * 각 단계(1~3)에 맞는 후보 ScoredCandidate 3개를 반환한다.
      * rank 1 = 메인 추천, rank 2~3 = 다른 후보
      */
-    public List<ScoredCandidate> getCandidatesForStep(int step, Session session) {
-        SkinType skinType = session.getSkinType() != null ? session.getSkinType() : SkinType.UNKNOWN;
-        boolean hasOilDiscomfort = session.getCautionCategories().contains(CautionCategory.OIL);
+    public List<ScoredCandidate> getCandidatesForStep(int step, RecommendationInput input) {
+        SkinType skinType = input.skinType() != null ? input.skinType() : SkinType.UNKNOWN;
+        List<CautionCategory> cautionCategories = effectiveCautionCategories(input);
+        boolean hasOilDiscomfort = cautionCategories.contains(CautionCategory.OIL);
 
         List<ProductCategory> categories = categoriesForStep(step, skinType, hasOilDiscomfort);
         List<ProductCandidate> pool = fetchPool(categories);
-        List<ProductCandidate> filtered = filterCaution(pool, session);
-        return scoreAndSort(filtered, session.getSkinConcern())
+        List<ProductCandidate> filtered = filterCaution(pool, input.sensitivityStatus(), cautionCategories);
+        return scoreAndSort(filtered, input.skinConcern())
                 .stream()
                 .limit(CANDIDATE_COUNT)
                 .toList();
@@ -165,16 +166,28 @@ public class RecommendationScoringService {
 
     // ---- 민감도 필터 ----
 
-    private List<ProductCandidate> filterCaution(List<ProductCandidate> pool, Session session) {
-        boolean shouldFilter = session.getSensitivityStatus() == SensitivityStatus.MEDIUM
-                || session.getSensitivityStatus() == SensitivityStatus.HIGH;
+    private List<CautionCategory> effectiveCautionCategories(RecommendationInput input) {
+        if (input.sensitivityStatus() != SensitivityStatus.MEDIUM
+                && input.sensitivityStatus() != SensitivityStatus.HIGH) {
+            return List.of();
+        }
+        return input.cautionCategories();
+    }
 
-        if (!shouldFilter || session.getCautionCategories().isEmpty()) {
+    private List<ProductCandidate> filterCaution(
+            List<ProductCandidate> pool,
+            SensitivityStatus sensitivityStatus,
+            List<CautionCategory> cautionCategories
+    ) {
+        boolean shouldFilter = sensitivityStatus == SensitivityStatus.MEDIUM
+                || sensitivityStatus == SensitivityStatus.HIGH;
+
+        if (!shouldFilter || cautionCategories.isEmpty()) {
             return pool;
         }
 
         return pool.stream()
-                .filter(candidate -> !hasCautionConflict(candidate, session.getCautionCategories()))
+                .filter(candidate -> !hasCautionConflict(candidate, cautionCategories))
                 .toList();
     }
 
