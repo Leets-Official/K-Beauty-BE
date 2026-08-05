@@ -1,5 +1,9 @@
 package com.leets.k_beauty.domain.survey.service;
 
+import com.leets.k_beauty.domain.common.enums.CautionCategory;
+import com.leets.k_beauty.domain.common.enums.DiagnosisType;
+import com.leets.k_beauty.domain.common.enums.SkinConcern;
+import com.leets.k_beauty.domain.common.enums.SkinType;
 import com.leets.k_beauty.domain.session.entity.Session;
 import com.leets.k_beauty.domain.session.repository.SessionRepository;
 import com.leets.k_beauty.domain.survey.dto.*;
@@ -98,6 +102,26 @@ public class SurveyService {
         return PreviousQuestionResponse.of(survey, options, groupAnswers(userCondition).get(previousCode));
     }
 
+    // 설문 처음부터 다시 시작
+    @Transactional
+    public RestartResponse restart(Long surveyId, String sessionToken) {
+        Session session = resolveSession(sessionToken);
+        UserCondition previous = getOwnedCondition(surveyId, session.getId());
+        previous.abandon();
+        session.resetCondition();
+
+        UserCondition next = UserCondition.start(previous.getSessionId());
+        userConditionRepository.save(next);
+
+        Survey first = surveyRepository.findFirst()
+                .orElseThrow(() -> new BusinessException(ErrorCode.SURVEY_QUESTION_NOT_FOUND));
+
+        return new RestartResponse(
+                previous.getId(), next.getId(), next.getSessionId(),
+                next.getStatus(), first.getQuestionCode(), first.getSurveyStep()
+        );
+    }
+
     // 답변된 질문을 설문 흐름 순서(surveyStep)대로 정렬
     private List<QuestionCode> answeredQuestionCodesInFlowOrder(UserCondition userCondition) {
         Map<QuestionCode, List<String>> grouped = groupAnswers(userCondition);
@@ -110,7 +134,8 @@ public class SurveyService {
     // 설문 답변 저장 및 변경
     @Transactional
     public AnswerSaveResponse saveAnswer(Long surveyId, QuestionCode questionCode, AnswerSaveRequest request, String sessionToken) {
-        UserCondition userCondition = getOwnedCondition(surveyId, sessionToken);
+        Session session = resolveSession(sessionToken);
+        UserCondition userCondition = getOwnedCondition(surveyId, session.getId());
         Survey survey = findActiveSurvey(questionCode);
         if (questionCode == QuestionCode.CAUTION && !isSensitiveYesAnswered(userCondition)) {
             throw new BusinessException(ErrorCode.CAUTION_PREREQUISITE_MISSING);
@@ -133,6 +158,11 @@ public class SurveyService {
         if (questionCode == QuestionCode.SKIN_TYPE) {
             boolean isTypeNeutral = selectedOptions.get(0).getOptionCode().equals(SKIN_TYPE_UNKNOWN);
             userCondition.updateTypeNeutralMode(isTypeNeutral);
+            session.updateSkinType(SkinType.valueOf(selectedOptions.get(0).getOptionCode()));
+        }
+
+        if (questionCode == QuestionCode.CONCERN) {
+            session.updateSkinConcern(SkinConcern.valueOf(selectedOptions.get(0).getOptionCode()));
         }
 
         List<QuestionCode> clearedQuestionCodes = new ArrayList<>();
@@ -143,6 +173,7 @@ public class SurveyService {
                 Survey cautionSurvey = findActiveSurvey(QuestionCode.CAUTION);
                 userSurveyAnswerRepository.deleteByConditionAndSurvey(userCondition, cautionSurvey);
                 clearedQuestionCodes.add(QuestionCode.CAUTION);
+                session.updateCautionCategories(List.of());
             }
         }
 
@@ -166,9 +197,18 @@ public class SurveyService {
                         : deriveFromCaution(existingCaution);
             }
             userCondition.updateSensitivityStatus(derivedSensitivityStatus);
+            session.updateSensitivityStatus(
+                    com.leets.k_beauty.domain.common.enums.SensitivityStatus.valueOf(derivedSensitivityStatus.name()));
         } else if (questionCode == QuestionCode.CAUTION) {
             derivedSensitivityStatus = deriveFromCaution(selectedOptions);
             userCondition.updateSensitivityStatus(derivedSensitivityStatus);
+            session.updateSensitivityStatus(
+                    com.leets.k_beauty.domain.common.enums.SensitivityStatus.valueOf(derivedSensitivityStatus.name()));
+            List<CautionCategory> cautions = selectedOptions.stream()
+                    .map(opt -> toCautionCategory(opt.getOptionCode()))
+                    .filter(c -> c != CautionCategory.UNKNOWN)
+                    .toList();
+            session.updateCautionCategories(cautions);
         }
 
         QuestionCode nextQuestionCode = determineNextQuestionCode(survey, selectedOptions);
@@ -192,7 +232,8 @@ public class SurveyService {
     // 진단 경로(QUICK/DETAILED) 저장
     @Transactional
     public DiagnosisModeResponse setDiagnosisMode(Long surveyId, DiagnosisModeRequest request, String sessionToken) {
-        UserCondition userCondition = getOwnedCondition(surveyId, sessionToken);
+        Session session = resolveSession(sessionToken);
+        UserCondition userCondition = getOwnedCondition(surveyId, session.getId());
         DiagnosisMode mode = parseDiagnosisMode(request.diagnosisMode());
 
         List<QuestionCode> missing = missingRequiredAnswers(userCondition, List.of(QuestionCode.CONCERN, QuestionCode.SKIN_TYPE));
@@ -209,11 +250,13 @@ public class SurveyService {
         userCondition.updateDiagnosisMode(mode);
         // 진단 경로가 바뀌면 민감도 상태도 다시 계산한다.
         // 원본 답변은 지우지 않고(프리필 유지) 파생값만 현재 경로에 맞춘다.
-        userCondition.updateSensitivityStatus(
-                mode == DiagnosisMode.QUICK
-                        ? SensitivityStatus.UNASSESSED           // 빠른 진단 = 민감도를 확인하지 않은 상태
-                        : deriveSensitivityStatus(userCondition) // 상세 진단 = 남아있는 답변으로 복원
-        );
+        SensitivityStatus newSensitivityStatus = mode == DiagnosisMode.QUICK
+                ? SensitivityStatus.UNASSESSED
+                : deriveSensitivityStatus(userCondition);
+        userCondition.updateSensitivityStatus(newSensitivityStatus);
+        session.updateDiagnosisType(DiagnosisType.valueOf(mode.name()));
+        session.updateSensitivityStatus(
+                com.leets.k_beauty.domain.common.enums.SensitivityStatus.valueOf(newSensitivityStatus.name()));
         // 상세 진단이면 다음 질문으로, 빠른 진단이면 바로 완료 단계
         // 다음 질문은 시드 데이터에서 찾으므로 설문 구성이 바뀌어도 따라감.
         QuestionCode nextQuestionCode = (mode == DiagnosisMode.DETAILED)
@@ -246,42 +289,32 @@ public class SurveyService {
         return CompletionResponse.from(userCondition);
     }
 
-    // 설문 처음부터 다시 시작
-    @Transactional
-    public RestartResponse restart(Long surveyId, String sessionToken) {
-        UserCondition previous = getOwnedCondition(surveyId, sessionToken);
-        previous.abandon();
-
-        UserCondition next = UserCondition.start(previous.getSessionId());
-        userConditionRepository.save(next);
-
-        Survey first = surveyRepository.findFirst()
-                .orElseThrow(() -> new BusinessException(ErrorCode.SURVEY_QUESTION_NOT_FOUND));
-
-        return new RestartResponse(
-                previous.getId(), next.getId(), next.getSessionId(),
-                next.getStatus(), first.getQuestionCode(), first.getSurveyStep()
-        );
-    }
-
     // ---- private helpers ----
+
+    // 세션 토큰으로 세션 조회
+    private Session resolveSession(String sessionToken) {
+        return sessionRepository.findBySessionTokenHash(Session.hashToken(sessionToken))
+                .orElseThrow(() -> new BusinessException(ErrorCode.SESSION_NOT_FOUND));
+    }
 
     // 세션 토큰으로 세션 ID 조회
     private Long resolveSessionId(String sessionToken) {
-        return sessionRepository.findBySessionTokenHash(Session.hashToken(sessionToken))
-                .orElseThrow(() -> new BusinessException(ErrorCode.SESSION_NOT_FOUND))
-                .getId();
+        return resolveSession(sessionToken).getId();
     }
 
-    // 설문 소유권(세션 일치) 확인 후 조회
-    private UserCondition getOwnedCondition(Long surveyId, String sessionToken) {
-        Long sessionId = resolveSessionId(sessionToken);
+    // 설문 소유권(세션 일치) 확인 후 조회 - sessionId 기반
+    private UserCondition getOwnedCondition(Long surveyId, Long sessionId) {
         UserCondition userCondition = userConditionRepository.findById(surveyId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SURVEY_NOT_FOUND));
         if (!userCondition.getSessionId().equals(sessionId)) {
             throw new BusinessException(ErrorCode.SURVEY_FORBIDDEN);
         }
         return userCondition;
+    }
+
+    // 설문 소유권(세션 일치) 확인 후 조회 - sessionToken 기반
+    private UserCondition getOwnedCondition(Long surveyId, String sessionToken) {
+        return getOwnedCondition(surveyId, resolveSessionId(sessionToken));
     }
 
     // 활성화된 질문 조회
@@ -513,5 +546,16 @@ public class SurveyService {
                 currentStep,
                 nextAction
         );
+    }
+
+    // CAUTION 선택지 코드 → CautionCategory 변환
+    private CautionCategory toCautionCategory(String optionCode) {
+        return switch (optionCode) {
+            case "FRAGRANCE" -> CautionCategory.FRAGRANCE;
+            case "ALCOHOL" -> CautionCategory.ALCOHOL;
+            case "OILY_TEXTURE" -> CautionCategory.OIL;
+            case "EXFOLIATION" -> CautionCategory.EXFOLIANT;
+            default -> CautionCategory.UNKNOWN;
+        };
     }
 }

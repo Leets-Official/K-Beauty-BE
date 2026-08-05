@@ -20,13 +20,17 @@ public class RecommendationInputMapper {
 
     public RecommendationInput from(UserCondition userCondition, List<UserSurveyAnswer> answers) {
         Map<QuestionCode, List<String>> optionCodesByQuestion = groupOptionCodes(answers);
+        SensitivityStatus sensitivityStatus = toSensitivityStatus(userCondition.getSensitivityStatus());
 
         return new RecommendationInput(
                 toSkinConcern(singleOptionCode(optionCodesByQuestion, QuestionCode.CONCERN)),
                 toSkinType(singleOptionCode(optionCodesByQuestion, QuestionCode.SKIN_TYPE)),
                 userCondition.isTypeNeutralMode(),
-                toSensitivityStatus(userCondition.getSensitivityStatus()),
-                toCautionCategories(optionCodesByQuestion.getOrDefault(QuestionCode.CAUTION, List.of()))
+                sensitivityStatus,
+                toEffectiveCautionCategories(
+                        sensitivityStatus,
+                        optionCodesByQuestion.getOrDefault(QuestionCode.CAUTION, List.of())
+                )
         );
     }
 
@@ -86,9 +90,17 @@ public class RecommendationInputMapper {
         };
     }
 
-    private List<CautionCategory> toCautionCategories(List<String> optionCodes) {
+    private List<CautionCategory> toEffectiveCautionCategories(
+            SensitivityStatus sensitivityStatus,
+            List<String> optionCodes
+    ) {
+        if (sensitivityStatus != SensitivityStatus.MEDIUM
+                && sensitivityStatus != SensitivityStatus.HIGH) {
+            return List.of();
+        }
         return optionCodes.stream()
                 .map(this::toCautionCategory)
+                .filter(cautionCategory -> cautionCategory != CautionCategory.UNKNOWN)
                 .toList();
     }
 

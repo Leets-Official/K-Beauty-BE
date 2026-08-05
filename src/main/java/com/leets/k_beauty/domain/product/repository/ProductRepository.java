@@ -21,4 +21,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             ORDER BY product.id ASC
             """)
     List<Product> findActiveByCategory(@Param("category") ProductCategory category);
+
+    // productId 목록으로 활성 상품을 한 번에 조회한다.
+    @Query("""
+            SELECT product
+            FROM Product product
+            WHERE product.id IN :ids
+              AND product.isActive = true
+            ORDER BY product.id ASC
+            """)
+    List<Product> findActiveByIds(@Param("ids") List<Long> ids);
 }

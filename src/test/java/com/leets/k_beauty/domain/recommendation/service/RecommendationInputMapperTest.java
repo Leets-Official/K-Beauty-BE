@@ -73,6 +73,19 @@ class RecommendationInputMapperTest extends IntegrationTestSupport {
         assertThat(input.cautionCategories()).isEmpty();
     }
 
+    @Test
+    @DisplayName("QUICK 전환 시 남아있는 주의 요소 답변은 추천 입력에 반영하지 않는다")
+    void quickModeIgnoresRemainingCautionAnswers() {
+        Fixture fixture = readyForRecommendationInput();
+        answer(fixture, QuestionCode.CAUTION, "OILY_TEXTURE", "EXFOLIATION");
+
+        setMode(fixture, "QUICK");
+        RecommendationInput input = toRecommendationInput(fixture);
+
+        assertThat(input.sensitivityStatus()).isEqualTo(SensitivityStatus.UNASSESSED);
+        assertThat(input.cautionCategories()).isEmpty();
+    }
+
     private RecommendationInput toRecommendationInput(Fixture fixture) {
         UserCondition userCondition = userConditionRepository.findById(fixture.surveyId()).orElseThrow();
         return recommendationInputMapper.from(
