@@ -5,6 +5,8 @@ spring:
 product:
   seed:
     enabled: true
+  price-update:
+    schedule-enabled: true
 
 # 프론트엔드 허용 오리진. 운영에서는 .env.prod의 CORS_ALLOWED_ORIGINS로 덮어쓴다.
 # localhost와 127.0.0.1은 브라우저가 서로 다른 오리진으로 보므로 둘 다 넣는다.

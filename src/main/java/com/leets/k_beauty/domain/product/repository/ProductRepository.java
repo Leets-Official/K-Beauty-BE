@@ -21,4 +21,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             ORDER BY product.id ASC
             """)
     List<Product> findActiveByCategory(@Param("category") ProductCategory category);
+
+    @Query("""
+            SELECT product
+            FROM Product product
+            WHERE product.isActive = true
+              AND product.purchaseUrl IS NOT NULL
+              AND product.purchaseUrl <> ''
+            ORDER BY product.id ASC
+            """)
+    List<Product> findActiveWithPurchaseUrl();
 }

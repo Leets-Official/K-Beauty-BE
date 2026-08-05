@@ -93,6 +93,24 @@ public class Product {
         this.isActive = isActive != null ? isActive : true;
     }
 
+    public void updateSeedDataPreservingPrice(
+            ProductCategory category,
+            String imageUrl,
+            String purchaseUrl,
+            Boolean isActive
+    ) {
+        this.category = category;
+        this.imageUrl = imageUrl;
+        this.purchaseUrl = purchaseUrl;
+        this.isActive = isActive != null ? isActive : true;
+    }
+
+    public void updatePrice(Integer price) {
+        if (price != null) {
+            this.price = price;
+        }
+    }
+
     @PrePersist
     private void prePersist() {
         LocalDateTime now = LocalDateTime.now();

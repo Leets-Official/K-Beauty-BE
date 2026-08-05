@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -97,7 +98,11 @@ public class ProductDataInitializer implements ApplicationRunner {
             boolean hasValidIngredients = hasValidProductIngredients(data, ingredientSeedNames);
             boolean isActive = resolveIsActive(data, enrichment) && hasValidIngredients;
 
-            Product product = productRepository.findByBrandNameAndProductName(data.brandName(), data.productName())
+            Optional<Product> existingProduct = productRepository.findByBrandNameAndProductName(
+                    data.brandName(),
+                    data.productName()
+            );
+            Product product = existingProduct
                     .orElseGet(() -> productRepository.save(Product.builder()
                             .brandName(data.brandName())
                             .productName(data.productName())
@@ -108,7 +113,9 @@ public class ProductDataInitializer implements ApplicationRunner {
                             .isActive(isActive)
                             .build()));
 
-            product.updateSeedData(data.category(), imageUrl, purchaseUrl, price, isActive);
+            if (existingProduct.isPresent()) {
+                product.updateSeedDataPreservingPrice(data.category(), imageUrl, purchaseUrl, isActive);
+            }
             if (hasValidIngredients) {
                 seedProductIngredients(product, data.ingredients());
             } else {
