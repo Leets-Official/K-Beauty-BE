@@ -7,6 +7,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
+    // ---- 공통: 도메인 규칙이 아니라 요청 형식 자체가 잘못된 경우 ----
+    INVALID_REQUEST(400, "요청 형식이 올바르지 않습니다."),
+    MALFORMED_REQUEST_BODY(400, "요청 본문을 읽을 수 없습니다."),
+    ENDPOINT_NOT_FOUND(404, "요청한 경로를 찾을 수 없습니다."),
+    METHOD_NOT_ALLOWED(405, "지원하지 않는 요청 방식입니다."),
+    INTERNAL_SERVER_ERROR(500, "서버 내부 오류가 발생했습니다."),
+
     SESSION_NOT_FOUND(404, "세션을 찾을 수 없습니다."),
     MISSING_SESSION_TOKEN(400, "X-Session-Token 헤더가 필요합니다."),
     SESSION_NOT_IN_PROGRESS(400, "진행 중인 세션만 재시작할 수 있습니다."),
@@ -45,7 +52,8 @@ public enum ErrorCode {
     PRODUCT_NOT_FOUND(404, "상품 정보를 찾을 수 없습니다."),
 
     // ---- Share ----
-    SHARE_NOT_FOUND(404, "공유 링크를 찾을 수 없습니다.");
+    SHARE_NOT_FOUND(404, "공유 링크를 찾을 수 없습니다."),
+    RECOMMENDATION_INVALIDATED(410, "설문이 변경되어 더 이상 유효하지 않은 추천 결과입니다.");
 
     private final int status;
     private final String message;

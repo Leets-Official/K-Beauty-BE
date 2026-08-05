@@ -22,6 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             """)
     List<Product> findActiveByCategory(@Param("category") ProductCategory category);
 
+    // 구매 링크가 있는 활성 상품 목록을 조회한다.
     @Query("""
             SELECT product
             FROM Product product
@@ -31,4 +32,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             ORDER BY product.id ASC
             """)
     List<Product> findActiveWithPurchaseUrl();
+
+    // productId 목록으로 활성 상품을 한 번에 조회한다.
+    @Query("""
+            SELECT product
+            FROM Product product
+            WHERE product.id IN :ids
+              AND product.isActive = true
+            ORDER BY product.id ASC
+            """)
+    List<Product> findActiveByIds(@Param("ids") List<Long> ids);
 }

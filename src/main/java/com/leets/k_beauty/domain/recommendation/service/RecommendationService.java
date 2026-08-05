@@ -1,9 +1,10 @@
 package com.leets.k_beauty.domain.recommendation.service;
 
-import com.leets.k_beauty.domain.product.dto.IngredientInfo;
 import com.leets.k_beauty.domain.product.dto.ProductCandidate;
+import com.leets.k_beauty.domain.recommendation.dto.ScoredCandidate;
 import com.leets.k_beauty.domain.product.service.ProductQueryService;
 import com.leets.k_beauty.domain.recommendation.dto.CandidateSelectRequest;
+import com.leets.k_beauty.domain.recommendation.dto.RecommendationInput;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationCandidateResponse;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationResponse;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationStepResponse;
@@ -18,8 +19,10 @@ import com.leets.k_beauty.domain.recommendation.repository.RecommendationStepRep
 import com.leets.k_beauty.domain.session.entity.Session;
 import com.leets.k_beauty.domain.session.repository.SessionRepository;
 import com.leets.k_beauty.domain.survey.entity.UserCondition;
+import com.leets.k_beauty.domain.survey.entity.UserSurveyAnswer;
 import com.leets.k_beauty.domain.survey.enums.SurveyStatus;
 import com.leets.k_beauty.domain.survey.repository.UserConditionRepository;
+import com.leets.k_beauty.domain.survey.repository.UserSurveyAnswerRepository;
 import com.leets.k_beauty.global.exception.BusinessException;
 import com.leets.k_beauty.global.exception.ErrorCode;
 import jakarta.persistence.EntityManager;
@@ -43,7 +46,9 @@ public class RecommendationService {
     private final RecommendationCandidateRepository candidateRepository;
     private final SessionRepository sessionRepository;
     private final UserConditionRepository userConditionRepository;
+    private final UserSurveyAnswerRepository userSurveyAnswerRepository;
     private final ProductQueryService productQueryService;
+    private final RecommendationInputMapper recommendationInputMapper;
     private final RecommendationScoringService scoringService;
     private final EntityManager entityManager;
 
@@ -55,6 +60,7 @@ public class RecommendationService {
         UserCondition userCondition = userConditionRepository.findFirstBySessionIdOrderByIdDesc(session.getId())
                 .filter(uc -> uc.getStatus() == SurveyStatus.COMPLETED)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SURVEY_NOT_COMPLETED));
+        RecommendationInput input = buildRecommendationInput(userCondition);
 
         // 기존 유효 추천 무효화
         recommendationRepository.findAllBySessionIdAndStatus(session.getId(), RecommendationStatus.GENERATED)
@@ -66,10 +72,11 @@ public class RecommendationService {
         recommendationRepository.save(recommendation);
 
         // 3단계 후보 생성
-        buildSteps(recommendation, session);
+        buildSteps(recommendation, input);
 
-        // 세션에 최신 추천 연결
+        // 세션에 최신 추천 연결 및 완료 처리
         session.linkRecommendation(recommendation.getId());
+        session.markAsCompleted();
 
         // 1차 캐시를 flush 후 clear해서 steps/candidates가 DB에서 새로 로딩되도록 함
         entityManager.flush();
@@ -126,17 +133,19 @@ public class RecommendationService {
 
     // ---- private helpers ----
 
-    private void buildSteps(Recommendation recommendation, Session session) {
+    private void buildSteps(Recommendation recommendation, RecommendationInput input) {
         StepRole[] roles = {StepRole.TEXTURE, StepRole.INTENSIVE, StepRole.MOISTURE};
 
         for (int stepNum = 1; stepNum <= 3; stepNum++) {
             RecommendationStep step = RecommendationStep.of(recommendation, stepNum, roles[stepNum - 1]);
             stepRepository.save(step);
 
-            List<ProductCandidate> candidates = scoringService.getCandidatesForStep(stepNum, session);
+            List<ScoredCandidate> candidates = scoringService.getCandidatesForStep(stepNum, input);
             for (int rank = 1; rank <= candidates.size(); rank++) {
+                ScoredCandidate scored = candidates.get(rank - 1);
                 RecommendationCandidate candidate = RecommendationCandidate.of(
-                        step, candidates.get(rank - 1).productId(), rank);
+                        step, scored.product().productId(), rank);
+                candidate.updateScoreAndReason(scored.matchScore(), scored.reasonShort());
                 candidateRepository.save(candidate);
 
                 // rank 1이 기본 선택
@@ -145,6 +154,11 @@ public class RecommendationService {
                 }
             }
         }
+    }
+
+    private RecommendationInput buildRecommendationInput(UserCondition userCondition) {
+        List<UserSurveyAnswer> answers = userSurveyAnswerRepository.findAllByCondition(userCondition);
+        return recommendationInputMapper.from(userCondition, answers);
     }
 
     private Session resolveSession(String sessionToken) {
@@ -161,15 +175,7 @@ public class RecommendationService {
         return recommendation;
     }
 
-    /**
-     * 추천 응답 조립.
-     * 후보에 저장된 productId로 ProductQueryService를 통해 제품 정보(성분 포함)를 조회한다.
-     * ProductQueryService가 카테고리 단위 조회만 지원하므로, 현재는 단건 조회를 반복한다.
-     *
-     * TODO: ProductQueryService에 findCandidatesByIds(List<Long>) 추가 시 N+1 개선 가능
-     */
     private RecommendationResponse toResponse(Recommendation recommendation) {
-        // 저장된 productId 전체를 한 번에 모아서 ProductCandidate 맵 구성
         List<Long> productIds = recommendation.getSteps().stream()
                 .flatMap(s -> s.getCandidates().stream())
                 .map(RecommendationCandidate::getProductId)
@@ -185,20 +191,11 @@ public class RecommendationService {
         return RecommendationResponse.of(recommendation, stepResponses);
     }
 
-    /**
-     * productId 목록으로 ProductCandidate 맵을 구성한다.
-     * ProductQueryService가 카테고리 단위 조회만 지원하므로, 전체 카테고리를 순회해 해당 ID만 필터링한다.
-     *
-     * TODO: ProductQueryService에 findCandidatesByIds(List<Long>) 추가 시 아래 로직 교체
-     */
     private Map<Long, ProductCandidate> buildProductMap(List<Long> productIds) {
-        return java.util.Arrays.stream(com.leets.k_beauty.domain.product.enums.ProductCategory.values())
-                .flatMap(cat -> productQueryService.findCandidatesByCategory(cat).stream())
-                .filter(pc -> productIds.contains(pc.productId()))
+        return productQueryService.findCandidatesByIds(productIds).stream()
                 .collect(Collectors.toMap(
                         ProductCandidate::productId,
-                        Function.identity(),
-                        (a, b) -> a
+                        Function.identity()
                 ));
     }
 
