@@ -4,6 +4,7 @@ import com.leets.k_beauty.domain.product.dto.IngredientInfo;
 import com.leets.k_beauty.domain.product.dto.ProductCandidate;
 import com.leets.k_beauty.domain.product.service.ProductQueryService;
 import com.leets.k_beauty.domain.recommendation.dto.CandidateSelectRequest;
+import com.leets.k_beauty.domain.recommendation.dto.RecommendationInput;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationCandidateResponse;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationResponse;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationStepResponse;
@@ -18,8 +19,10 @@ import com.leets.k_beauty.domain.recommendation.repository.RecommendationStepRep
 import com.leets.k_beauty.domain.session.entity.Session;
 import com.leets.k_beauty.domain.session.repository.SessionRepository;
 import com.leets.k_beauty.domain.survey.entity.UserCondition;
+import com.leets.k_beauty.domain.survey.entity.UserSurveyAnswer;
 import com.leets.k_beauty.domain.survey.enums.SurveyStatus;
 import com.leets.k_beauty.domain.survey.repository.UserConditionRepository;
+import com.leets.k_beauty.domain.survey.repository.UserSurveyAnswerRepository;
 import com.leets.k_beauty.global.exception.BusinessException;
 import com.leets.k_beauty.global.exception.ErrorCode;
 import jakarta.persistence.EntityManager;
@@ -43,8 +46,10 @@ public class RecommendationService {
     private final RecommendationCandidateRepository candidateRepository;
     private final SessionRepository sessionRepository;
     private final UserConditionRepository userConditionRepository;
+    private final UserSurveyAnswerRepository userSurveyAnswerRepository;
     private final ProductQueryService productQueryService;
     private final RecommendationScoringService scoringService;
+    private final RecommendationInputMapper recommendationInputMapper;
     private final EntityManager entityManager;
 
     // POST /api/recommendations - 추천 결과 생성
@@ -66,7 +71,8 @@ public class RecommendationService {
         recommendationRepository.save(recommendation);
 
         // 3단계 후보 생성
-        buildSteps(recommendation, session);
+        RecommendationInput input = buildRecommendationInput(userCondition);
+        buildSteps(recommendation, input);
 
         // 세션에 최신 추천 연결
         session.linkRecommendation(recommendation.getId());
@@ -126,14 +132,14 @@ public class RecommendationService {
 
     // ---- private helpers ----
 
-    private void buildSteps(Recommendation recommendation, Session session) {
+    private void buildSteps(Recommendation recommendation, RecommendationInput input) {
         StepRole[] roles = {StepRole.TEXTURE, StepRole.INTENSIVE, StepRole.MOISTURE};
 
         for (int stepNum = 1; stepNum <= 3; stepNum++) {
             RecommendationStep step = RecommendationStep.of(recommendation, stepNum, roles[stepNum - 1]);
             stepRepository.save(step);
 
-            List<ProductCandidate> candidates = scoringService.getCandidatesForStep(stepNum, session);
+            List<ProductCandidate> candidates = scoringService.getCandidatesForStep(stepNum, input);
             for (int rank = 1; rank <= candidates.size(); rank++) {
                 RecommendationCandidate candidate = RecommendationCandidate.of(
                         step, candidates.get(rank - 1).productId(), rank);
@@ -145,6 +151,11 @@ public class RecommendationService {
                 }
             }
         }
+    }
+
+    private RecommendationInput buildRecommendationInput(UserCondition userCondition) {
+        List<UserSurveyAnswer> answers = userSurveyAnswerRepository.findAllByCondition(userCondition);
+        return recommendationInputMapper.from(userCondition, answers);
     }
 
     private Session resolveSession(String sessionToken) {

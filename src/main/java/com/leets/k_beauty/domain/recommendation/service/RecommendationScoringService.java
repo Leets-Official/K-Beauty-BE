@@ -3,7 +3,7 @@ package com.leets.k_beauty.domain.recommendation.service;
 import com.leets.k_beauty.domain.product.dto.ProductCandidate;
 import com.leets.k_beauty.domain.product.enums.ProductCategory;
 import com.leets.k_beauty.domain.product.service.ProductQueryService;
-import com.leets.k_beauty.domain.session.entity.Session;
+import com.leets.k_beauty.domain.recommendation.dto.RecommendationInput;
 import com.leets.k_beauty.domain.common.enums.CautionCategory;
 import com.leets.k_beauty.domain.common.enums.SensitivityStatus;
 import lombok.RequiredArgsConstructor;
@@ -38,10 +38,10 @@ public class RecommendationScoringService {
      * 각 단계(1~3)에 맞는 후보 ProductCandidate 3개를 반환한다.
      * rank 1 = 메인 추천, rank 2~3 = 다른 후보
      */
-    public List<ProductCandidate> getCandidatesForStep(int step, Session session) {
+    public List<ProductCandidate> getCandidatesForStep(int step, RecommendationInput input) {
         List<ProductCategory> categories = categoriesForStep(step);
         List<ProductCandidate> pool = fetchPool(categories);
-        return filter(pool, session).stream()
+        return filter(pool, input).stream()
                 .limit(CANDIDATE_COUNT)
                 .toList();
     }
@@ -92,16 +92,16 @@ public class RecommendationScoringService {
      *
      * TODO: Product 메타데이터 추가 후 피부 고민·타입 기반 점수 로직 구현
      */
-    private List<ProductCandidate> filter(List<ProductCandidate> pool, Session session) {
-        boolean shouldFilter = session.getSensitivityStatus() == SensitivityStatus.MEDIUM
-                || session.getSensitivityStatus() == SensitivityStatus.HIGH;
+    private List<ProductCandidate> filter(List<ProductCandidate> pool, RecommendationInput input) {
+        boolean shouldFilter = input.sensitivityStatus() == SensitivityStatus.MEDIUM
+                || input.sensitivityStatus() == SensitivityStatus.HIGH;
 
-        if (!shouldFilter || session.getCautionCategories().isEmpty()) {
+        if (!shouldFilter || input.cautionCategories().isEmpty()) {
             return pool;
         }
 
         return pool.stream()
-                .filter(candidate -> !hasCautionConflict(candidate, session.getCautionCategories()))
+                .filter(candidate -> !hasCautionConflict(candidate, input.cautionCategories()))
                 .toList();
     }
 
