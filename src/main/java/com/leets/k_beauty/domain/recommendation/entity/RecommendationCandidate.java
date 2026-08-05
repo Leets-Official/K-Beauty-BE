@@ -39,6 +39,9 @@ public class RecommendationCandidate {
     @Column(length = 200)
     private String reasonShort;
 
+    @Column(name = "is_user_selected", nullable = false, columnDefinition = "bit(1) default b'0'")
+    private boolean userSelected;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -48,11 +51,20 @@ public class RecommendationCandidate {
         candidate.step = step;
         candidate.productId = productId;
         candidate.candidateRank = candidateRank;
+        candidate.userSelected = false;
         return candidate;
     }
 
     public void updateScoreAndReason(int score, String reason) {
         this.matchScore = java.math.BigDecimal.valueOf(score);
         this.reasonShort = reason;
+    }
+
+    public void markUserSelected() {
+        this.userSelected = true;
+    }
+
+    public void clearUserSelected() {
+        this.userSelected = false;
     }
 }

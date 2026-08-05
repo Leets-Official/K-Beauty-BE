@@ -82,7 +82,7 @@ erDiagram
 | 단계 ID | `step_id` | BIGINT | NOT NULL FK → recommendation_steps.id | 연결된 추천 단계 |
 | 상품 ID | `product_id` | BIGINT | NOT NULL FK → products.id | 추천된 상품 |
 | 후보 순서 | `candidate_rank` | INT | NOT NULL | 1=메인 추천, 2·3=다른 후보 |
-| 사용자 교체 여부 | `is_user_selected` | BOOLEAN | NOT NULL DEFAULT FALSE | 사용자가 직접 후보로 교체한 경우 TRUE |
+| 후보 선택 여부 | `is_user_selected` | BOOLEAN | NOT NULL DEFAULT FALSE | 현재 해당 단계에서 선택된 후보인 경우 TRUE |
 | 매칭 점수 | `match_score` | DECIMAL(5,2) | NULL | 상품 매칭 점수 |
 | 추천 이유 요약 | `reason_short` | VARCHAR(200) | NULL | 추천 이유 한 줄 설명 |
 | 생성일자 | `created_at` | DATETIME | NOT NULL | 생성 시각 |
@@ -92,4 +92,4 @@ erDiagram
 - 같은 추천 결과 안에서 동일한 단계·후보 순서는 중복될 수 없다. `UNIQUE(step_id, candidate_rank)`
 - 각 단계의 메인 추천은 `candidate_rank = 1`이며, 후보는 `candidate_rank = 2 또는 3`이다.
 - `candidate_rank`는 `match_score` 내림차순으로 결정하며, 동점일 경우 `product_id` 내림차순(더 최근 등록 상품 우선)으로 결정한다.
-- `is_user_selected = TRUE`인 상품은 사용자가 후보에서 직접 교체한 상품이다. 답변 변경 시 FALSE로 초기화한다.
+- 각 단계에서 현재 선택된 후보는 `is_user_selected = TRUE`이다. 추천 생성 시 기본 추천 후보(`candidate_rank = 1`)가 TRUE가 되고, 후보 교체 시 같은 단계의 기존 후보는 FALSE, 새 선택 후보는 TRUE로 변경된다.
