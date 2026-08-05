@@ -73,7 +73,7 @@ public class RecommendationScoringService {
         List<ProductCategory> categories = categoriesForStep(step, skinType, hasOilDiscomfort);
         List<ProductCandidate> pool = fetchPool(categories);
         List<ProductCandidate> filtered = filterCaution(pool, input.sensitivityStatus(), cautionCategories);
-        return scoreAndSort(filtered, input.skinConcern(), step)
+        return scoreAndSort(filtered, input.skinConcern())
                 .stream()
                 .limit(CANDIDATE_COUNT)
                 .toList();
@@ -233,7 +233,7 @@ public class RecommendationScoringService {
 
     // ---- 점수 계산 및 정렬 ----
 
-    private List<ScoredCandidate> scoreAndSort(List<ProductCandidate> pool, SkinConcern skinConcern, int step) {
+    private List<ScoredCandidate> scoreAndSort(List<ProductCandidate> pool, SkinConcern skinConcern) {
         Set<String> concernIngredients = skinConcern != null
                 ? CONCERN_INGREDIENT_MAP.getOrDefault(skinConcern, Set.of())
                 : Set.of();
@@ -251,7 +251,7 @@ public class RecommendationScoringService {
                     return new ScoredCandidate(
                             product,
                             matched.size(),
-                            buildReason(reasonIngredientNames, skinConcern, step)
+                            buildReason(reasonIngredientNames, skinConcern)
                     );
                 })
                 .sorted(Comparator.comparingInt(ScoredCandidate::matchScore).reversed()
@@ -281,9 +281,9 @@ public class RecommendationScoringService {
                 .replaceAll("\\s+", "");
     }
 
-    private String buildReason(List<String> matchedNames, SkinConcern concern, int step) {
+    private String buildReason(List<String> matchedNames, SkinConcern concern) {
         if (matchedNames.isEmpty() || concern == null) {
-            return stepRoleName(step) + " 단계에 맞춰 사용감과 루틴 흐름을 고려해 추천했어요.";
+            return "피부 타입에 맞춰 사용감을 고려해 추천했어요.";
         }
 
         String concernName = CONCERN_DISPLAY_NAME.getOrDefault(concern, "선택한 피부");
@@ -299,12 +299,4 @@ public class RecommendationScoringService {
         return String.join(", ", ingredientNames);
     }
 
-    private String stepRoleName(int step) {
-        return switch (step) {
-            case 1 -> "피부결 정돈";
-            case 2 -> "집중 케어";
-            case 3 -> "보습 마무리";
-            default -> "루틴";
-        };
-    }
 }
