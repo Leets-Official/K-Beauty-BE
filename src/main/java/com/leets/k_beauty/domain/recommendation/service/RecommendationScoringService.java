@@ -254,7 +254,9 @@ public class RecommendationScoringService {
                             buildReason(reasonIngredientNames, skinConcern, step)
                     );
                 })
-                .sorted(Comparator.comparingInt(ScoredCandidate::matchScore).reversed())
+                .sorted(Comparator.comparingInt(ScoredCandidate::matchScore).reversed()
+                        .thenComparing(candidate -> candidate.product().price(), Comparator.nullsLast(Integer::compareTo))
+                        .thenComparing(candidate -> candidate.product().productId()))
                 .collect(Collectors.toList());
     }
 
