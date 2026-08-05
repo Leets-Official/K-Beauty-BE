@@ -126,7 +126,9 @@ public class RecommendationService {
                 .findByStepAndProductId(recommendationStep, request.productId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.CANDIDATE_NOT_IN_STEP));
 
+        recommendationStep.getCandidates().forEach(RecommendationCandidate::clearUserSelected);
         recommendationStep.selectCandidate(candidate.getId());
+        candidate.markUserSelected();
 
         return toResponse(recommendation);
     }
@@ -146,6 +148,9 @@ public class RecommendationService {
                 RecommendationCandidate candidate = RecommendationCandidate.of(
                         step, scored.product().productId(), rank);
                 candidate.updateScoreAndReason(scored.matchScore(), scored.reasonShort());
+                if (rank == 1) {
+                    candidate.markUserSelected();
+                }
                 candidateRepository.save(candidate);
 
                 // rank 1이 기본 선택
