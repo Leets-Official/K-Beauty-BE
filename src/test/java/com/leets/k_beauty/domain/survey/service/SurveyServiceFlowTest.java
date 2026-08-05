@@ -72,7 +72,7 @@ class SurveyServiceFlowTest extends IntegrationTestSupport {
 
             var current = surveyService.getCurrent(fixture.sessionToken());
 
-            assertThat(current.id()).isEqualTo(fixture.surveyId());
+            assertThat(current.surveyResponseId()).isEqualTo(fixture.surveyId());
             assertThat(current.status()).isEqualTo(SurveyStatus.IN_PROGRESS);
         }
 
@@ -85,7 +85,7 @@ class SurveyServiceFlowTest extends IntegrationTestSupport {
 
             var current = surveyService.getCurrent(fixture.sessionToken());
 
-            assertThat(current.id()).isEqualTo(fixture.surveyId());
+            assertThat(current.surveyResponseId()).isEqualTo(fixture.surveyId());
             assertThat(current.status()).isEqualTo(SurveyStatus.COMPLETED);
         }
 

@@ -29,11 +29,16 @@ public class SurveyController {
                 .body(ApiResponse.created(surveyService.create(sessionToken)));
     }
 
-    @Operation(summary = "설문 이어하기/재진입 라우팅", description = "세션의 가장 최근 설문 컨텍스트를 상태 무관으로 조회합니다. " +
-            "status가 IN_PROGRESS면 이어하기, COMPLETED면 결과 화면으로, 응답이 없으면(404) 온보딩으로 라우팅합니다.")
+    @Operation(summary = "설문 이어하기/재진입 라우팅", description = "세션의 가장 최근 설문 컨텍스트를 진행 상태와 함께 상태 무관으로 조회합니다. " +
+            "먼저 status로 분기하고(COMPLETED면 결과 화면, 응답이 없으면 404로 온보딩), " +
+            "그 외에는 nextAction으로 분기합니다. " +
+            "ANSWER_QUESTION이면 currentQuestionCode 질문을 answers[]로 프리필해 띄우고, " +
+            "SELECT_DIAGNOSIS_MODE면 진단 경로 선택, READY_TO_COMPLETE면 완료를 호출합니다. " +
+            "SELECT_DIAGNOSIS_MODE와 READY_TO_COMPLETE 상태에서는 currentQuestionCode가 응답에서 생략되므로 " +
+            "질문 코드의 유무로 분기하면 안 됩니다.")
     @GetMapping("/current")
-    public ResponseEntity<ApiResponse<UserConditionResponse>> getCurrent(@Parameter(description = "세션 토큰", required = true)
-                                                                         @RequestHeader("X-Session-Token") String sessionToken) {
+    public ResponseEntity<ApiResponse<SurveyProgressResponse>> getCurrent(@Parameter(description = "세션 토큰", required = true)
+                                                                          @RequestHeader("X-Session-Token") String sessionToken) {
         return ResponseEntity.ok(ApiResponse.success(surveyService.getCurrent(sessionToken)));
     }
 

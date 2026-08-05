@@ -54,11 +54,13 @@ public class SurveyService {
     }
 
     // 세션의 가장 최근 설문 컨텍스트 조회 (재진입 라우팅용: IN_PROGRESS→이어하기, COMPLETED→결과 화면, 없음→온보딩)
-    public UserConditionResponse getCurrent(String sessionToken) {
+    // 어느 화면을 띄울지만 알려주면 "이어하기"를 골랐을 때 어느 질문부터 이어갈지 알 수 없어,
+    // 진행 상태(답변 이력·다음 질문)까지 함께 내려준다. 재진입 시 이 API 한 번이면 화면을 그릴 수 있다.
+    public SurveyProgressResponse getCurrent(String sessionToken) {
         Long sessionId = resolveSessionId(sessionToken);
         UserCondition userCondition = userConditionRepository.findFirstBySessionIdOrderByIdDesc(sessionId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SURVEY_NOT_FOUND));
-        return UserConditionResponse.from(userCondition);
+        return buildProgress(userCondition);
     }
 
     // 설문 진행 정보 및 답변 이력 조회
