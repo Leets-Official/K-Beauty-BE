@@ -52,7 +52,8 @@ public enum ErrorCode {
     PRODUCT_NOT_FOUND(404, "상품 정보를 찾을 수 없습니다."),
 
     // ---- Share ----
-    SHARE_NOT_FOUND(404, "공유 링크를 찾을 수 없습니다.");
+    SHARE_NOT_FOUND(404, "공유 링크를 찾을 수 없습니다."),
+    RECOMMENDATION_INVALIDATED(410, "설문이 변경되어 더 이상 유효하지 않은 추천 결과입니다.");
 
     private final int status;
     private final String message;

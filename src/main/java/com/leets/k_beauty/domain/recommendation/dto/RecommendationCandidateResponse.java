@@ -5,6 +5,7 @@ import com.leets.k_beauty.domain.product.dto.ProductCandidate;
 import com.leets.k_beauty.domain.product.enums.ProductCategory;
 import com.leets.k_beauty.domain.recommendation.entity.RecommendationCandidate;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public record RecommendationCandidateResponse(
@@ -17,7 +18,9 @@ public record RecommendationCandidateResponse(
         String purchaseUrl,
         Integer price,
         int candidateRank,
-        List<IngredientInfo> topIngredients  // 주요 성분 칩 최대 3개
+        List<IngredientInfo> topIngredients,  // 주요 성분 칩 최대 3개
+        BigDecimal matchScore,
+        String reasonShort
 ) {
     public static RecommendationCandidateResponse of(RecommendationCandidate candidate, ProductCandidate product) {
         List<IngredientInfo> top3 = product.ingredients().stream()
@@ -34,7 +37,9 @@ public record RecommendationCandidateResponse(
                 product.purchaseUrl(),
                 product.price(),
                 candidate.getCandidateRank(),
-                top3
+                top3,
+                candidate.getMatchScore(),
+                candidate.getReasonShort()
         );
     }
 }

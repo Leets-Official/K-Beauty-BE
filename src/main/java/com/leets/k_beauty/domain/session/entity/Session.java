@@ -114,4 +114,36 @@ public class Session {
     public void linkRecommendation(Long recommendationId) {
         this.recommendationId = recommendationId;
     }
+
+    public void updateDiagnosisType(DiagnosisType diagnosisType) {
+        this.diagnosisType = diagnosisType;
+    }
+
+    public void updateSkinConcern(SkinConcern skinConcern) {
+        this.skinConcern = skinConcern;
+    }
+
+    public void updateSkinType(SkinType skinType) {
+        this.skinType = skinType;
+        this.typeNeutralMode = (skinType == SkinType.UNKNOWN);
+    }
+
+    public void updateSensitivityStatus(SensitivityStatus status) {
+        this.sensitivityStatus = status;
+    }
+
+    public void updateCautionCategories(List<CautionCategory> categories) {
+        this.cautionCategories.clear();
+        this.cautionCategories.addAll(categories);
+    }
+
+    public void resetCondition() {
+        this.diagnosisType = null;
+        this.skinConcern = null;
+        this.skinType = null;
+        this.typeNeutralMode = false;
+        this.sensitivityStatus = SensitivityStatus.UNASSESSED;
+        this.cautionCategories.clear();
+        this.recommendationId = null;
+    }
 }
