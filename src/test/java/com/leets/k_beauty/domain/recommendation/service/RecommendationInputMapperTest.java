@@ -5,6 +5,7 @@ import com.leets.k_beauty.domain.common.enums.SensitivityStatus;
 import com.leets.k_beauty.domain.common.enums.SkinConcern;
 import com.leets.k_beauty.domain.common.enums.SkinType;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationInput;
+import com.leets.k_beauty.domain.recommendation.enums.ExplorationHabit;
 import com.leets.k_beauty.domain.session.entity.Session;
 import com.leets.k_beauty.domain.session.repository.SessionRepository;
 import com.leets.k_beauty.domain.survey.dto.AnswerSaveRequest;
@@ -53,6 +54,7 @@ class RecommendationInputMapperTest extends IntegrationTestSupport {
         assertThat(input.skinType()).isEqualTo(SkinType.DRY);
         assertThat(input.typeNeutralMode()).isFalse();
         assertThat(input.sensitivityStatus()).isEqualTo(SensitivityStatus.HIGH);
+        assertThat(input.explorationHabit()).isEqualTo(ExplorationHabit.OCCASIONALLY);
         assertThat(input.cautionCategories())
                 .containsExactlyInAnyOrder(CautionCategory.OIL, CautionCategory.EXFOLIANT);
     }
@@ -70,19 +72,34 @@ class RecommendationInputMapperTest extends IntegrationTestSupport {
         assertThat(input.skinType()).isEqualTo(SkinType.UNKNOWN);
         assertThat(input.typeNeutralMode()).isTrue();
         assertThat(input.sensitivityStatus()).isEqualTo(SensitivityStatus.UNASSESSED);
+        assertThat(input.explorationHabit()).isEqualTo(ExplorationHabit.OCCASIONALLY);
         assertThat(input.cautionCategories()).isEmpty();
     }
 
     @Test
-    @DisplayName("QUICK 전환 시 남아있는 주의 요소 답변은 추천 입력에 반영하지 않는다")
-    void quickModeIgnoresRemainingCautionAnswers() {
+    @DisplayName("탐색 습관 답변을 추천 입력값으로 변환한다")
+    void mapsExplorationHabitToRecommendationInput() {
+        Fixture fixture = readyForRecommendationInput();
+        answer(fixture, QuestionCode.CAUTION, "OILY_TEXTURE");
+        answer(fixture, QuestionCode.EXPLORATION_HABIT, "FREQUENTLY");
+
+        RecommendationInput input = toRecommendationInput(fixture);
+
+        assertThat(input.explorationHabit()).isEqualTo(ExplorationHabit.FREQUENTLY);
+    }
+
+    @Test
+    @DisplayName("QUICK 전환 시 남아있는 상세 진단 답변은 추천 입력에 반영하지 않는다")
+    void quickModeIgnoresRemainingDetailedAnswers() {
         Fixture fixture = readyForRecommendationInput();
         answer(fixture, QuestionCode.CAUTION, "OILY_TEXTURE", "EXFOLIATION");
+        answer(fixture, QuestionCode.EXPLORATION_HABIT, "FREQUENTLY");
 
         setMode(fixture, "QUICK");
         RecommendationInput input = toRecommendationInput(fixture);
 
         assertThat(input.sensitivityStatus()).isEqualTo(SensitivityStatus.UNASSESSED);
+        assertThat(input.explorationHabit()).isEqualTo(ExplorationHabit.OCCASIONALLY);
         assertThat(input.cautionCategories()).isEmpty();
     }
 

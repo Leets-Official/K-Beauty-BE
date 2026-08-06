@@ -10,6 +10,7 @@ import com.leets.k_beauty.domain.product.enums.ProductCategory;
 import com.leets.k_beauty.domain.product.service.ProductQueryService;
 import com.leets.k_beauty.domain.recommendation.dto.RecommendationInput;
 import com.leets.k_beauty.domain.recommendation.dto.ScoredCandidate;
+import com.leets.k_beauty.domain.recommendation.enums.ExplorationHabit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,22 @@ public class RecommendationScoringService {
             SkinConcern.AGING, "탄력과 주름 고민을 케어하는 데 도움을 줄 수 있어요."
     );
 
+    private static final Map<SkinConcern, String> CONCERN_EXPERT_DESCRIPTION = Map.of(
+            SkinConcern.MOISTURE, "수분 공급과 보습 장벽 유지 관점에서 잘 맞아요.",
+            SkinConcern.SENSITIVE, "진정 케어와 자극 부담 완화 관점에서 잘 맞아요.",
+            SkinConcern.TONE, "칙칙함 케어와 톤 균일도 관리 관점에서 잘 맞아요.",
+            SkinConcern.TROUBLE, "피부결 케어와 유분 밸런스 관리 관점에서 잘 맞아요.",
+            SkinConcern.AGING, "탄력 케어와 보습 장벽 관리 관점에서 잘 맞아요."
+    );
+
+    private static final Map<SkinConcern, String> CONCERN_SIMPLE_REASON = Map.of(
+            SkinConcern.MOISTURE, "건조한 피부에 수분감을 채워주기 좋아 추천했어요.",
+            SkinConcern.SENSITIVE, "예민한 피부도 편안하게 쓰기 좋아 추천했어요.",
+            SkinConcern.TONE, "칙칙한 피부톤이 고민일 때 쓰기 좋아 추천했어요.",
+            SkinConcern.TROUBLE, "번들거림이나 모공 고민이 있는 피부에 가볍게 쓰기 좋아 추천했어요.",
+            SkinConcern.AGING, "탄력이 떨어져 보이는 피부를 관리하기 좋아 추천했어요."
+    );
+
     private enum Season { SUMMER, SPRING_FALL, WINTER }
 
     /**
@@ -73,7 +90,7 @@ public class RecommendationScoringService {
         List<ProductCategory> categories = categoriesForStep(step, skinType, hasOilDiscomfort);
         List<ProductCandidate> pool = fetchPool(categories);
         List<ProductCandidate> filtered = filterCaution(pool, input.sensitivityStatus(), cautionCategories);
-        return scoreAndSort(filtered, input.skinConcern())
+        return scoreAndSort(filtered, input.skinConcern(), input.explorationHabit())
                 .stream()
                 .limit(CANDIDATE_COUNT)
                 .toList();
@@ -233,7 +250,11 @@ public class RecommendationScoringService {
 
     // ---- 점수 계산 및 정렬 ----
 
-    private List<ScoredCandidate> scoreAndSort(List<ProductCandidate> pool, SkinConcern skinConcern) {
+    private List<ScoredCandidate> scoreAndSort(
+            List<ProductCandidate> pool,
+            SkinConcern skinConcern,
+            ExplorationHabit explorationHabit
+    ) {
         Set<String> concernIngredients = skinConcern != null
                 ? CONCERN_INGREDIENT_MAP.getOrDefault(skinConcern, Set.of())
                 : Set.of();
@@ -251,7 +272,7 @@ public class RecommendationScoringService {
                     return new ScoredCandidate(
                             product,
                             matched.size(),
-                            buildReason(reasonIngredientNames, skinConcern)
+                            buildReason(reasonIngredientNames, skinConcern, explorationHabit)
                     );
                 })
                 .sorted(Comparator.comparingInt(ScoredCandidate::matchScore).reversed()
@@ -281,18 +302,54 @@ public class RecommendationScoringService {
                 .replaceAll("\\s+", "");
     }
 
-    private String buildReason(List<String> matchedNames, SkinConcern concern) {
+    private String buildReason(
+            List<String> matchedNames,
+            SkinConcern concern,
+            ExplorationHabit explorationHabit
+    ) {
         if (matchedNames.isEmpty() || concern == null) {
-            return "피부 타입에 맞춰 사용감을 고려해 추천했어요.";
+            return buildFallbackReason(explorationHabit);
+        }
+
+        if (explorationHabit == ExplorationHabit.RARELY) {
+            return CONCERN_SIMPLE_REASON.getOrDefault(
+                    concern,
+                    "선택한 피부 고민에 맞춰 쓰기 좋아 추천했어요."
+            );
         }
 
         String concernName = CONCERN_DISPLAY_NAME.getOrDefault(concern, "선택한 피부");
+        String ingredientPhrase = toIngredientPhrase(matchedNames);
+        if (explorationHabit == ExplorationHabit.FREQUENTLY) {
+            String expertDescription = CONCERN_EXPERT_DESCRIPTION.getOrDefault(
+                    concern,
+                    "선택한 고민을 케어하는 성분 구성 관점에서 잘 맞아요."
+            );
+            return concernName + " 고민에 맞춰 " + ingredientPhrase
+                    + "을 기준으로 추천했어요. " + expertDescription;
+        }
+
         String effectDescription = CONCERN_EFFECT_DESCRIPTION.getOrDefault(
                 concern,
                 "선택한 고민을 케어하는 데 도움을 줄 수 있어요."
         );
         return concernName + " 고민에 맞게 " + joinIngredientNames(matchedNames)
                 + " 성분이 " + effectDescription;
+    }
+
+    private String buildFallbackReason(ExplorationHabit explorationHabit) {
+        return switch (explorationHabit) {
+            case FREQUENTLY -> "선택한 고민과 직접 맞는 핵심 성분은 적지만, 피부 타입과 제품군의 사용감을 함께 고려해 추천했어요.";
+            case OCCASIONALLY -> "피부 타입과 제품군을 기준으로, 매일 부담 없이 사용할 수 있는 제품으로 추천했어요.";
+            case RARELY -> "피부 타입에 맞춰 사용감이 무난한 제품으로 추천했어요.";
+        };
+    }
+
+    private String toIngredientPhrase(List<String> ingredientNames) {
+        if (ingredientNames.size() == 1) {
+            return ingredientNames.get(0) + " 성분";
+        }
+        return joinIngredientNames(ingredientNames) + " 성분 조합";
     }
 
     private String joinIngredientNames(List<String> ingredientNames) {
