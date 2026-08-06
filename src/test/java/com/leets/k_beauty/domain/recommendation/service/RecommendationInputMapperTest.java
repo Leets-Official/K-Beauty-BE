@@ -89,10 +89,11 @@ class RecommendationInputMapperTest extends IntegrationTestSupport {
     }
 
     @Test
-    @DisplayName("QUICK 전환 시 남아있는 주의 요소 답변은 추천 입력에 반영하지 않는다")
-    void quickModeIgnoresRemainingCautionAnswers() {
+    @DisplayName("QUICK 전환 시 남아있는 상세 진단 답변은 추천 입력에 반영하지 않는다")
+    void quickModeIgnoresRemainingDetailedAnswers() {
         Fixture fixture = readyForRecommendationInput();
         answer(fixture, QuestionCode.CAUTION, "OILY_TEXTURE", "EXFOLIATION");
+        answer(fixture, QuestionCode.EXPLORATION_HABIT, "FREQUENTLY");
 
         setMode(fixture, "QUICK");
         RecommendationInput input = toRecommendationInput(fixture);

@@ -8,6 +8,7 @@ import com.leets.k_beauty.domain.recommendation.dto.RecommendationInput;
 import com.leets.k_beauty.domain.recommendation.enums.ExplorationHabit;
 import com.leets.k_beauty.domain.survey.entity.UserCondition;
 import com.leets.k_beauty.domain.survey.entity.UserSurveyAnswer;
+import com.leets.k_beauty.domain.survey.enums.DiagnosisMode;
 import com.leets.k_beauty.domain.survey.enums.QuestionCode;
 import com.leets.k_beauty.global.exception.BusinessException;
 import com.leets.k_beauty.global.exception.ErrorCode;
@@ -28,7 +29,10 @@ public class RecommendationInputMapper {
                 toSkinType(singleOptionCode(optionCodesByQuestion, QuestionCode.SKIN_TYPE)),
                 userCondition.isTypeNeutralMode(),
                 sensitivityStatus,
-                toExplorationHabit(optionCodesByQuestion.getOrDefault(QuestionCode.EXPLORATION_HABIT, List.of())),
+                toExplorationHabit(
+                        userCondition,
+                        optionCodesByQuestion.getOrDefault(QuestionCode.EXPLORATION_HABIT, List.of())
+                ),
                 toEffectiveCautionCategories(
                         sensitivityStatus,
                         optionCodesByQuestion.getOrDefault(QuestionCode.CAUTION, List.of())
@@ -117,7 +121,10 @@ public class RecommendationInputMapper {
         };
     }
 
-    private ExplorationHabit toExplorationHabit(List<String> optionCodes) {
+    private ExplorationHabit toExplorationHabit(UserCondition userCondition, List<String> optionCodes) {
+        if (userCondition.getDiagnosisMode() == DiagnosisMode.QUICK) {
+            return ExplorationHabit.OCCASIONALLY;
+        }
         if (optionCodes.isEmpty()) {
             return ExplorationHabit.OCCASIONALLY;
         }
